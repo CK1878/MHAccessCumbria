@@ -1,0 +1,43 @@
+[
+  {
+    "id": "res-001",
+    "title": "Peer-Led Recovery & Talking Groups",
+    "description": "Self-directed community support meetings offering safe, non-clinical spaces to talk and connect.",
+    "category": "Mental Health Support",
+    "access": "Drop-in",
+    "address": "Carlisle Community Centre, CA3 8NX",
+    "lat": 54.8925,
+    "lng": -2.9329
+  },
+  {
+    "id": "res-002",
+    "title": "Active Wellbeing & Walking Groups",
+    "description": "Low-impact outdoor walking and physical activity sessions aimed at boosting mood and social recovery.",
+    "category": "Exercise & Physical Activity",
+    "access": "Open Access",
+    "address": "Bitts Park, Carlisle, CA3 8UZ",
+    "lat": 54.8981,
+    "lng": -2.9382
+  },
+  {
+    "id": "res-003",
+    "title": "Crisis Diversion & Safe Haven",
+    "description": "A calm, non-clinical evening space providing immediate sensory grounding and practical distress support.",
+    "category": "Crisis Support",
+    "access": "Self-Referral",
+    "address": "Victoria Viaduct, Carlisle, CA3 8HA",
+    "lat": 54.8891,
+    "lng": -2.9345
+  },
+  {
+    "id": "res-004",
+    "title": "Community Allotment & Green Social Prescribing",
+    "description": "Hands-on outdoor gardening and therapeutic community shed activities to rebuild routine and confidence.",
+    "category": "Exercise & Physical Activity",
+    "access": "Free Registration",
+    "address": "Stanwix Community Garden, CA3 9AA",
+    "lat": 54.9032,
+    "lng": -2.9311
+  }
+]
+
