@@ -1,0 +1,176 @@
+/* Color Palette Variables */
+:root {
+  --navy-dark: #1D2D44;      /* Deep Navy Background */
+  --navy-medium: #0D1B2A;    /* Dark Slate Utility Bar */
+  --slate-accent: #3D405B;   /* Warm Slate Neutral */
+  --terracotta: #E07A5F;     /* Warm Accent / Button */
+  --terracotta-hover: #D0694E;
+  --bg-light: #F8F9FA;       /* Soft White Background */
+  --text-dark: #212529;      /* Body Text */
+  --text-muted: #6C757D;
+}
+
+/* Layout Reset & Base Styling */
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+body { 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+  background: var(--bg-light); 
+  color: var(--text-dark); 
+  line-height: 1.5;
+}
+
+.container { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 0 20px; 
+}
+
+/* Top Utility Bar */
+.top-bar { 
+  background-color: var(--navy-medium); 
+  color: #B0C4DE; 
+  font-size: 0.85rem; 
+  padding: 8px 0; 
+  border-bottom: 1px solid rgba(255,255,255,0.05); 
+}
+
+.top-bar-content { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+.trust-badge { 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+  font-weight: 500; 
+}
+
+.badge-dot { 
+  width: 8px; 
+  height: 8px; 
+  background-color: var(--terracotta); 
+  border-radius: 50%; 
+  display: inline-block; 
+}
+
+.utility-nav a { 
+  color: #B0C4DE; 
+  text-decoration: none; 
+  margin-left: 20px; 
+  transition: color 0.2s; 
+}
+
+.utility-nav a:hover { 
+  color: #FFFFFF; 
+}
+
+/* Main Commercial Header */
+.main-header { 
+  background-color: var(--navy-dark); 
+  color: #FFFFFF; 
+  padding: 24px 0; 
+  border-bottom: 1px solid rgba(255,255,255,0.1); 
+}
+
+.header-content { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+.brand { 
+  display: flex; 
+  align-items: center; 
+  gap: 16px; 
+}
+
+.brand-logo { 
+  width: 42px; 
+  height: 42px; 
+}
+
+.brand-title { 
+  font-size: 1.6rem; 
+  font-weight: 800; 
+  letter-spacing: 0.5px; 
+  color: #FFFFFF; 
+  line-height: 1.1; 
+}
+
+.brand-subtitle { 
+  font-size: 0.9rem; 
+  color: #A0AAB2; 
+  font-weight: 400; 
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+}
+
+/* Primary Action Button */
+.btn-primary { 
+  background-color: var(--terracotta); 
+  color: #FFFFFF; 
+  padding: 10px 20px; 
+  border-radius: 6px; 
+  text-decoration: none; 
+  font-weight: 600; 
+  font-size: 0.95rem; 
+  transition: background 0.2s ease-in-out; 
+}
+
+.btn-primary:hover { 
+  background-color: var(--terracotta-hover); 
+}
+
+/* Main Navigation Bar */
+.main-nav { 
+  background-color: #FFFFFF; 
+  border-bottom: 2px solid #E9ECEF; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+}
+
+.nav-links { 
+  display: flex; 
+  gap: 30px; 
+}
+
+.nav-item { 
+  padding: 16px 0; 
+  color: var(--slate-accent); 
+  text-decoration: none; 
+  font-size: 0.95rem; 
+  font-weight: 600; 
+  position: relative; 
+  transition: color 0.2s; 
+}
+
+.nav-item:hover { 
+  color: var(--navy-dark); 
+}
+
+.nav-item.active { 
+  color: var(--terracotta); 
+}
+
+.nav-item.active::after { 
+  content: ''; 
+  position: absolute; 
+  bottom: -2px; 
+  left: 0; 
+  right: 0; 
+  height: 3px; 
+  background-color: var(--terracotta); 
+  border-radius: 3px 3px 0 0; 
+}
+
+/* Main Content Container */
+.main-content {
+  padding: 40px 0;
+}
+
