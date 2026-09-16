@@ -46,10 +46,6 @@
             flex-wrap: wrap;
         }
 
-        .top-bar-tagline {
-            font-weight: 500;
-        }
-
         .top-bar-links a {
             color: #C5D1DF;
             text-decoration: none;
@@ -60,7 +56,7 @@
             color: white;
         }
 
-        /* Main Header Banner */
+        /* Header Banner */
         header {
             background-color: var(--brand-dark-navy);
             color: white;
@@ -83,7 +79,6 @@
             margin-bottom: 0.8rem;
         }
 
-        /* Custom Arc Logo */
         .brand-logo-arc {
             width: 38px;
             height: 38px;
@@ -91,10 +86,6 @@
             border-bottom-color: transparent;
             border-radius: 50%;
             transform: rotate(-45deg);
-        }
-
-        .brand-titles {
-            text-align: left;
         }
 
         .brand-titles h1 {
@@ -132,7 +123,7 @@
             background-color: var(--brand-terracotta-hover);
         }
 
-        /* Horizontal Tab Bar */
+        /* Tab Navigation */
         .tab-nav-wrapper {
             background: #FFFFFF;
             border-bottom: 1px solid var(--border-color);
@@ -147,10 +138,10 @@
             display: flex;
             overflow-x: auto;
             white-space: nowrap;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
 
-        .tab-nav::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        .tab-nav::-webkit-scrollbar { display: none; }
 
         .tab-btn {
             background: none;
@@ -164,198 +155,21 @@
             transition: all 0.2s ease;
         }
 
-        .tab-btn:hover {
-            color: var(--brand-dark-navy);
-        }
-
         .tab-btn.active {
             color: var(--brand-terracotta);
             border-bottom-color: var(--brand-terracotta);
         }
 
-        /* Container & Tab Content Sections */
         .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 1.5rem 1rem;
         }
 
-        .tab-content {
-            display: none;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Crisis Bar */
-        .urgent-bar {
-            background: #FDF2F0;
-            border-left: 4px solid var(--brand-terracotta);
-            padding: 0.9rem 1.2rem;
-            border-radius: 6px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-        }
-
-        .urgent-bar strong {
-            color: #902912;
-        }
-
-        .btn-urgent {
-            background-color: var(--brand-terracotta);
-            color: white;
-            padding: 0.4rem 0.9rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        /* Map Section */
-        #map {
-            height: 360px;
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-            margin-bottom: 1.5rem;
-            z-index: 1;
-        }
-
-        /* Filters */
-        .filter-section {
-            background: var(--card-bg);
-            padding: 1.2rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 1.5rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .filter-group label {
-            font-size: 0.78rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            margin-bottom: 0.4rem;
-        }
-
-        select, input, textarea {
-            padding: 0.6rem 0.8rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.95rem;
-            outline: none;
-            background-color: #FAF9F6;
-            width: 100%;
-        }
-
-        select:focus, input:focus, textarea:focus {
-            border-color: var(--brand-terracotta);
-            background-color: #FFF;
-        }
-
-        /* Resource Grid & Cards */
-        .resource-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.25rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-        }
-
-        .badge-row {
-            display: flex;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-            margin-bottom: 0.6rem;
-        }
-
-        .badge {
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            background: #EAEFF5;
-            color: var(--brand-dark-navy);
-        }
-
-        .badge-cost {
-            background: #F4F1EA;
-            color: var(--text-dark);
-        }
-
-        .card h3 {
-            margin: 0 0 0.5rem 0;
-            color: var(--brand-dark-navy);
-            font-size: 1.15rem;
-        }
-
-        .card p.desc {
-            font-size: 0.9rem;
-            color: var(--text-dark);
-            margin-bottom: 1rem;
-        }
-
-        .card-meta p {
-            margin: 0.25rem 0;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .card-actions {
-            margin-top: 1.25rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 0.55rem 0.85rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-primary { background: var(--brand-dark-navy); color: white; }
-        .btn-outline { border: 1px solid var(--brand-dark-navy); color: var(--brand-dark-navy); background: transparent; }
-        .btn-plan { background: #F7EBE8; color: var(--brand-terracotta); border: 1px solid #F0C4B8; }
-
-        /* Interactive WRAP Tools Styling */
+        /* Panels & Cards */
         .wrap-panel {
             background: white;
             border: 1px solid var(--border-color);
@@ -372,59 +186,96 @@
             padding-bottom: 0.5rem;
         }
 
-        .tool-list {
-            list-style: none;
-            padding: 0;
-            margin: 1rem 0;
+        /* Fizz Scale Bar */
+        .fizz-slider-container {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #FAF9F6;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
         }
 
-        .tool-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #FAF9F6;
-            padding: 0.75rem 1rem;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
+        .fizz-gauge {
+            width: 100%;
+            height: 18px;
+            border-radius: 10px;
+            background: linear-gradient(to right, #4CAF50, #FFEB3B, #FF9800, #F44336);
+            margin-bottom: 1rem;
+        }
+
+        .fizz-readout {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--brand-dark-navy);
             margin-bottom: 0.5rem;
         }
 
-        .tool-item button {
-            background: none;
-            border: none;
-            color: #C53030;
-            cursor: pointer;
-            font-size: 1rem;
+        /* STOPP Tool Steps */
+        .stopp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
-        /* Floating Action Plan Drawer */
-        .plan-panel {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 3px solid var(--brand-terracotta);
-            padding: 1rem 1.5rem;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
-            display: none;
+        .stopp-card {
+            background: #FAF9F6;
+            border-left: 4px solid var(--brand-terracotta);
+            padding: 1rem;
+            border-radius: 4px;
+        }
+
+        .stopp-card strong {
+            display: block;
+            color: var(--brand-dark-navy);
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Buttons & Utility */
+        .btn {
+            padding: 0.55rem 0.85rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary { background: var(--brand-dark-navy); color: white; }
+        .btn-terracotta { background: var(--brand-terracotta); color: white; }
+        .btn-outline { border: 1px solid var(--brand-dark-navy); color: var(--brand-dark-navy); background: transparent; }
+
+        .urgent-bar {
+            background: #FDF2F0;
+            border-left: 4px solid var(--brand-terracotta);
+            padding: 0.9rem 1.2rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 2000;
+            flex-wrap: wrap;
+            gap: 0.8rem;
         }
 
-        .plan-panel.active { display: flex; }
+        #map { height: 360px; width: 100%; border-radius: 8px; margin-bottom: 1.5rem; }
+        .resource-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; }
 
         /* Print formatting */
         @media print {
-            header, .top-bar, .tab-nav-wrapper, .filter-section, .urgent-bar, #map, .card-actions, .plan-panel, .no-print {
+            header, .top-bar, .tab-nav-wrapper, .urgent-bar, #map, .no-print, .btn {
                 display: none !important;
             }
             body { background: white; }
             .container { max-width: 100%; padding: 0; }
-            .tab-content { display: block !important; }
-            .resource-grid { display: block; }
-            .card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 1rem; page-break-inside: avoid; }
+            .tab-content { display: block !important; margin-bottom: 2rem; }
+            .wrap-panel { border: 1px solid #ccc; page-break-inside: avoid; }
             .print-header { display: block !important; margin-bottom: 1.5rem; border-bottom: 2px solid var(--brand-dark-navy); padding-bottom: 0.5rem; }
         }
 
@@ -435,15 +286,15 @@
 
     <!-- Top Utility Bar -->
     <div class="top-bar">
-        <div class="top-bar-tagline">• Peer-Designed • Self-Directed • Strengths-Based</div>
+        <div>• Peer-Designed • Self-Directed • Strengths-Based</div>
         <div class="top-bar-links">
-            <a href="#about" onclick="switchTab('dashboard')">About WRAP</a>
-            <a href="#directory" onclick="switchTab('directory')">Resource Library</a>
-            <a href="#contact" onclick="switchTab('dashboard')">Get in Touch</a>
+            <a href="#" onclick="switchTab('dashboard')">About WRAP</a>
+            <a href="#" onclick="switchTab('directory')">Resource Library</a>
+            <a href="#" onclick="exportPDF()" style="color: var(--brand-terracotta); font-weight:700;">[Print / Save PDF Plan]</a>
         </div>
     </div>
 
-    <!-- Main Header -->
+    <!-- Main Header Banner -->
     <header>
         <div class="header-content">
             <div class="brand-row">
@@ -463,94 +314,40 @@
             <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
             <button class="tab-btn" onclick="switchTab('directory')">Community Directory & Map</button>
             <button class="tab-btn" onclick="switchTab('toolbox')">Wellness Toolbox</button>
-            <button class="tab-btn" onclick="switchTab('maintenance')">Daily Maintenance</button>
-            <button class="tab-btn" onclick="switchTab('triggers')">Triggers & Action Plan</button>
-            <button class="tab-btn" onclick="switchTab('fizz')">Distress / Fizz Scale</button>
+            <button class="tab-btn" onclick="switchTab('stopp')">STOPP Skill</button>
+            <button class="tab-btn" onclick="switchTab('fizz')">Distress / 'Fizz' Scale</button>
+            <button class="tab-btn" onclick="switchTab('maintenance')">Daily Maintenance Plan</button>
         </div>
     </div>
 
     <div class="container">
 
+        <!-- Print-Only Title Section -->
         <div class="print-header">
-            <h2>My Personal Wellness Recovery Action Plan</h2>
-            <p>Saved resources, daily maintenance & coping strategies</p>
-            <p><strong>Date Prepared:</strong> <span id="print-date"></span></p>
+            <h2>Personal Wellness Recovery Action Plan</h2>
+            <p>Exported Plan • Date: <span id="print-date"></span></p>
         </div>
 
         <!-- Crisis Bar -->
-        <div class="urgent-bar">
+        <div class="urgent-bar no-print">
             <div>
-                <strong>Need Immediate Urgent Mental Health Support?</strong> 
-                Call NHS Mental Health Services free on <strong>111 (Option 2)</strong> or text <strong>SHOUT</strong> to <strong>85258</strong> for 24/7 crisis text support.
+                <strong>Need Immediate Urgent Support?</strong> 
+                Call NHS Mental Health Services on <strong>111 (Option 2)</strong> or text <strong>SHOUT</strong> to <strong>85258</strong>.
             </div>
-            <a href="tel:111" class="btn-urgent">Call 111</a>
+            <button class="btn btn-terracotta" onclick="exportPDF()">Print / Save PDF Plan</button>
         </div>
 
         <!-- TAB 1: DASHBOARD -->
         <div id="tab-dashboard" class="tab-content active">
             <div class="wrap-panel">
-                <h2>Welcome to Your Personal Recovery Toolkit</h2>
-                <p>WRAP (Wellness Recovery Action Plan) is a self-designed system for managing your mental health and everyday wellbeing. Use the tabs above to explore local groups across Cumbria or build your interactive personal recovery plan.</p>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
-                    <div style="background: var(--brand-soft-bg); padding: 1rem; border-radius: 6px;">
-                        <h4 style="margin:0 0 0.5rem 0; color: var(--brand-dark-navy);">1. Community Directory</h4>
-                        <p style="margin:0; font-size:0.88rem;">Find local groups, repair cafés, men's sheds, and peer support across Cumbria.</p>
-                    </div>
-                    <div style="background: var(--brand-soft-bg); padding: 1rem; border-radius: 6px;">
-                        <h4 style="margin:0 0 0.5rem 0; color: var(--brand-dark-navy);">2. Wellness Toolbox</h4>
-                        <p style="margin:0; font-size:0.88rem;">Keep track of everyday tools and activities that keep you balanced and feeling well.</p>
-                    </div>
-                    <div style="background: var(--brand-soft-bg); padding: 1rem; border-radius: 6px;">
-                        <h4 style="margin:0 0 0.5rem 0; color: var(--brand-dark-navy);">3. Triggers & Strategies</h4>
-                        <p style="margin:0; font-size:0.88rem;">Identify personal triggers and construct clear action plans to respond effectively.</p>
-                    </div>
-                </div>
+                <h2>Welcome to Your Interactive WRAP Toolkit</h2>
+                <p>Use the tabs above to explore your local community directory or construct your individual wellness and coping strategies. Everything you write is automatically saved to your browser and can be exported as a printable PDF at any time.</p>
             </div>
         </div>
 
-        <!-- TAB 2: COMMUNITY DIRECTORY & MAP -->
+        <!-- TAB 2: DIRECTORY & MAP -->
         <div id="tab-directory" class="tab-content">
-            <!-- Interactive Map -->
-            <div id="map"></div>
-
-            <!-- Filter Bar -->
-            <div class="filter-section">
-                <div class="filter-group">
-                    <label for="catFilter">Type of Activity / Support</label>
-                    <select id="catFilter" onchange="renderDirectory()">
-                        <option value="all">All Categories</option>
-                        <option value="talking">Talking, Crisis & Peer Support</option>
-                        <option value="sheds">Community Sheds & Woodwork</option>
-                        <option value="repair">Repair Cafés & Craft Hubs</option>
-                        <option value="allotment">Allotments, Farming & Green Spaces</option>
-                        <option value="fitness">Walking Sports & Active Groups</option>
-                        <option value="hobby">Model Railway, Gaming & Hobby Clubs</option>
-                        <option value="arts">Creative Arts, Textiles & Crafts</option>
-                        <option value="photography">Photography & Digital Media</option>
-                        <option value="music">Community Music & Choirs</option>
-                        <option value="food-housing">Food, Housing & Welfare Advice</option>
-                    </select>
-                </div>
-
-                <div class="filter-group">
-                    <label for="areaFilter">Area</label>
-                    <select id="areaFilter" onchange="renderDirectory()">
-                        <option value="all">All Cumbria</option>
-                        <option value="carlisle">Carlisle</option>
-                        <option value="penrith">Penrith & Eden</option>
-                        <option value="west">West Cumbria (Workington / Whitehaven / Maryport)</option>
-                        <option value="south">South Cumbria & Lakes (Keswick / Ulverston)</option>
-                        <option value="online">Online / Nationwide</option>
-                    </select>
-                </div>
-
-                <div class="filter-group">
-                    <label for="searchFilter">Search</label>
-                    <input type="text" id="searchFilter" placeholder="Search by keyword, postcode..." onkeyup="renderDirectory()">
-                </div>
-            </div>
-
-            <!-- Directory Grid -->
+            <div id="map" class="no-print"></div>
             <div class="resource-grid" id="resourceGrid"></div>
         </div>
 
@@ -558,95 +355,95 @@
         <div id="tab-toolbox" class="tab-content">
             <div class="wrap-panel">
                 <h2>My Wellness Toolbox</h2>
-                <p>Record simple, safe, and free (or low-cost) skills and tools you can do to stay well.</p>
-                
-                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                    <input type="text" id="toolInput" placeholder="Add a wellness tool (e.g. 20-minute walk, espresso break, wood turning)...">
+                <p>Record simple, safe, and free (or low-cost) activities that keep you grounded and balanced.</p>
+                <div class="no-print" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                    <input type="text" id="toolInput" placeholder="Add a tool (e.g. 15 min walk, dark roast espresso, music)...">
                     <button class="btn btn-primary" onclick="addTool()">Add Tool</button>
                 </div>
-
-                <ul id="toolList" class="tool-list"></ul>
+                <ul id="toolList" style="list-style: none; padding: 0;"></ul>
             </div>
         </div>
 
-        <!-- TAB 4: DAILY MAINTENANCE -->
+        <!-- TAB 4: STOPP TECHNIQUE -->
+        <div id="tab-stopp" class="tab-content">
+            <div class="wrap-panel">
+                <h2>The STOPP Skill</h2>
+                <p>A CBT-based grounding technique to pause, gain perspective, and choose how to proceed when feeling overwhelmed.</p>
+                <div class="stopp-grid">
+                    <div class="stopp-card">
+                        <strong>S - Stop!</strong>
+                        <span>Pause immediately. Do not react on impulse.</span>
+                    </div>
+                    <div class="stopp-card">
+                        <strong>T - Take a breath</strong>
+                        <span>Slow down your breathing. Inhale deep into your belly.</span>
+                    </div>
+                    <div class="stopp-card">
+                        <strong>O - Observe</strong>
+                        <span>What thoughts am I having? What sensations are in my body?</span>
+                    </div>
+                    <div class="stopp-card">
+                        <strong>P - Pull Back</strong>
+                        <span>Put it in perspective. Will this matter in a week? What's the bigger picture?</span>
+                    </div>
+                    <div class="stopp-card">
+                        <strong>P - Practice / Proceed</strong>
+                        <span>What is the best thing to do right now for my wellbeing?</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: DISTRESS / FIZZ SCALE -->
+        <div id="tab-fizz" class="tab-content">
+            <div class="wrap-panel">
+                <h2>Interactive Distress & 'Fizz' Monitor</h2>
+                <p>Assess your current distress level and establish corresponding action plans.</p>
+                
+                <div class="fizz-slider-container no-print">
+                    <div class="fizz-gauge"></div>
+                    <div class="fizz-readout">Current Level: <span id="fizzVal">1</span>/10 - <span id="fizzStatus">Calm & Balanced</span></div>
+                    <input type="range" id="fizzRange" min="1" max="10" value="1" style="width:100%" oninput="updateFizz(this.value)">
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <label style="font-weight:700;">My Personal 'Fizz' Indicators (Early Warning Signs):</label>
+                    <textarea id="fizzSignsText" rows="3" placeholder="e.g. Restless sleep, irritability, skipping coffee breaks..." style="width:100%; margin-top:0.4rem;" oninput="saveWrapData()"></textarea>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <label style="font-weight:700;">Action Strategy When 'Fizz' Rises:</label>
+                    <textarea id="fizzActionText" rows="3" placeholder="e.g. Step outside for 10 mins, practice STOPP, call a friend..." style="width:100%; margin-top:0.4rem;" oninput="saveWrapData()"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: DAILY MAINTENANCE PLAN -->
         <div id="tab-maintenance" class="tab-content">
             <div class="wrap-panel">
                 <h2>Daily Maintenance Plan</h2>
-                <p>What do I feel like when I'm feeling well, and what do I need to do every day to stay that way?</p>
-                
-                <div style="margin-bottom: 1.2rem;">
-                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">When I am feeling well, I am:</label>
-                    <textarea id="feelingWellText" rows="3" placeholder="e.g. Focused, chatty, organized, active..." oninput="saveWrapData()"></textarea>
+                <p>Routine actions to maintain wellness and mental stability.</p>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700;">When I am feeling well, I am:</label>
+                    <textarea id="feelingWellText" rows="3" style="width:100%; margin-top:0.4rem;" placeholder="e.g. Focused, chatty, organized..." oninput="saveWrapData()"></textarea>
                 </div>
 
                 <div>
-                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">Things I need to do every day:</label>
-                    <textarea id="dailyNeedsText" rows="4" placeholder="e.g. Drink water, go outdoors, connect with a peer, work on a personal project..." oninput="saveWrapData()"></textarea>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 5: TRIGGERS & ACTION PLAN -->
-        <div id="tab-triggers" class="tab-content">
-            <div class="wrap-panel">
-                <h2>Triggers & Response Strategy</h2>
-                <p>Identify events or circumstances that might cause distress, and outline your proactive response.</p>
-                
-                <div style="margin-bottom: 1.2rem;">
-                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">My External Triggers:</label>
-                    <textarea id="triggersText" rows="3" placeholder="e.g. Poor sleep, crowded noise, unexpected schedule changes..." oninput="saveWrapData()"></textarea>
-                </div>
-
-                <div>
-                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">My Trigger Action Plan:</label>
-                    <textarea id="triggerPlanText" rows="4" placeholder="e.g. Use ear defenders, take 10 minutes in a quiet space, refer to my wellness toolbox..." oninput="saveWrapData()"></textarea>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 6: DISTRESS / FIZZ SCALE -->
-        <div id="tab-fizz" class="tab-content">
-            <div class="wrap-panel">
-                <h2>Distress & 'Fizz' Monitor</h2>
-                <p>Track early warning signs before reaching crisis levels.</p>
-
-                <div style="margin-bottom: 1.2rem;">
-                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">Early Warning Signs ('The Fizz'):</label>
-                    <textarea id="fizzSignsText" rows="3" placeholder="e.g. Irritability, restless sleep, skipping meals, overthinking..." oninput="saveWrapData()"></textarea>
-                </div>
-
-                <div>
-                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">Action Plan for When Things Are Breaking Down:</label>
-                    <textarea id="fizzActionText" rows="4" placeholder="e.g. Call NHS 111 (Option 2), reach out to a trusted friend, step back from extra commitments..." oninput="saveWrapData()"></textarea>
+                    <label style="font-weight: 700;">Things I must do every day to stay well:</label>
+                    <textarea id="dailyNeedsText" rows="4" style="width:100%; margin-top:0.4rem;" placeholder="e.g. 8 hours sleep, nutritious meal, time outdoors..." oninput="saveWrapData()"></textarea>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Printable Plan Panel -->
-    <div class="plan-panel" id="planPanel">
-        <div>
-            <strong>My Saved Guide (<span id="planCount">0</span>)</strong>
-            <p style="margin: 0; font-size: 0.82rem; color: var(--text-muted);">Ready to export or print your custom reference sheet</p>
-        </div>
-        <div>
-            <button class="btn btn-outline" onclick="clearPlan()">Clear</button>
-            <button class="btn btn-primary" onclick="printGuide()">Save / Print My Guide</button>
-        </div>
-    </div>
-
-    <!-- Leaflet JS for Maps -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
         let resources = [];
-        let savedItems = [];
         let userTools = [];
-        let map, mapMarkers = [];
 
-        // Tab Switching Logic
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -656,125 +453,21 @@
 
             const targetTab = document.getElementById(`tab-${tabId}`);
             if (targetTab) targetTab.classList.add('active');
-
-            if (tabId === 'directory' && map) {
-                setTimeout(() => map.invalidateSize(), 200);
-            }
         }
 
-        // Map Initialization
-        function initMap() {
-            map = L.map('map').setView([54.8000, -3.1000], 9);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
+        // Fizz Scale Updates
+        function updateFizz(val) {
+            document.getElementById('fizzVal').innerText = val;
+            const labels = [
+                "Calm & Balanced", "Slightly Unsettled", "Mild Stress", 
+                "Noticeable Tension", "Building Pressure", "High 'Fizz' / Agitated", 
+                "Very Distressed", "Overwhelmed", "Near Crisis", "Crisis Level"
+            ];
+            document.getElementById('fizzStatus').innerText = labels[val - 1] || "";
+            saveWrapData();
         }
 
-        function updateMapMarkers(filteredData) {
-            mapMarkers.forEach(m => map.removeLayer(m));
-            mapMarkers = [];
-
-            filteredData.forEach(item => {
-                if (item.lat && item.lng) {
-                    const marker = L.marker([item.lat, item.lng]).addTo(map);
-                    marker.bindPopup(`
-                        <strong>${item.title}</strong><br>
-                        ${item.location}<br>
-                        <small>${item.time}</small>
-                    `);
-                    mapMarkers.push(marker);
-                }
-            });
-        }
-
-        // Directory Rendering
-        function renderDirectory() {
-            const cat = document.getElementById('catFilter').value;
-            const area = document.getElementById('areaFilter').value;
-            const search = document.getElementById('searchFilter').value.toLowerCase();
-
-            const grid = document.getElementById('resourceGrid');
-            grid.innerHTML = "";
-
-            const filtered = resources.filter(item => {
-                const matchCat = (cat === 'all' || item.category === cat);
-                const matchArea = (area === 'all' || item.area === area);
-                const matchSearch = item.title.toLowerCase().includes(search) || 
-                                    item.desc.toLowerCase().includes(search) || 
-                                    item.location.toLowerCase().includes(search);
-                return matchCat && matchArea && matchSearch;
-            });
-
-            filtered.forEach(item => {
-                const isSaved = savedItems.includes(item.id);
-                const cardHtml = `
-                    <div class="card" id="card-${item.id}">
-                        <div>
-                            <div class="badge-row">
-                                <span class="badge">${getCategoryName(item.category)}</span>
-                                <span class="badge badge-cost">${item.cost}</span>
-                            </div>
-                            <h3>${item.title}</h3>
-                            <p class="desc">${item.desc}</p>
-                            <div class="card-meta">
-                                <p><strong>Times:</strong> ${item.time}</p>
-                                <p><strong>Location:</strong> ${item.location}</p>
-                            </div>
-                        </div>
-                        <div class="card-actions">
-                            ${item.phone ? `<a href="tel:${item.phone}" class="btn btn-primary">Call</a>` : ''}
-                            ${item.link ? `<a href="${item.link}" target="_blank" class="btn btn-outline">Website</a>` : ''}
-                            ${item.lat ? `<a href="https://maps.google.com/?q=${encodeURIComponent(item.title + ' ' + item.location)}" target="_blank" class="btn btn-outline">Map</a>` : ''}
-                            <button class="btn btn-plan" style="${isSaved ? 'background:#D1E7DD; color:#0F5132;' : ''}" onclick="toggleSave(${item.id})">
-                                ${isSaved ? '✓ Saved' : '+ Add to Plan'}
-                            </button>
-                        </div>
-                    </div>
-                `;
-                grid.innerHTML += cardHtml;
-            });
-
-            updateMapMarkers(filtered);
-        }
-
-        function getCategoryName(catKey) {
-            const names = {
-                'talking': 'Talking & Peer Support',
-                'sheds': 'Community Sheds',
-                'repair': 'Repair & Craft',
-                'allotment': 'Allotment & Green Space',
-                'fitness': 'Sports & Activity',
-                'hobby': 'Model & Hobby Clubs',
-                'arts': 'Arts & Textiles',
-                'photography': 'Photography',
-                'music': 'Community Music',
-                'food-housing': 'Housing & Advice'
-            };
-            return names[catKey] || 'Community';
-        }
-
-        function toggleSave(id) {
-            const index = savedItems.indexOf(id);
-            if (index > -1) {
-                savedItems.splice(index, 1);
-            } else {
-                savedItems.push(id);
-            }
-            document.getElementById('planCount').innerText = savedItems.length;
-            document.getElementById('planPanel').classList.toggle('active', savedItems.length > 0);
-            renderDirectory();
-        }
-
-        function clearPlan() {
-            savedItems = [];
-            document.getElementById('planCount').innerText = 0;
-            document.getElementById('planPanel').classList.remove('active');
-            renderDirectory();
-        }
-
-        // Local Storage for Interactive WRAP Tools
+        // Add/Remove Tools
         function addTool() {
             const input = document.getElementById('toolInput');
             if (input.value.trim()) {
@@ -785,8 +478,8 @@
             }
         }
 
-        function removeTool(index) {
-            userTools.splice(index, 1);
+        function removeTool(i) {
+            userTools.splice(i, 1);
             renderTools();
             saveWrapData();
         }
@@ -796,23 +489,23 @@
             list.innerHTML = '';
             userTools.forEach((tool, i) => {
                 list.innerHTML += `
-                    <li class="tool-item">
+                    <li style="background:#FAF9F6; padding:0.6rem; border:1px solid #E2E8F0; border-radius:4px; margin-bottom:0.4rem; display:flex; justify-between; align-items:center;">
                         <span>${tool}</span>
-                        <button onclick="removeTool(${i})">✕</button>
+                        <button class="no-print" onclick="removeTool(${i})" style="background:none; border:none; color:#C53030; cursor:pointer;">✕</button>
                     </li>
                 `;
             });
         }
 
+        // Persistence
         function saveWrapData() {
             const wrapData = {
                 tools: userTools,
-                feelingWell: document.getElementById('feelingWellText').value,
-                dailyNeeds: document.getElementById('dailyNeedsText').value,
-                triggers: document.getElementById('triggersText').value,
-                triggerPlan: document.getElementById('triggerPlanText').value,
+                fizzLevel: document.getElementById('fizzRange').value,
                 fizzSigns: document.getElementById('fizzSignsText').value,
-                fizzAction: document.getElementById('fizzActionText').value
+                fizzAction: document.getElementById('fizzActionText').value,
+                feelingWell: document.getElementById('feelingWellText').value,
+                dailyNeeds: document.getElementById('dailyNeedsText').value
             };
             localStorage.setItem('wrap_user_data', JSON.stringify(wrapData));
         }
@@ -822,32 +515,8 @@
             if (data) {
                 const parsed = JSON.parse(data);
                 userTools = parsed.tools || [];
-                document.getElementById('feelingWellText').value = parsed.feelingWell || '';
-                document.getElementById('dailyNeedsText').value = parsed.dailyNeeds || '';
-                document.getElementById('triggersText').value = parsed.triggers || '';
-                document.getElementById('triggerPlanText').value = parsed.triggerPlan || '';
+                document.getElementById('fizzRange').value = parsed.fizzLevel || 1;
+                updateFizz(parsed.fizzLevel || 1);
                 document.getElementById('fizzSignsText').value = parsed.fizzSigns || '';
                 document.getElementById('fizzActionText').value = parsed.fizzAction || '';
-                renderTools();
-            }
-        }
-
-        function printGuide() {
-            document.getElementById('print-date').innerText = new Date().toLocaleDateString('en-GB');
-            window.print();
-        }
-
-        window.onload = function() {
-            initMap();
-            loadWrapData();
-            fetch('resources.json')
-                .then(response => response.json())
-                .then(data => {
-                    resources = data;
-                    renderDirectory();
-                })
-                .catch(err => console.error("Error loading resources.json:", err));
-        };
-    </script>
-</body>
-</html>
+                document.getElementById('feelingWellTex
