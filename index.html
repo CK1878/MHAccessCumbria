@@ -10,20 +10,18 @@
 
     <style>
         :root {
-            --brand-dark-navy: #1B2A3A;    /* Header Navy Blue */
-            --brand-sub-nav: #121C27;     /* Top Utility Bar */
-            --brand-terracotta: #DE6B48;  /* Accent Terracotta Button/Active State */
+            --brand-dark-navy: #1B2A3A;
+            --brand-sub-nav: #121C27;
+            --brand-terracotta: #DE6B48;
             --brand-terracotta-hover: #C85937;
-            --brand-soft-bg: #F4F6F8;     /* Light Neutral Canvas */
+            --brand-soft-bg: #F4F6F8;
             --card-bg: #FFFFFF;
             --text-dark: #2B2D42;
             --text-muted: #6C757D;
             --border-color: #E2E8F0;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -50,11 +48,10 @@
             color: #C5D1DF;
             text-decoration: none;
             margin-left: 1.2rem;
+            cursor: pointer;
         }
 
-        .top-bar-links a:hover {
-            color: white;
-        }
+        .top-bar-links a:hover { color: white; }
 
         /* Header Banner */
         header {
@@ -119,9 +116,7 @@
             transition: background 0.2s ease;
         }
 
-        .btn-header-cta:hover {
-            background-color: var(--brand-terracotta-hover);
-        }
+        .btn-header-cta:hover { background-color: var(--brand-terracotta-hover); }
 
         /* Tab Navigation */
         .tab-nav-wrapper {
@@ -186,7 +181,7 @@
             padding-bottom: 0.5rem;
         }
 
-        /* Fizz Scale Bar */
+        /* Fizz Scale */
         .fizz-slider-container {
             margin: 1.5rem 0;
             padding: 1rem;
@@ -210,7 +205,7 @@
             margin-bottom: 0.5rem;
         }
 
-        /* STOPP Tool Steps */
+        /* STOPP Steps */
         .stopp-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -248,7 +243,6 @@
 
         .btn-primary { background: var(--brand-dark-navy); color: white; }
         .btn-terracotta { background: var(--brand-terracotta); color: white; }
-        .btn-outline { border: 1px solid var(--brand-dark-navy); color: var(--brand-dark-navy); background: transparent; }
 
         .urgent-bar {
             background: #FDF2F0;
@@ -264,14 +258,19 @@
         }
 
         #map { height: 360px; width: 100%; border-radius: 8px; margin-bottom: 1.5rem; }
-        .resource-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+        .resource-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
         .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; }
 
-        /* Print formatting */
+        textarea, input[type="text"] {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.6rem;
+            font-family: inherit;
+        }
+
+        /* Print styling */
         @media print {
-            header, .top-bar, .tab-nav-wrapper, .urgent-bar, #map, .no-print, .btn {
-                display: none !important;
-            }
+            header, .top-bar, .tab-nav-wrapper, .urgent-bar, #map, .no-print, .btn { display: none !important; }
             body { background: white; }
             .container { max-width: 100%; padding: 0; }
             .tab-content { display: block !important; margin-bottom: 2rem; }
@@ -288,9 +287,9 @@
     <div class="top-bar">
         <div>• Peer-Designed • Self-Directed • Strengths-Based</div>
         <div class="top-bar-links">
-            <a href="#" onclick="switchTab('dashboard')">About WRAP</a>
-            <a href="#" onclick="switchTab('directory')">Resource Library</a>
-            <a href="#" onclick="exportPDF()" style="color: var(--brand-terracotta); font-weight:700;">[Print / Save PDF Plan]</a>
+            <a onclick="switchTab('dashboard')">About WRAP</a>
+            <a onclick="switchTab('directory')">Resource Library</a>
+            <a onclick="exportPDF()" style="color: var(--brand-terracotta); font-weight:700;">[Print / Save PDF Plan]</a>
         </div>
     </div>
 
@@ -311,24 +310,22 @@
     <!-- Navigation Tab Bar -->
     <div class="tab-nav-wrapper">
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
-            <button class="tab-btn" onclick="switchTab('directory')">Community Directory & Map</button>
-            <button class="tab-btn" onclick="switchTab('toolbox')">Wellness Toolbox</button>
-            <button class="tab-btn" onclick="switchTab('stopp')">STOPP Skill</button>
-            <button class="tab-btn" onclick="switchTab('fizz')">Distress / 'Fizz' Scale</button>
-            <button class="tab-btn" onclick="switchTab('maintenance')">Daily Maintenance Plan</button>
+            <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</button>
+            <button class="tab-btn" data-tab="directory" onclick="switchTab('directory')">Community Directory & Map</button>
+            <button class="tab-btn" data-tab="toolbox" onclick="switchTab('toolbox')">Wellness Toolbox</button>
+            <button class="tab-btn" data-tab="stopp" onclick="switchTab('stopp')">STOPP Skill</button>
+            <button class="tab-btn" data-tab="fizz" onclick="switchTab('fizz')">Distress / 'Fizz' Scale</button>
+            <button class="tab-btn" data-tab="maintenance" onclick="switchTab('maintenance')">Daily Maintenance Plan</button>
         </div>
     </div>
 
     <div class="container">
 
-        <!-- Print-Only Title Section -->
         <div class="print-header">
             <h2>Personal Wellness Recovery Action Plan</h2>
             <p>Exported Plan • Date: <span id="print-date"></span></p>
         </div>
 
-        <!-- Crisis Bar -->
         <div class="urgent-bar no-print">
             <div>
                 <strong>Need Immediate Urgent Support?</strong> 
@@ -347,8 +344,11 @@
 
         <!-- TAB 2: DIRECTORY & MAP -->
         <div id="tab-directory" class="tab-content">
-            <div id="map" class="no-print"></div>
-            <div class="resource-grid" id="resourceGrid"></div>
+            <div class="wrap-panel">
+                <h2>Community Directory & Map</h2>
+                <div id="map" class="no-print"></div>
+                <div class="resource-grid" id="resourceGrid"></div>
+            </div>
         </div>
 
         <!-- TAB 3: WELLNESS TOOLBOX -->
@@ -357,7 +357,7 @@
                 <h2>My Wellness Toolbox</h2>
                 <p>Record simple, safe, and free (or low-cost) activities that keep you grounded and balanced.</p>
                 <div class="no-print" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                    <input type="text" id="toolInput" placeholder="Add a tool (e.g. 15 min walk, dark roast espresso, music)...">
+                    <input type="text" id="toolInput" placeholder="Add a tool (e.g. 15 min walk, fresh espresso, music)..." style="flex:1;">
                     <button class="btn btn-primary" onclick="addTool()">Add Tool</button>
                 </div>
                 <ul id="toolList" style="list-style: none; padding: 0;"></ul>
@@ -438,24 +438,105 @@
 
     </div>
 
+    <!-- Leaflet OpenStreetMap JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
+        let map;
+        let markers = [];
         let resources = [];
         let userTools = [];
 
+        // Tab Switching Logic
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
-            const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+            const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
             if (targetBtn) targetBtn.classList.add('active');
 
-            const targetTab = document.getElementById(`tab-${tabId}`);
-            if (targetTab) targetTab.classList.add('active');
+            const targetContent = document.getElementById(`tab-${tabId}`);
+            if (targetContent) targetContent.classList.add('active');
+
+            // If switching to directory tab, re-trigger Leaflet size calculation
+            if (tabId === 'directory') {
+                setTimeout(() => {
+                    if (!map) {
+                        initMap();
+                    } else {
+                        map.invalidateSize();
+                    }
+                }, 100);
+            }
         }
 
-        // Fizz Scale Updates
+        // Initialize OpenStreetMap
+        function initMap() {
+            // Default position (Carlisle / Cumbria baseline)
+            map = L.map('map').setView([54.8925, -2.9329], 11);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            renderDirectory();
+        }
+
+        // Fetch & Render Directory
+        function loadResources() {
+            fetch('resources.json')
+                .then(res => res.json())
+                .then(data => {
+                    resources = data;
+                    if (document.getElementById('tab-directory').classList.contains('active')) {
+                        if (!map) initMap(); else renderDirectory();
+                    }
+                })
+                .catch(err => {
+                    console.warn("resources.json not loaded yet or empty. Add resources to display markers.", err);
+                });
+        }
+
+        function renderDirectory() {
+            const grid = document.getElementById('resourceGrid');
+            grid.innerHTML = '';
+
+            // Clear existing markers
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+
+            if (resources.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; color: var(--text-muted);">No directory resources loaded yet. Ensure <code>resources.json</code> is present.</p>';
+                return;
+            }
+
+            resources.forEach(res => {
+                // Card UI
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div>
+                        <h3 style="margin-top:0; color: var(--brand-dark-navy);">${res.name}</h3>
+                        <p style="font-size:0.88rem; color: var(--text-muted);">${res.description || ''}</p>
+                        <p style="font-size:0.85rem;"><strong>Address:</strong> ${res.address || 'N/A'}</p>
+                    </div>
+                    <div>
+                        ${res.phone ? `<p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Phone:</strong> ${res.phone}</p>` : ''}
+                        ${res.website ? `<a href="${res.website}" target="_blank" class="btn btn-primary" style="width:100%; text-align:center;">Visit Website</a>` : ''}
+                    </div>
+                `;
+                grid.appendChild(card);
+
+                // Add map marker if lat/lng present
+                if (res.lat && res.lng) {
+                    const marker = L.marker([res.lat, res.lng]).addTo(map)
+                        .bindPopup(`<b>${res.name}</b><br>${res.address || ''}`);
+                    markers.push(marker);
+                }
+            });
+        }
+
+        // Fizz Scale
         function updateFizz(val) {
             document.getElementById('fizzVal').innerText = val;
             const labels = [
@@ -467,7 +548,7 @@
             saveWrapData();
         }
 
-        // Add/Remove Tools
+        // Tool Add/Remove
         function addTool() {
             const input = document.getElementById('toolInput');
             if (input.value.trim()) {
@@ -489,15 +570,15 @@
             list.innerHTML = '';
             userTools.forEach((tool, i) => {
                 list.innerHTML += `
-                    <li style="background:#FAF9F6; padding:0.6rem; border:1px solid #E2E8F0; border-radius:4px; margin-bottom:0.4rem; display:flex; justify-between; align-items:center;">
+                    <li style="background:#FAF9F6; padding:0.6rem 0.8rem; border:1px solid #E2E8F0; border-radius:6px; margin-bottom:0.4rem; display:flex; justify-content:space-between; align-items:center;">
                         <span>${tool}</span>
-                        <button class="no-print" onclick="removeTool(${i})" style="background:none; border:none; color:#C53030; cursor:pointer;">✕</button>
+                        <button class="no-print" onclick="removeTool(${i})" style="background:none; border:none; color:#C53030; cursor:pointer; font-weight:bold;">✕</button>
                     </li>
                 `;
             });
         }
 
-        // Persistence
+        // Save & Restore localStorage
         function saveWrapData() {
             const wrapData = {
                 tools: userTools,
@@ -519,4 +600,21 @@
                 updateFizz(parsed.fizzLevel || 1);
                 document.getElementById('fizzSignsText').value = parsed.fizzSigns || '';
                 document.getElementById('fizzActionText').value = parsed.fizzAction || '';
-                document.getElementById('feelingWellTex
+                document.getElementById('feelingWellText').value = parsed.feelingWell || '';
+                document.getElementById('dailyNeedsText').value = parsed.dailyNeeds || '';
+                renderTools();
+            }
+        }
+
+        function exportPDF() {
+            document.getElementById('print-date').innerText = new Date().toLocaleDateString('en-GB');
+            window.print();
+        }
+
+        window.onload = function() {
+            loadWrapData();
+            loadResources();
+        };
+    </script>
+</body>
+</html>
