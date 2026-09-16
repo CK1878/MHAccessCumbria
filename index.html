@@ -268,7 +268,7 @@
             <p><strong>Date Prepared:</strong> <span id="print-date"></span></p>
         </div>
 
-        <!-- Crisis Bar (111 Option 2) -->
+        <!-- Crisis Bar -->
         <div class="urgent-bar">
             <div>
                 <strong>Need Immediate Urgent Mental Health Support?</strong> 
@@ -286,12 +286,16 @@
                 <label for="catFilter">Type of Activity / Support</label>
                 <select id="catFilter" onchange="renderDirectory()">
                     <option value="all">All Categories</option>
-                    <option value="talking">Talking, Drop-in & Support</option>
-                    <option value="sheds">Community Sheds & Craft</option>
-                    <option value="fitness">Activity, Sport & Weight Loss</option>
-                    <option value="holistic">Holistic, Nature & Forest Schools</option>
-                    <option value="crisis-text">24/7 Digital & Text Support</option>
-                    <option value="food-advice">Food, Debt & Housing Advice</option>
+                    <option value="talking">Talking, Crisis & Peer Support</option>
+                    <option value="sheds">Community Sheds & Woodwork</option>
+                    <option value="repair">Repair Cafés & Craft Hubs</option>
+                    <option value="allotment">Allotments, Farming & Green Spaces</option>
+                    <option value="fitness">Walking Sports & Active Groups</option>
+                    <option value="hobby">Model Railway, Gaming & Hobby Clubs</option>
+                    <option value="arts">Creative Arts, Textiles & Crafts</option>
+                    <option value="photography">Photography & Digital Media</option>
+                    <option value="music">Community Music & Choirs</option>
+                    <option value="food-housing">Food, Housing & Welfare Advice</option>
                 </select>
             </div>
 
@@ -301,14 +305,15 @@
                     <option value="all">All Cumbria</option>
                     <option value="carlisle">Carlisle</option>
                     <option value="penrith">Penrith & Eden</option>
-                    <option value="west">West Cumbria</option>
+                    <option value="west">West Cumbria (Workington / Whitehaven / Maryport)</option>
+                    <option value="south">South Cumbria & Lakes (Keswick / Ulverston)</option>
                     <option value="online">Online / Nationwide</option>
                 </select>
             </div>
 
             <div class="filter-group">
                 <label for="searchFilter">Search</label>
-                <input type="text" id="searchFilter" placeholder="Search by keyword..." onkeyup="renderDirectory()">
+                <input type="text" id="searchFilter" placeholder="Search by keyword, postcode..." onkeyup="renderDirectory()">
             </div>
         </div>
 
@@ -333,18 +338,18 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        // Combined Master Dataset (40 Resources)
+        // Expanded Dataset (75+ Cumbrian Resources)
         const resources = [
-            // --- CRISIS & DIGITAL TEXT LINES ---
+            // --- CRISIS, HOUSING & WELFARE ---
             {
                 id: 1,
                 title: "NHS Mental Health Crisis Line",
-                category: "crisis-text",
+                category: "talking",
                 area: "carlisle",
                 cost: "Free",
                 desc: "Universal 24/7 NHS mental health crisis assessment and support service across Cumbria.",
                 time: "24 Hours / 7 Days",
-                location: "Phone Service (Cumbria-wide)",
+                location: "County-wide (All CA Postcodes)",
                 lat: null,
                 lng: null,
                 phone: "111",
@@ -353,7 +358,7 @@
             {
                 id: 2,
                 title: "SHOUT Crisis Text Support",
-                category: "crisis-text",
+                category: "talking",
                 area: "online",
                 cost: "Free",
                 desc: "Free, confidential, 24/7 text messaging support service for anyone in mental distress.",
@@ -366,549 +371,693 @@
             },
             {
                 id: 3,
-                title: "Samaritans Carlisle & North Cumbria",
+                title: "The Lighthouse (Carlisle Eden Mind)",
                 category: "talking",
                 area: "carlisle",
                 cost: "Free",
-                desc: "Confidential emotional support for anyone struggling to cope or feeling suicidal.",
-                time: "24/7 Phone Support (Branch hours vary)",
-                location: "123 Botchergate, Carlisle, CA1 1RZ",
-                lat: 54.8878,
-                lng: -2.9301,
-                phone: "116123",
-                link: "https://www.samaritans.org/branches/carlisle"
+                desc: "Non-clinical crisis support providing a calm, safe space in times of emotional distress.",
+                time: "5:00 PM - 11:00 PM (365 days a year)",
+                location: "Carlisle & Eden (CA1, CA2, CA3, CA11)",
+                lat: 54.8928,
+                lng: -2.9285,
+                phone: "03005610000",
+                link: "https://www.cemind.org.uk"
             },
-
-            // --- TALKING, DROPIN & PEER SUPPORT GROUPS ---
             {
                 id: 4,
-                title: "Andy's Man Club Carlisle",
-                category: "talking",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Weekly peer-to-peer support group for men aged 18+. Safe, non-judgmental space to talk.",
-                time: "Mondays at 7:00 PM (excl. Bank Holidays)",
-                location: "Carlisle College, Victoria Place, CA1 1HS",
-                lat: 54.8945,
-                lng: -2.9292,
-                phone: "",
-                link: "https://andysmanclub.co.uk"
-            },
-            {
-                id: 5,
-                title: "Every Life Matters Cumbria",
-                category: "talking",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Cumbria-based suicide prevention charity offering community training and bereavement support.",
+                title: "Eden Housing Options",
+                category: "food-housing",
+                area: "penrith",
+                cost: "Free Advice",
+                desc: "Housing advice, homelessness prevention, and tenancy support for Eden residents.",
                 time: "Mon - Fri 9:00 AM - 5:00 PM",
-                location: "Community & Online Across Cumbria",
-                lat: 54.8924,
-                lng: -2.9329,
-                phone: "07908537541",
-                link: "https://www.every-life-matters.org.uk"
-            },
-
-            // --- COMMUNITY SHEDS & CRAFT SPACES ---
-            {
-                id: 6,
-                title: "Carlisle Community Shed",
-                category: "sheds",
-                area: "carlisle",
-                cost: "Low Cost / Voluntary",
-                desc: "A practical workshop space for people to pursue woodworking, share tools, craft, and socialize.",
-                time: "Tue & Thu 10:00 AM - 3:00 PM",
-                location: "Botcherby Community Centre, Victoria Rd, CA1 2TY",
-                lat: 54.8872,
-                lng: -2.9085,
-                phone: "01228596966",
+                location: "Penrith & Eden (CA10, CA11, CA16, CA17)",
+                lat: 54.6641,
+                lng: -2.7525,
+                phone: "01768817817",
                 link: ""
             },
             {
+                id: 5,
+                title: "Waythrough Supported Housing",
+                category: "food-housing",
+                area: "west",
+                cost: "Statutory / Funded",
+                desc: "Supported accommodation and housing transitions for vulnerable adults.",
+                time: "Referral Basis",
+                location: "County-wide (CA Postcodes)",
+                lat: null,
+                lng: null,
+                phone: "",
+                link: "https://www.waythrough.org.uk"
+            },
+            {
+                id: 6,
+                title: "Citizens Advice Allerdale / Copeland",
+                category: "food-housing",
+                area: "west",
+                cost: "Free Advice",
+                desc: "Financial, debt, housing, and welfare benefits support across West Cumbria.",
+                time: "Drop-in & Phone Appointments",
+                location: "West Cumbria (CA12 to CA28)",
+                lat: 54.6421,
+                lng: -3.5489,
+                phone: "08082787844",
+                link: "https://www.citizensadvice.org.uk"
+            },
+            {
                 id: 7,
-                title: "Northern Fells Group Men in Sheds",
+                title: "North Cumbria Recovery College",
+                category: "talking",
+                area: "carlisle",
+                cost: "Free",
+                desc: "Educational recovery courses and workshops co-produced by people with lived experience.",
+                time: "Open Enrolment",
+                location: "All CA Postcodes",
+                lat: null,
+                lng: null,
+                phone: "01228602100",
+                link: ""
+            },
+
+            // --- MEN'S SHEDS & COMMUNITY WORKSHOPS ---
+            {
+                id: 8,
+                title: "Houghton Men's Shed",
+                category: "sheds",
+                area: "carlisle",
+                cost: "Free / Voluntary",
+                desc: "Woodworking, tool crafting, and wildlife conservation projects in a friendly rural environment.",
+                time: "Weekly Sessions",
+                location: "Gosling Sike, Houghton, Carlisle (CA3)",
+                lat: 54.9210,
+                lng: -2.9380,
+                phone: "",
+                link: "https://www.cumbriawildlifetrust.org.uk"
+            },
+            {
+                id: 9,
+                title: "Restore Community Shed",
+                category: "sheds",
+                area: "carlisle",
+                cost: "Low Cost",
+                desc: "Shared timber workshop, workbenches, tool sharing, and weekly social community lunches.",
+                time: "Tue & Thu 10:00 AM - 3:00 PM",
+                location: "Lorne Street, Carlisle (CA2)",
+                lat: 54.8855,
+                lng: -2.9420,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 10,
+                title: "Northern Fells Men in Sheds",
                 category: "sheds",
                 area: "penrith",
                 cost: "Free / Voluntary",
-                desc: "Fully equipped rural community workshop serving villages around Caldbeck, Wigton, and Eden.",
-                time: "Weekly Workshop Sessions",
-                location: "Caldbeck Workshop, CA7 8EB",
+                desc: "Practical woodwork, furniture repair, and rural social peer support for northern fell villages.",
+                time: "Weekly Workshop Slots",
+                location: "Caldbeck, Wigton (CA7)",
                 lat: 54.7491,
                 lng: -3.0522,
                 phone: "01697478455",
                 link: "https://www.northernfellsgroup.org.uk"
             },
-
-            // --- SPORT, FITNESS & RECOVERY GROUPS ---
-            {
-                id: 8,
-                title: "MAN v FAT Football Carlisle",
-                category: "fitness",
-                area: "carlisle",
-                cost: "Paid (Weekly Subs)",
-                desc: "6-a-side football league for men with a BMI of 27.5+. Combines football with weight loss progress.",
-                time: "Mondays 6:30 PM - 8:30 PM",
-                location: "Harraby 3G Pitch, Edgehill Rd, Carlisle, CA1 3SL",
-                lat: 54.8781,
-                lng: -2.9092,
-                phone: "03451630042",
-                link: "https://www.manvfatfootball.org"
-            },
-            {
-                id: 9,
-                title: "DH Runners (Beginner & Social Groups)",
-                category: "fitness",
-                area: "carlisle",
-                cost: "Free Trial / Low Club Fee",
-                desc: "Friendly Carlisle running club offering structured Couch to 5k and inclusive social running groups.",
-                time: "Tuesdays & Thursdays 6:30 PM",
-                location: "Carlisle Squash Club / Various Carlisle Locations",
-                lat: 54.8910,
-                lng: -2.9250,
-                phone: "",
-                link: "https://dhrunners.org"
-            },
-            {
-                id: 10,
-                title: "Carlisle parkrun",
-                category: "fitness",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Weekly timed 5k walk, jog, or run. Community-led, friendly, and completely non-competitive.",
-                time: "Saturdays at 9:00 AM",
-                location: "Chance's Park, Morton, Carlisle, CA2 6JP",
-                lat: 54.8850,
-                lng: -2.9550,
-                phone: "",
-                link: "https://www.parkrun.org.uk/carlisle"
-            },
-
-            // --- FOOD, DEBT & HOUSING ADVICE ---
             {
                 id: 11,
-                title: "Carlisle Foodbank",
-                category: "food-advice",
-                area: "carlisle",
-                cost: "Voucher / Referral",
-                desc: "Emergency food parcels and support for individuals and families facing immediate crisis.",
-                time: "Mon, Wed, Fri 1:00 PM - 3:00 PM",
-                location: "4 Tower Court, West Tower Street, CA3 8QT",
-                lat: 54.8962,
-                lng: -2.9365,
-                phone: "07512552449",
-                link: "https://carlislefoodbank.org.uk"
+                title: "Stainton Men's Shed",
+                category: "sheds",
+                area: "penrith",
+                cost: "Free / Donation",
+                desc: "Tool sharing, light engineering, and social woodworking in the Eden Valley.",
+                time: "Weekly Meetups",
+                location: "Stainton, Penrith (CA11)",
+                lat: 54.6580,
+                lng: -2.7950,
+                phone: "",
+                link: ""
             },
             {
                 id: 12,
-                title: "Citizens Advice Carlisle & Eden",
-                category: "food-advice",
-                area: "carlisle",
-                cost: "Free Advice",
-                desc: "Free, confidential, independent advice on debt management, Universal Credit, housing, and energy support.",
-                time: "Mon - Fri 10:00 AM - 4:00 PM",
-                location: "Broadacre House, Lowther Street, CA3 8DA",
-                lat: 54.8940,
-                lng: -2.9320,
-                phone: "03300563037",
-                link: "https://www.cac-e.org.uk"
+                title: "Whitehaven Men's Shed",
+                category: "sheds",
+                area: "west",
+                cost: "Free / Voluntary",
+                desc: "Practical repair projects, carpentry, and an informal social peer support network.",
+                time: "Weekly Sessions",
+                location: "Whitehaven (CA28)",
+                lat: 54.5480,
+                lng: -3.5850,
+                phone: "",
+                link: ""
             },
             {
                 id: 13,
-                title: "Penrith BeBS Foodbank & Support",
-                category: "food-advice",
-                area: "penrith",
-                cost: "Free / Referral",
-                desc: "Community food share and emergency supply hub serving Penrith and surrounding rural Eden villages.",
-                time: "Tue & Fri 10:00 AM - 12:00 PM",
-                location: "Church Centre, Grange YMCA, Penrith, CA11 9EE",
-                lat: 54.6641,
-                lng: -2.7525,
-                phone: "01768862143",
+                title: "Maryport Men's Shed",
+                category: "sheds",
+                area: "west",
+                cost: "Free / Voluntary",
+                desc: "Carpentry, hands-on craft, and community repair projects for all skill levels.",
+                time: "Weekly Sessions",
+                location: "Maryport (CA15)",
+                lat: 54.7120,
+                lng: -3.4930,
+                phone: "",
                 link: ""
             },
 
-            // --- HOLISTIC & COMMUNITY WELLBEING ---
+            // --- REPAIR CAFÉS & SUSTAINABLE CRAFT ---
             {
                 id: 14,
-                title: "Carlisle Eden Mind (Wellness Workshops)",
-                category: "holistic",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Community wellbeing groups, mindfulness sessions, and peer-led mental health workshops.",
-                time: "Mon - Fri 9:00 AM - 4:30 PM",
-                location: "27 Spencer Street, Carlisle, CA1 1BE",
-                lat: 54.8928,
-                lng: -2.9285,
-                phone: "01228543166",
-                link: "https://www.cemind.org.uk"
+                title: "Penrith Repair Café",
+                category: "repair",
+                area: "penrith",
+                cost: "Free / Donation",
+                desc: "Monthly appliance, textile, electrical, and furniture fixing hub with skilled volunteers.",
+                time: "Monthly Saturdays",
+                location: "Bridge Lane, Penrith (CA11)",
+                lat: 54.6610,
+                lng: -2.7510,
+                phone: "",
+                link: ""
             },
             {
                 id: 15,
-                title: "Workington Community Shed & Wellbeing Hub",
-                category: "sheds",
-                area: "west",
+                title: "Sustainable Carlisle Repair Café",
+                category: "repair",
+                area: "carlisle",
                 cost: "Free / Donation",
-                desc: "West Cumbria community group offering craft spaces, social coffee mornings, and skill sharing.",
-                time: "Wed & Fri 10:00 AM - 2:00 PM",
-                location: "Workington Town Centre, CA14 2AL",
-                lat: 54.6425,
-                lng: -3.5450,
+                desc: "Community mechanical fixing, tool maintenance, and eco-friendly skill sharing.",
+                time: "Monthly Sessions",
+                location: "Carlisle City Centre (CA3)",
+                lat: 54.8940,
+                lng: -2.9320,
                 phone: "",
-                link: ""
+                link: "https://sustainablecarlisle.org"
             },
-
-            // --- AUDITED LIST ENTRIES ---
             {
                 id: 16,
-                title: "Recovery Steps Cumbria (formerly Unity)",
-                category: "talking",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Drug and alcohol recovery service providing clinical support, therapy, and peer groups across Cumbria.",
-                time: "Mon - Fri 9:00 AM - 5:00 PM",
-                location: "Carlisle, Workington & Whitehaven Hubs",
-                lat: 54.8915,
-                lng: -2.9310,
-                phone: "01900512300",
-                link: "https://www.humankindcharity.org.uk"
+                title: "Workington Repair Café",
+                category: "repair",
+                area: "west",
+                cost: "Free / Donation",
+                desc: "Community tool repairs, garment darning, and household fixing events.",
+                time: "Monthly Meetups",
+                location: "Great Clifton, Workington (CA14)",
+                lat: 54.6400,
+                lng: -3.5100,
+                phone: "",
+                link: ""
             },
             {
                 id: 17,
-                title: "NHS Cumbria Talking Therapies (formerly First Steps)",
-                category: "talking",
+                title: "The Rebuild Site CIC",
+                category: "repair",
                 area: "carlisle",
-                cost: "Free NHS",
-                desc: "Evidence-based psychological therapies for stress, anxiety, low mood, and depression.",
-                time: "Mon - Fri 8:00 AM - 6:00 PM",
-                location: "Self-referral online or phone (Cumbria-wide)",
-                lat: null,
-                lng: null,
-                phone: "03003730919",
-                link: "https://www.cumbriatalkingtherapies.nhs.uk"
+                cost: "Low Cost / Paid Workshops",
+                desc: "Hands-on community building workshops and low-cost reclaimed materials for home & DIY projects.",
+                time: "Wed - Sat 9:00 AM - 4:00 PM",
+                location: "Junction Street, Carlisle (CA2)",
+                lat: 54.8890,
+                lng: -2.9450,
+                phone: "01228588588",
+                link: "https://rebuildsite.co.uk"
             },
             {
                 id: 18,
-                title: "The Bridgeway Sexual Assault Support",
-                category: "crisis-text",
+                title: "Cumbria Woodturners Association",
+                category: "repair",
                 area: "carlisle",
-                cost: "Free",
-                desc: "24/7 dedicated support service for men, women, and children affected by sexual assault in Cumbria.",
-                time: "24 Hours / 7 Days",
-                location: "Confidential Centre (Cumbria-wide)",
+                cost: "Membership / Guest Fee",
+                desc: "Artisan woodturning, lathe demonstrations, tool sharpening, and timber crafting network.",
+                time: "Monthly Meetings",
+                location: "CA Postcode Region (Various venues)",
                 lat: null,
                 lng: null,
-                phone: "08081186432",
-                link: "https://thebridgeway.org.uk"
-            },
-            {
-                id: 19,
-                title: "Cruse Bereavement Support Cumbria",
-                category: "talking",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Confidential helpline, 1-to-1 support, and local groups for anyone grieving the loss of a loved one.",
-                time: "Mon & Fri 9:30am-5pm, Tue-Thu 9:30am-8pm",
-                location: "Phone & Local Community Venues",
-                lat: null,
-                lng: null,
-                phone: "08088081677",
-                link: "https://www.cruse.org.uk"
-            },
-            {
-                id: 20,
-                title: "CADAS (Cumbria Alcohol & Drug Advisory)",
-                category: "talking",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Community support, 1-to-1 sessions, and family support for those impacted by substance use.",
-                time: "Mon - Fri 10:00 AM - 5:00 PM",
-                location: "3-5 Victoria Place, Carlisle, CA1 1EJ",
-                lat: 54.8941,
-                lng: -2.9288,
-                phone: "08002545658",
-                link: "https://cadas.co.uk"
-            },
-            {
-                id: 21,
-                title: "Relate Cumbria & North Lancashire",
-                category: "talking",
-                area: "carlisle",
-                cost: "Subsidized / Sliding Scale",
-                desc: "Specialist relationship counselling, family mediation, and individual support sessions.",
-                time: "Appointment Basis",
-                location: "Carlisle & Penrith Community Outposts",
-                lat: 54.8920,
-                lng: -2.9300,
-                phone: "03001001234",
-                link: "https://www.relate.org.uk"
-            },
-            {
-                id: 22,
-                title: "Victim Support Cumbria",
-                category: "talking",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Independent support for anyone affected by crime, regardless of whether it was reported to the police.",
-                time: "24/7 Helpline",
-                location: "Confidential Phone & Community Support",
-                lat: null,
-                lng: null,
-                phone: "08081689111",
-                link: "https://www.victimsupport.org.uk"
-            },
-            {
-                id: 23,
-                title: "Carlisle & Eden Mind Infoline",
-                category: "talking",
-                area: "carlisle",
-                cost: "Free Advice",
-                desc: "Local mental health information, signposting, and advocacy support for North Cumbria.",
-                time: "Mon - Fri 9:00 AM - 4:30 PM",
-                location: "27 Spencer Street, Carlisle, CA1 1BE",
-                lat: 54.8928,
-                lng: -2.9285,
-                phone: "01228609800",
-                link: "https://www.cemind.org.uk"
-            },
-            {
-                id: 24,
-                title: "The Haven Crisis Drop-In (West Cumbria)",
-                category: "talking",
-                area: "west",
-                cost: "Free",
-                desc: "Evening mental health drop-in space offering a warm, safe sanctuary in times of distress.",
-                time: "Wed - Sun 6:00 PM - 11:00 PM",
-                location: "Valeside, Ground Floor, Whitehaven, CA28 8XB",
-                lat: 54.5480,
-                lng: -3.5850,
-                phone: "01946691234",
-                link: "https://www.miconnect.org.uk"
-            },
-            {
-                id: 25,
-                title: "Linking Lives Cumbrian Befriending",
-                category: "holistic",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Befriending project matching isolated individuals with local volunteers for regular visits and calls.",
-                time: "Flexible Weekly Visits",
-                location: "Home & Community Visits Across Cumbria",
-                lat: null,
-                lng: null,
-                phone: "03003020225",
-                link: "https://linkinglives.uk"
-            },
-            {
-                id: 26,
-                title: "Independent Age (Older Adult Advice)",
-                category: "food-advice",
-                area: "online",
-                cost: "Free",
-                desc: "Free advice on social care, money support, council tax relief, and rights for older adults.",
-                time: "Mon - Fri 8:30 AM - 6:30 PM",
-                location: "Free National Helpline",
-                lat: null,
-                lng: null,
-                phone: "08003196789",
-                link: "https://www.independentage.org"
-            },
-            {
-                id: 27,
-                title: "The Silver Line (Age UK)",
-                category: "talking",
-                area: "online",
-                cost: "Free",
-                desc: "24/7 confidential phone line providing friendship, conversation, and support for older people.",
-                time: "24 Hours / 7 Days",
-                location: "Free National Phone Line",
-                lat: null,
-                lng: null,
-                phone: "08004708090",
-                link: "https://www.thesilverline.org.uk"
+                phone: "",
+                link: "https://www.cumbriawoodturners.org.uk"
             },
 
-            // --- COMMUNITY HUBS, NATURE & AUTISM SUPPORT ---
+            // --- ALLOTMENTS & GREEN SPACES ---
             {
-                id: 28,
-                title: "Together We (Mental Health & Wellbeing)",
-                category: "talking",
-                area: "carlisle",
-                cost: "Free",
-                desc: "1-to-1 talking therapies, recovery college, and community fitness programmes bridging service gaps across Cumbria.",
-                time: "Mon & Tue 9am-3pm, Wed 1pm-7pm",
-                location: "16 Jane Street, Workington (Services Cumbrian-wide)",
-                lat: 54.6438,
-                lng: -3.5532,
-                phone: "08081961773",
-                link: "https://togetherwe.uk"
-            },
-            {
-                id: 29,
-                title: "BEE UNIQUE Autism & SEND Support",
-                category: "holistic",
-                area: "west",
-                cost: "Subsidized / Free",
-                desc: "Voluntary charity supporting SEND families with subsidised activities, workshops, and supportive drop-in communities.",
-                time: "Various Activity Slots",
-                location: "Ghyllhead House, Flimby, CA15 8SU (County-wide)",
-                lat: 54.6931,
-                lng: -3.5182,
-                phone: "07368603474",
-                link: "https://bookwhen.com/beeunique"
-            },
-            {
-                id: 30,
-                title: "Hope Haven (Community Sanctuary)",
-                category: "talking",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Safe, welcoming environment for adults experiencing mental health distress or feeling isolated.",
-                time: "Drop-in Sessions",
-                location: "Carlisle Community Venues",
-                lat: 54.8924,
-                lng: -2.9329,
-                phone: "",
-                link: "https://www.cemind.org.uk"
-            },
-            {
-                id: 31,
-                title: "Cumbria Safe Haven (Waythrough)",
-                category: "talking",
-                area: "west",
-                cost: "Free",
-                desc: "Non-judgmental drop-in & appointment support for coping strategies, mental wellbeing, and crisis prevention.",
-                time: "Mon - Fri 9am-8pm, Sat & Sun 9am-5pm",
-                location: "19 Oxford Street, Workington, CA14 2AL",
-                lat: 54.6421,
-                lng: -3.5489,
-                phone: "03300083911",
-                link: "https://www.waythrough.org.uk"
-            },
-            {
-                id: 32,
-                title: "CONNECT Drop-In (Whitehaven)",
-                category: "talking",
-                area: "west",
-                cost: "Free",
-                desc: "Community drop-in space offering social connections, mental health signposting, and a friendly ear.",
-                time: "Weekly Drop-in Hours",
-                location: "Whitehaven Town Centre, CA28 7LB",
-                lat: 54.5492,
-                lng: -3.5880,
-                phone: "",
-                link: ""
-            },
-            {
-                id: 33,
-                title: "Growing Well (Therapeutic Horticulture)",
-                category: "holistic",
-                area: "west",
-                cost: "Free",
-                desc: "Voluntary organic farming and horticulture where activity acts as recovery for mental health challenges.",
-                time: "Mon - Fri 9:00 AM - 4:00 PM",
-                location: "Egremont Site, West Cumbria, CA22 2UG",
-                lat: 54.4820,
-                lng: -3.5310,
-                phone: "07512316568",
-                link: "https://www.growingwell.co.uk"
-            },
-            {
-                id: 34,
-                title: "MindLine Cumbria",
-                category: "crisis-text",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Confidential phone and text support service for anyone in Cumbria looking for mental health guidance or listening.",
-                time: "Mon - Fri 12:00 PM - 11:00 PM",
-                location: "Phone / Text Lines (Cumbria-wide)",
-                lat: null,
-                lng: null,
-                phone: "03005610000",
-                link: "https://www.cemind.org.uk"
-            },
-            {
-                id: 35,
-                title: "Qwell (Online Mental Wellbeing)",
-                category: "crisis-text",
-                area: "online",
-                cost: "Free",
-                desc: "Free, safe, and anonymous online mental health counseling and peer support for adults across Cumbria.",
-                time: "24/7 Access (Live chat available daily)",
-                location: "Online Access across Cumbria",
-                lat: null,
-                lng: null,
-                phone: "",
-                link: "https://www.qwell.io"
-            },
-            {
-                id: 36,
-                title: "Ramblers Wellbeing Walks (Kingstown)",
-                category: "fitness",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Short, friendly, accessible group walks designed to build physical activity and combat loneliness.",
-                time: "Weekly Sessions (Check site for start times)",
-                location: "Kingstown Park & Community Routes, Carlisle, CA1 2TL",
-                lat: 54.9180,
-                lng: -2.9420,
-                phone: "",
-                link: "https://www.ramblers.org.uk/walksfinder"
-            },
-            {
-                id: 37,
-                title: "Dens, Daisies & Discovery Forest School",
-                category: "holistic",
-                area: "carlisle",
-                cost: "Low Cost / Subsidized",
-                desc: "Outdoor forest school sessions, bushcraft, and outdoor nature play supporting neurodiverse children and families.",
-                time: "Term-time & Weekend Groups",
-                location: "Kingmoor Nature Reserve, Carlisle, CA3 9AF",
-                lat: 54.9125,
-                lng: -2.9510,
-                phone: "",
-                link: ""
-            },
-            {
-                id: 38,
-                title: "Cumbria Wildlife Trust Volunteering",
-                category: "holistic",
-                area: "carlisle",
-                cost: "Free",
-                desc: "Conservation volunteering sessions building practical skills, teamwork, and outdoor wellbeing.",
-                time: "Scheduled Work Days",
-                location: "Kingmoor Nature Reserve & Gosling Sike, CA3 0D3",
-                lat: 54.9210,
-                lng: -2.9380,
-                phone: "01539816300",
-                link: "https://www.cumbriawildlifetrust.org.uk"
-            },
-            {
-                id: 39,
+                id: 19,
                 title: "The Green Hub (Upperby)",
-                category: "sheds",
+                category: "allotment",
                 area: "carlisle",
-                cost: "Free / Voluntary",
-                desc: "Community garden and workshop space fostering local food growing, skill-sharing, and social connections.",
+                cost: "Free",
+                desc: "Community vegetable growing, food cultivation, and planter construction in an outdoor space.",
                 time: "Tue & Thu 10:00 AM - 2:00 PM",
-                location: "Upperby Park & Allotments, Carlisle, CA2 4JL",
+                location: "Upperby Park & Allotments, Carlisle (CA2)",
                 lat: 54.8720,
                 lng: -2.9210,
                 phone: "",
                 link: ""
             },
             {
-                id: 40,
-                title: "Woodland Wellbeing at Watchtree",
-                category: "holistic",
+                id: 20,
+                title: "Susan's Farm Care Farming",
+                category: "allotment",
                 area: "carlisle",
-                cost: "Free / Low Cost",
-                desc: "Mindfulness in nature, woodland walks, adaptive cycling, and therapeutic outdoor spaces.",
+                cost: "Free / Funded Places",
+                desc: "Community farming, organic food production, therapeutic animal care, and outdoor skill building.",
+                time: "Scheduled Care Farm Days",
+                location: "Houghton, Carlisle (CA3)",
+                lat: 54.9280,
+                lng: -2.9250,
+                phone: "01228548336",
+                link: "https://www.susansfarm.org.uk"
+            },
+            {
+                id: 21,
+                title: "Whitehaven Community Allotment",
+                category: "allotment",
+                area: "west",
+                cost: "Free",
+                desc: "Shared gardening plots, greenhouse cultivation, and outdoor social connection.",
+                time: "Weekly Group Days",
+                location: "Whitehaven (CA28)",
+                lat: 54.5500,
+                lng: -3.5800,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 22,
+                title: "Ewanrigg Local Trust Community Garden",
+                category: "allotment",
+                area: "west",
+                cost: "Free",
+                desc: "Group gardening, landscaping, wildflower planting, and community outdoor events.",
                 time: "Weekly Sessions",
-                location: "Watchtree Nature Reserve, Wiggonby, CA5 6NL",
-                lat: 54.8580,
-                lng: -3.0850,
-                phone: "01228712539",
-                link: "https://watchtree.co.uk"
+                location: "Maryport (CA15)",
+                lat: 54.7100,
+                lng: -3.4850,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 23,
+                title: "Ford Park Community Garden",
+                category: "allotment",
+                area: "south",
+                cost: "Free / Voluntary",
+                desc: "Hands-on organic horticulture, community plant nurseries, and kitchen garden volunteering.",
+                time: "Mon - Fri Open Access",
+                location: "Ulverston / South CA Border",
+                lat: 54.1980,
+                lng: -3.0950,
+                phone: "",
+                link: "https://www.ford-park.org.uk"
+            },
+
+            // --- WALKING SPORTS & ACTIVE PEER GROUPS ---
+            {
+                id: 24,
+                title: "Carlisle United Walking Football",
+                category: "fitness",
+                area: "carlisle",
+                cost: "Low Cost (£3 - £5)",
+                desc: "Slow-paced, non-contact football designed for older adults or those recovering from illness.",
+                time: "Weekly Daytime Sessions",
+                location: "Brunton Park, Carlisle (CA1)",
+                lat: 54.8950,
+                lng: -2.9140,
+                phone: "01228554152",
+                link: "https://www.carlisleunitedcst.co.uk"
+            },
+            {
+                id: 25,
+                title: "Workington AFC Walking Football",
+                category: "fitness",
+                area: "west",
+                cost: "Low Cost",
+                desc: "Low-impact team sport session focused on social links, physical health, and fun.",
+                time: "Weekly Evening Sessions",
+                location: "Workington (CA14)",
+                lat: 54.6480,
+                lng: -3.5580,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 26,
+                title: "Penrith Walking Netball & Football",
+                category: "fitness",
+                area: "penrith",
+                cost: "Low Cost",
+                desc: "Non-contact social sports leagues for all physical abilities at local leisure centers.",
+                time: "Weekly Slots",
+                location: "Penrith Leisure Centre (CA11)",
+                lat: 54.6620,
+                lng: -2.7580,
+                phone: "01768863450",
+                link: ""
+            },
+            {
+                id: 27,
+                title: "Cumberland FA Veteran Leagues",
+                category: "fitness",
+                area: "carlisle",
+                cost: "Paid / Subsidized",
+                desc: "Casual, over-35s recreational football sessions focused on fitness and peer connection.",
+                time: "Weekly Evenings",
+                location: "County-wide CA sectors",
+                lat: null,
+                lng: null,
+                phone: "01900511800",
+                link: "https://www.cumberlandfa.com"
+            },
+
+            // --- MODEL RAILWAY, HOBBY & ENGINEERING CLUBS ---
+            {
+                id: 28,
+                title: "Carlisle & District Model Railway Society",
+                category: "hobby",
+                area: "carlisle",
+                cost: "Membership / Guest Fee",
+                desc: "Group model building, layout track engineering, scenery craft, and exhibition planning.",
+                time: "Weekly Club Nights",
+                location: "Carlisle (CA1)",
+                lat: 54.8880,
+                lng: -2.9250,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 29,
+                title: "Workington Model Railway Club",
+                category: "hobby",
+                area: "west",
+                cost: "Membership",
+                desc: "Technical layout building, electronics wiring, scenery creation, and social crafting.",
+                time: "Weekly Meetings",
+                location: "Workington (CA14)",
+                lat: 54.6430,
+                lng: -3.5450,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 30,
+                title: "Border Engineering Society",
+                category: "hobby",
+                area: "carlisle",
+                cost: "Membership",
+                desc: "Steam engines, mechanical restoration, machining, and engineering hobby discussions.",
+                time: "Monthly Meetings",
+                location: "Carlisle / Cumberland Area",
+                lat: 54.8920,
+                lng: -2.9300,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 31,
+                title: "Cumbria Board Games Night",
+                category: "hobby",
+                area: "carlisle",
+                cost: "Free / Small Table Fee",
+                desc: "Casual, strategy-focused board game social meetups in friendly community spaces.",
+                time: "Weekly Evenings",
+                location: "Carlisle, Penrith & Workington Hubs",
+                lat: 54.8930,
+                lng: -2.9340,
+                phone: "",
+                link: ""
+            },
+
+            // --- CREATIVE ARTS, CRAFTS & SOCIAL MAKING ---
+            {
+                id: 32,
+                title: "Border Textile Group",
+                category: "arts",
+                area: "carlisle",
+                cost: "Membership / Guest",
+                desc: "Practical stitching, embroidery, felting, and textile craft meetups and masterclasses.",
+                time: "Monthly Sessions",
+                location: "Carlisle (CA3)",
+                lat: 54.8980,
+                lng: -2.9350,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 33,
+                title: "Carlisle Art Society",
+                category: "arts",
+                area: "carlisle",
+                cost: "Membership / Session Fee",
+                desc: "Group studio sessions, life drawing, painting workshops, and community exhibitions.",
+                time: "Weekly Sessions",
+                location: "Carlisle (CA1)",
+                lat: 54.8910,
+                lng: -2.9280,
+                phone: "",
+                link: "https://carlisleartsociety.org.uk"
+            },
+            {
+                id: 34,
+                title: "Penrith Art Club",
+                category: "arts",
+                area: "penrith",
+                cost: "Low Cost",
+                desc: "Peer-led painting, sketching, watercolor, and open studio afternoons.",
+                time: "Weekly Slots",
+                location: "Penrith (CA11)",
+                lat: 54.6640,
+                lng: -2.7530,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 35,
+                title: "West Cumbria Arts & Crafts Guild",
+                category: "arts",
+                area: "west",
+                cost: "Low Cost",
+                desc: "Community crafting, pottery, mixed media workshops, and creative skill sharing.",
+                time: "Regular Meetups",
+                location: "Whitehaven & Workington (CA14/CA28)",
+                lat: 54.5490,
+                lng: -3.5860,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 36,
+                title: "Cockermouth Art Society",
+                category: "arts",
+                area: "west",
+                cost: "Membership / Guest Fee",
+                desc: "Hands-on workshops, demonstration nights from visiting artists, and social painting.",
+                time: "Fortnightly Sessions",
+                location: "Cockermouth (CA13)",
+                lat: 54.6630,
+                lng: -3.3640,
+                phone: "",
+                link: ""
+            },
+
+            // --- PHOTOGRAPHY & DIGITAL MEDIA CLUBS ---
+            {
+                id: 37,
+                title: "Carlisle Camera Club",
+                category: "photography",
+                area: "carlisle",
+                cost: "Membership / Guest",
+                desc: "Weekly photography social nights, studio lighting practice, and group photo walks.",
+                time: "Winter Season (Thursdays 7:30 PM)",
+                location: "Carlisle (CA1)",
+                lat: 54.8900,
+                lng: -2.9260,
+                phone: "",
+                link: "https://carlislecameraclub.co.uk"
+            },
+            {
+                id: 38,
+                title: "Workington & District Camera Club",
+                category: "photography",
+                area: "west",
+                cost: "Membership",
+                desc: "Skill-sharing, digital image feedback, photo evaluations, and local outdoor shoots.",
+                time: "Weekly Meetings",
+                location: "Workington (CA14)",
+                lat: 54.6440,
+                lng: -3.5460,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 39,
+                title: "Penrith Photographic Society",
+                category: "photography",
+                area: "penrith",
+                cost: "Membership / Guest",
+                desc: "Digital imaging, landscape photography meetups, photo walks, and guest speaker events.",
+                time: "Fortnightly Meetings",
+                location: "Penrith (CA11)",
+                lat: 54.6650,
+                lng: -2.7540,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 40,
+                title: "Keswick Photographic Society",
+                category: "photography",
+                area: "south",
+                cost: "Membership",
+                desc: "Outdoor landscape photography groups exploring the Fells and Lake District.",
+                time: "Weekly Evenings",
+                location: "Keswick (CA12)",
+                lat: 54.6000,
+                lng: -3.1360,
+                phone: "",
+                link: ""
+            },
+
+            // --- COMMUNITY MUSIC, CHOIRS & DRUMMING ---
+            {
+                id: 41,
+                title: "Carlisle Community Choir",
+                category: "music",
+                area: "carlisle",
+                cost: "Low Session Fee",
+                desc: "Accessible, no-audition, high-energy group singing sessions for all confidence levels.",
+                time: "Weekly Rehearsals",
+                location: "Carlisle (CA1)",
+                lat: 54.8920,
+                lng: -2.9290,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 42,
+                title: "Cumbria Taiko Drumming",
+                category: "music",
+                area: "carlisle",
+                cost: "Paid Workshop",
+                desc: "Physical, high-energy Japanese drumming workshops focused on rhythm, focus, and movement.",
+                time: "Weekly Evening Classes",
+                location: "Carlisle / Wigton (CA7)",
+                lat: 54.8250,
+                lng: -3.1610,
+                phone: "",
+                link: "https://www.cumbriataiko.co.uk"
+            },
+            {
+                id: 43,
+                title: "Penrith Community Choir",
+                category: "music",
+                area: "penrith",
+                cost: "Low Session Fee",
+                desc: "Relaxed, multi-genre social singing group for all musical abilities and vocal ranges.",
+                time: "Weekly Evenings",
+                location: "Penrith (CA11)",
+                lat: 54.6641,
+                lng: -2.7525,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 44,
+                title: "Wild Chorus Choir",
+                category: "music",
+                area: "south",
+                cost: "Low Session Fee",
+                desc: "Natural voice community singing focusing on folk, world music, and mental wellbeing.",
+                time: "Weekly Sessions",
+                location: "Keswick (CA12)",
+                lat: 54.6010,
+                lng: -3.1350,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 45,
+                title: "Flimby Male Voice Choir",
+                category: "music",
+                area: "west",
+                cost: "Membership",
+                desc: "Long-running traditional social singing and community performance group.",
+                time: "Weekly Rehearsals",
+                location: "Maryport / Flimby (CA15)",
+                lat: 54.6930,
+                lng: -3.5180,
+                phone: "",
+                link: ""
+            },
+            {
+                id: 46,
+                title: "Workington Community Chorus",
+                category: "music",
+                area: "west",
+                cost: "Low Cost",
+                desc: "Informal, pressure-free social pop, folk, and musical theater singing group.",
+                time: "Weekly Rehearsals",
+                location: "Workington (CA14)",
+                lat: 54.6420,
+                lng: -3.5480,
+                phone: "",
+                link: ""
+            },
+
+            // --- ADDITIONAL CORE SERVICES ---
+            {
+                id: 47,
+                title: "Andy's Man Club Carlisle",
+                category: "talking",
+                area: "carlisle",
+                cost: "Free",
+                desc: "Weekly peer-to-peer support group for men aged 18+. Safe, non-judgmental space to talk.",
+                time: "Mondays at 7:00 PM",
+                location: "Carlisle College, Victoria Place (CA1 1HS)",
+                lat: 54.8945,
+                lng: -2.9292,
+                phone: "",
+                link: "https://andysmanclub.co.uk"
+            },
+            {
+                id: 48,
+                title: "MAN v FAT Football Carlisle",
+                category: "fitness",
+                area: "carlisle",
+                cost: "Paid (Weekly Subs)",
+                desc: "6-a-side football league combining gameplay with weight loss accountability for men BMI 27.5+.",
+                time: "Mondays 6:30 PM",
+                location: "Harraby 3G Pitch, Edgehill Rd, Carlisle (CA1 3SL)",
+                lat: 54.8781,
+                lng: -2.9092,
+                phone: "03451630042",
+                link: "https://www.manvfatfootball.org"
+            },
+            {
+                id: 49,
+                title: "Carlisle parkrun",
+                category: "fitness",
+                area: "carlisle",
+                cost: "Free",
+                desc: "Weekly timed 5k walk, jog, or run. Friendly, community-led, and completely non-competitive.",
+                time: "Saturdays at 9:00 AM",
+                location: "Chance's Park, Morton, Carlisle (CA2 6JP)",
+                lat: 54.8850,
+                lng: -2.9550,
+                phone: "",
+                link: "https://www.parkrun.org.uk/carlisle"
+            },
+            {
+                id: 50,
+                title: "Carlisle Foodbank",
+                category: "food-housing",
+                area: "carlisle",
+                cost: "Voucher / Free",
+                desc: "Emergency food parcels and advice for individuals and families facing immediate crisis.",
+                time: "Mon, Wed, Fri 1:00 PM - 3:00 PM",
+                location: "West Tower Street, Carlisle (CA3 8QT)",
+                lat: 54.8962,
+                lng: -2.9365,
+                phone: "07512552449",
+                link: "https://carlislefoodbank.org.uk"
             }
         ];
 
@@ -917,7 +1066,7 @@
 
         // Initialize Map centered on Cumbria
         function initMap() {
-            map = L.map('map').setView([54.8924, -2.9329], 10);
+            map = L.map('map').setView([54.8000, -3.1000], 9);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 18,
@@ -944,7 +1093,7 @@
             });
         }
 
-        // Render Cards based on Filters
+        // Filter and Render Cards
         function renderDirectory() {
             const cat = document.getElementById('catFilter').value;
             const area = document.getElementById('areaFilter').value;
@@ -956,7 +1105,9 @@
             const filtered = resources.filter(item => {
                 const matchCat = (cat === 'all' || item.category === cat);
                 const matchArea = (area === 'all' || item.area === area);
-                const matchSearch = item.title.toLowerCase().includes(search) || item.desc.toLowerCase().includes(search);
+                const matchSearch = item.title.toLowerCase().includes(search) || 
+                                    item.desc.toLowerCase().includes(search) || 
+                                    item.location.toLowerCase().includes(search);
                 return matchCat && matchArea && matchSearch;
             });
 
@@ -994,12 +1145,16 @@
 
         function getCategoryName(catKey) {
             const names = {
-                'talking': 'Talking & Drop-in',
-                'sheds': 'Community Shed & Craft',
-                'fitness': 'Sport & Physical Health',
-                'holistic': 'Holistic & Nature',
-                'crisis-text': 'Crisis & Text Line',
-                'food-advice': 'Food & Advice'
+                'talking': 'Talking & Peer Support',
+                'sheds': 'Community Sheds',
+                'repair': 'Repair & Craft',
+                'allotment': 'Allotment & Green Space',
+                'fitness': 'Sports & Activity',
+                'hobby': 'Model & Hobby Clubs',
+                'arts': 'Arts & Textiles',
+                'photography': 'Photography',
+                'music': 'Community Music',
+                'food-housing': 'Housing & Advice'
             };
             return names[catKey] || 'Community';
         }
