@@ -1,228 +1,110 @@
-/* Color Palette Variables */
-:root {
-  --navy-dark: #1D2D44;      /* Deep Navy Background */
-  --navy-medium: #0D1B2A;    /* Dark Slate Utility Bar */
-  --slate-accent: #3D405B;   /* Warm Slate Neutral */
-  --terracotta: #E07A5F;     /* Warm Accent / Button */
-  --terracotta-hover: #D0694E;
-  --bg-light: #F8F9FA;       /* Soft White Background */
-  --text-dark: #212529;      /* Body Text */
-  --text-muted: #6C757D;
+/* Interactive Tool & Database Content Styles */
+.tool-section {
+  display: none; /* Controlled by navigation JS */
+  background: #FFFFFF;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-top: 20px;
 }
 
-/* Base Reset & Layout */
-* { 
-  box-sizing: border-box; 
-  margin: 0; 
-  padding: 0; 
+.tool-section.active {
+  display: block;
 }
 
-body { 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-  background: var(--bg-light); 
-  color: var(--text-dark); 
-  line-height: 1.5;
+.section-title {
+  font-size: 1.3rem;
+  color: var(--navy-dark);
+  margin-bottom: 8px;
+  border-bottom: 2px solid var(--terracotta);
+  padding-bottom: 6px;
 }
 
-.container { 
-  max-width: 1200px; 
-  margin: 0 auto; 
-  padding: 0 16px; 
+.section-desc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
 }
 
-/* Top Utility Bar */
-.top-bar { 
-  background-color: var(--navy-medium); 
-  color: #B0C4DE; 
-  font-size: 0.8rem; 
-  padding: 8px 0; 
-  border-bottom: 1px solid rgba(255,255,255,0.08); 
-}
-
-.top-bar-content { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.trust-badge { 
-  display: flex; 
-  align-items: center; 
-  gap: 6px; 
-  font-weight: 500; 
-  white-space: nowrap;
-}
-
-.badge-dot { 
-  width: 6px; 
-  height: 6px; 
-  background-color: var(--terracotta); 
-  border-radius: 50%; 
-  display: inline-block; 
-  flex-shrink: 0;
-}
-
-.utility-nav {
-  display: flex;
-  gap: 12px;
-  white-space: nowrap;
-}
-
-.utility-nav a { 
-  color: #B0C4DE; 
-  text-decoration: none; 
-  transition: color 0.2s; 
-}
-
-.utility-nav a:hover { 
-  color: #FFFFFF; 
-}
-
-/* Main Commercial Header */
-.main-header { 
-  background-color: var(--navy-dark); 
-  color: #FFFFFF; 
-  padding: 20px 0; 
-  border-bottom: 1px solid rgba(255,255,255,0.1); 
-}
-
-.header-content { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
+/* STOP Technique Grid */
+.stop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
-  flex-wrap: wrap;
+  margin-top: 16px;
 }
 
-.brand { 
-  display: flex; 
-  align-items: center; 
-  gap: 12px; 
+.stop-card {
+  background: var(--bg-light);
+  border-left: 4px solid var(--terracotta);
+  padding: 16px;
+  border-radius: 4px;
 }
 
-.brand-logo { 
-  width: 36px; 
-  height: 36px; 
-  flex-shrink: 0;
+.stop-card h4 {
+  color: var(--navy-dark);
+  margin-bottom: 6px;
 }
 
-.brand-title { 
-  font-size: 1.4rem; 
-  font-weight: 800; 
-  letter-spacing: 0.5px; 
-  color: #FFFFFF; 
-  line-height: 1.1; 
+/* FIZZ Scale Interactive Slider */
+.fizz-container {
+  max-width: 600px;
+  margin: 20px 0;
 }
 
-.brand-subtitle { 
-  font-size: 0.8rem; 
-  color: #A0AAB2; 
-  font-weight: 400; 
-  text-transform: uppercase; 
-  letter-spacing: 0.8px; 
+.fizz-slider {
+  width: 100%;
+  height: 12px;
+  border-radius: 6px;
+  outline: none;
+  background: linear-gradient(to right, #4CAF50, #FFEB3B, #FF9800, #F44336);
+  appearance: none;
+  cursor: pointer;
 }
 
-/* Primary Action Button */
-.header-actions {
-  flex-shrink: 0;
+.fizz-output {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 6px;
+  background: #F0F4F8;
+  font-weight: 600;
+  color: var(--navy-dark);
 }
 
-.btn-primary { 
+/* Resource Filter & Cards */
+.search-box {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #CED4DA;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+.resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.resource-card {
+  border: 1px solid #E9ECEF;
+  border-radius: 6px;
+  padding: 14px;
+  background: #FFFFFF;
+}
+
+.resource-card h4 {
+  color: var(--navy-dark);
+}
+
+.resource-tag {
   display: inline-block;
-  background-color: var(--terracotta); 
-  color: #FFFFFF; 
-  padding: 8px 16px; 
-  border-radius: 6px; 
-  text-decoration: none; 
-  font-weight: 600; 
-  font-size: 0.85rem; 
-  white-space: nowrap;
-  transition: background 0.2s ease-in-out; 
-}
-
-.btn-primary:hover { 
-  background-color: var(--terracotta-hover); 
-}
-
-/* Main Navigation Bar (With Touch Horizontal Scroll for Mobile) */
-.main-nav { 
-  background-color: #FFFFFF; 
-  border-bottom: 2px solid #E9ECEF; 
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.nav-links { 
-  display: flex; 
-  gap: 24px; 
-  white-space: nowrap;
-}
-
-.nav-item { 
-  padding: 14px 0; 
-  color: var(--slate-accent); 
-  text-decoration: none; 
-  font-size: 0.9rem; 
-  font-weight: 600; 
-  position: relative; 
-  transition: color 0.2s; 
-  flex-shrink: 0;
-}
-
-.nav-item:hover { 
-  color: var(--navy-dark); 
-}
-
-.nav-item.active { 
-  color: var(--terracotta); 
-}
-
-.nav-item.active::after { 
-  content: ''; 
-  position: absolute; 
-  bottom: -2px; 
-  left: 0; 
-  right: 0; 
-  height: 3px; 
-  background-color: var(--terracotta); 
-  border-radius: 3px 3px 0 0; 
-}
-
-/* Main Content Area */
-.main-content {
-  padding: 32px 16px;
-}
-
-/* Responsive Mobile Overrides */
-@media (max-width: 640px) {
-  .top-bar-content {
-    justify-content: center;
-  }
-  
-  .trust-badge {
-    font-size: 0.75rem;
-  }
-  
-  .utility-nav {
-    font-size: 0.75rem;
-  }
-
-  .header-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .header-actions {
-    width: 100%;
-  }
-
-  .btn-primary {
-    display: block;
-    text-align: center;
-    width: 100%;
-  }
+  background: #E0E8F0;
+  color: var(--navy-dark);
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: 6px;
+  font-weight: 600;
 }
