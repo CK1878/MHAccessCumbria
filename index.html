@@ -1,223 +1,694 @@
-const resources = [
-    // --- CRISIS & DIGITAL TEXT LINES ---
-    {
-        id: 1,
-        title: "NHS Mental Health Crisis Line",
-        category: "crisis-text",
-        area: "carlisle",
-        cost: "Free",
-        desc: "Universal 24/7 NHS mental health crisis assessment and support service across Cumbria.",
-        time: "24 Hours / 7 Days",
-        location: "Phone Service (Cumbria-wide)",
-        lat: null,
-        lng: null,
-        phone: "111",
-        link: "https://www.cntw.nhs.uk"
-    },
-    {
-        id: 2,
-        title: "SHOUT Crisis Text Support",
-        category: "crisis-text",
-        area: "online",
-        cost: "Free",
-        desc: "Free, confidential, 24/7 text messaging support service for anyone in mental distress.",
-        time: "24 Hours / 7 Days",
-        location: "Text SHOUT to 85258",
-        lat: null,
-        lng: null,
-        phone: "85258",
-        link: "https://giveusashout.org"
-    },
-    {
-        id: 3,
-        title: "Samaritans Carlisle & North Cumbria",
-        category: "talking",
-        area: "carlisle",
-        cost: "Free",
-        desc: "Confidential emotional support for anyone struggling to cope or feeling suicidal.",
-        time: "24/7 Phone Support (Branch hours vary)",
-        location: "123 Botchergate, Carlisle, CA1 1RZ",
-        lat: 54.8878,
-        lng: -2.9301,
-        phone: "116123",
-        link: "https://www.samaritans.org/branches/carlisle"
-    },
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumbria WellSpring | Community & Wellbeing Directory</title>
+    
+    <!-- Leaflet OpenStreetMap CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    // --- TALKING & PEER SUPPORT GROUPS ---
-    {
-        id: 4,
-        title: "Andy's Man Club Carlisle",
-        category: "talking",
-        area: "carlisle",
-        cost: "Free",
-        desc: "Weekly peer-to-peer support group for men aged 18+. Safe, non-judgmental space to talk.",
-        time: "Mondays at 7:00 PM (excl. Bank Holidays)",
-        location: "Carlisle College, Victoria Place, CA1 1HS",
-        lat: 54.8945,
-        lng: -2.9292,
-        phone: "",
-        link: "https://andysmanclub.co.uk"
-    },
-    {
-        id: 5,
-        title: "Every Life Matters Cumbria",
-        category: "talking",
-        area: "carlisle",
-        cost: "Free",
-        desc: "Cumbria-based suicide prevention charity offering community training and bereavement support.",
-        time: "Mon - Fri 9:00 AM - 5:00 PM",
-        location: "Community & Online Across Cumbria",
-        lat: 54.8924,
-        lng: -2.9329,
-        phone: "07908537541",
-        link: "https://www.every-life-matters.org.uk"
-    },
+    <style>
+        :root {
+            /* Warm, empowering, non-clinical palette */
+            --brand-primary: #2C4A4E;   /* Deep Slate Teal */
+            --brand-accent: #E07A5F;    /* Warm Terracotta */
+            --brand-soft: #88A096;      /* Soft Sage */
+            --bg-light: #F7F5F0;        /* Warm Sand/Off-White */
+            --card-bg: #FFFFFF;
+            --text-dark: #2B2D42;
+            --text-muted: #6C757D;
+            --border-color: #E2E0D9;
+        }
 
-    // --- COMMUNITY SHEDS & CRAFT SPACES ---
-    {
-        id: 6,
-        title: "Carlisle Community Shed",
-        category: "sheds",
-        area: "carlisle",
-        cost: "Low Cost / Voluntary",
-        desc: "A practical workshop space for people to pursue woodworking, share tools, craft, and socialize.",
-        time: "Tue & Thu 10:00 AM - 3:00 PM",
-        location: "Botcherby Community Centre, Victoria Rd, CA1 2TY",
-        lat: 54.8872,
-        lng: -2.9085,
-        phone: "01228 596966",
-        link: ""
-    },
-    {
-        id: 7,
-        title: "Northern Fells Group Men in Sheds",
-        category: "sheds",
-        area: "penrith",
-        cost: "Free / Voluntary",
-        desc: "Fully equipped rural community workshop serving villages around Caldbeck, Wigton, and Eden.",
-        time: "Weekly Workshop Sessions",
-        location: "Caldbeck Workshop, CA7 8EB",
-        lat: 54.7491,
-        lng: -3.0522,
-        phone: "016974 78455",
-        link: "https://www.northernfellsgroup.org.uk"
-    },
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
 
-    // --- SPORT, FITNESS & RECOVERY GROUPS ---
-    {
-        id: 8,
-        title: "MAN v FAT Football Carlisle",
-        category: "fitness",
-        area: "carlisle",
-        cost: "Paid (Weekly Subs)",
-        desc: "6-a-side football league for men with a BMI of 27.5+. Combines football with weight loss progress.",
-        time: "Fridays 7:00 PM - 9:00 PM",
-        location: "3G Pitch, Edgehill Rd, Harraby, CA1 3LJ",
-        lat: 54.8781,
-        lng: -2.9092,
-        phone: "03451630042",
-        link: "https://www.manvfatfootball.org"
-    },
-    {
-        id: 9,
-        title: "DH Runners (Beginner & Social Groups)",
-        category: "fitness",
-        area: "carlisle",
-        cost: "Free Trial / Low Club Fee",
-        desc: "Friendly Carlisle running club offering structured Couch to 5k and inclusive social running groups.",
-        time: "Tuesdays & Thursdays 6:30 PM",
-        location: "Carlisle Squash Club / Various Carlisle Locations",
-        lat: 54.8910,
-        lng: -2.9250,
-        phone: "",
-        link: "https://dhrunners.org"
-    },
-    {
-        id: 10,
-        title: "Carlisle parkrun",
-        category: "fitness",
-        area: "carlisle",
-        cost: "Free",
-        desc: "Weekly timed 5k walk, jog, or run. Community-led, friendly, and completely non-competitive.",
-        time: "Saturdays at 9:00 AM",
-        location: "Chance's Park, Morton, Carlisle, CA2 6JP",
-        lat: 54.8850,
-        lng: -2.9550,
-        phone: "",
-        link: "https://www.parkrun.org.uk/carlisle"
-    },
+        header {
+            background-color: var(--brand-primary);
+            color: white;
+            padding: 2rem 1rem 1.5rem 1rem;
+            text-align: center;
+        }
 
-    // --- FOOD, DEBT & HOUSING ADVICE ---
-    {
-        id: 11,
-        title: "Carlisle Foodbank",
-        category: "food-advice",
-        area: "carlisle",
-        cost: "Voucher / Referral",
-        desc: "Emergency food parcels and support for individuals and families facing immediate crisis.",
-        time: "Mon, Wed, Fri 1:00 PM - 3:00 PM",
-        location: "4 Tower Court, West Tower Street, CA3 8QT",
-        lat: 54.8962,
-        lng: -2.9365,
-        phone: "07512 552449",
-        link: "https://carlislefoodbank.org.uk"
-    },
-    {
-        id: 12,
-        title: "Citizens Advice Carlisle & Eden",
-        category: "food-advice",
-        area: "carlisle",
-        cost: "Free Advice",
-        desc: "Free, confidential, independent advice on debt management, Universal Credit, housing, and energy support.",
-        time: "Mon - Fri 10:00 AM - 4:00 PM",
-        location: "Broadacre House, Lowther Street, CA3 8DA",
-        lat: 54.8940,
-        lng: -2.9320,
-        phone: "03300563037",
-        link: "https://www.cac-e.org.uk"
-    },
-    {
-        id: 13,
-        title: "Penrith BeBS Foodbank & Support",
-        category: "food-advice",
-        area: "penrith",
-        cost: "Free / Referral",
-        desc: "Community food share and emergency supply hub serving Penrith and surrounding rural Eden villages.",
-        time: "Tue & Fri 10:00 AM - 12:00 PM",
-        location: "Church Centre, Grange YMCA, Penrith, CA11 9EE",
-        lat: 54.6641,
-        lng: -2.7525,
-        phone: "01768 862143",
-        link: ""
-    },
+        header h1 {
+            margin: 0 0 0.4rem 0;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+        }
 
-    // --- HOLISTIC & COMMUNITY WELLBEING ---
-    {
-        id: 14,
-        title: "Carlisle Eden Mind (Wellness Workshops)",
-        category: "holistic",
-        area: "carlisle",
-        cost: "Free",
-        desc: "Community wellbeing groups, mindfulness sessions, and peer-led mental health workshops.",
-        time: "Mon - Fri 9:00 AM - 4:30 PM",
-        location: "27 Spencer Street, Carlisle, CA1 1BE",
-        lat: 54.8928,
-        lng: -2.9285,
-        phone: "01228 543166",
-        link: "https://www.cemind.org.uk"
-    },
-    {
-        id: 15,
-        title: "Workington Community Shed & Wellbeing Hub",
-        category: "sheds",
-        area: "west",
-        cost: "Free / Donation",
-        desc: "West Cumbria community group offering craft spaces, social coffee mornings, and skill sharing.",
-        time: "Wed & Fri 10:00 AM - 2:00 PM",
-        location: "Workington Town Centre, CA14 2AL",
-        lat: 54.6425,
-        lng: -3.5450,
-        phone: "",
-        link: ""
-    }
-];
+        header p {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #D1E0DC;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        /* Crisis & Support Bar */
+        .urgent-bar {
+            background: #FDF2F0;
+            border-left: 4px solid var(--brand-accent);
+            padding: 0.9rem 1.2rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .urgent-bar strong {
+            color: #902912;
+        }
+
+        .btn-urgent {
+            background-color: var(--brand-accent);
+            color: white;
+            padding: 0.4rem 0.9rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Map Section */
+        #map {
+            height: 380px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 1.5rem;
+            z-index: 1;
+        }
+
+        /* Filters */
+        .filter-section {
+            background: var(--card-bg);
+            padding: 1.2rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        select, input {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+            background-color: #FAF9F6;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--brand-soft);
+            background-color: #FFF;
+        }
+
+        /* Resource Grid & Cards */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.6rem;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            background: #EBF2F0;
+            color: var(--brand-primary);
+        }
+
+        .badge-cost {
+            background: #F4F1EA;
+            color: var(--text-dark);
+        }
+
+        .card h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--brand-primary);
+            font-size: 1.2rem;
+        }
+
+        .card p.desc {
+            font-size: 0.92rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .card-meta p {
+            margin: 0.25rem 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .card-actions {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.55rem 0.85rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary { background: var(--brand-primary); color: white; }
+        .btn-outline { border: 1px solid var(--brand-primary); color: var(--brand-primary); background: transparent; }
+        .btn-plan { background: #E8F0EE; color: var(--brand-primary); border: 1px solid #C5D8D2; }
+
+        /* Floating Action Plan Drawer */
+        .plan-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 3px solid var(--brand-soft);
+            padding: 1rem 1.5rem;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .plan-panel.active { display: flex; }
+
+        /* Print formatting */
+        @media print {
+            header, .filter-section, .urgent-bar, #map, .card-actions, .plan-panel, .no-print {
+                display: none !important;
+            }
+            body { background: white; }
+            .container { max-width: 100%; padding: 0; }
+            .resource-grid { display: block; }
+            .card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 1rem; page-break-inside: avoid; }
+            .print-header { display: block !important; margin-bottom: 1.5rem; border-bottom: 2px solid var(--brand-primary); padding-bottom: 0.5rem; }
+        }
+
+        .print-header { display: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cumbria WellSpring</h1>
+        <p>Explore local community spaces, wellbeing groups, support & activities across Cumbria</p>
+    </header>
+
+    <div class="container">
+
+        <div class="print-header">
+            <h2>My Community Support & Action Plan</h2>
+            <p>Saved resources & contact details</p>
+            <p><strong>Date Prepared:</strong> <span id="print-date"></span></p>
+        </div>
+
+        <!-- Crisis Bar (111 Option 2) -->
+        <div class="urgent-bar">
+            <div>
+                <strong>Need Immediate Urgent Mental Health Support?</strong> 
+                Call NHS Mental Health Services free on <strong>111 (Option 2)</strong> or text <strong>SHOUT</strong> to <strong>85258</strong> for 24/7 crisis text support.
+            </div>
+            <a href="tel:111" class="btn-urgent">Call 111</a>
+        </div>
+
+        <!-- Interactive Map -->
+        <div id="map"></div>
+
+        <!-- Filter Bar -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <label for="catFilter">Type of Activity / Support</label>
+                <select id="catFilter" onchange="renderDirectory()">
+                    <option value="all">All Categories</option>
+                    <option value="talking">Talking & Peer Support</option>
+                    <option value="sheds">Community Sheds & Craft</option>
+                    <option value="fitness">Activity, Sport & Weight Loss</option>
+                    <option value="holistic">Paid / Holistic & Wellness</option>
+                    <option value="crisis-text">24/7 Digital & Text Support</option>
+                    <option value="food-advice">Food, Debt & Housing Advice</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="areaFilter">Area</label>
+                <select id="areaFilter" onchange="renderDirectory()">
+                    <option value="all">All Cumbria</option>
+                    <option value="carlisle">Carlisle</option>
+                    <option value="penrith">Penrith & Eden</option>
+                    <option value="west">West Cumbria</option>
+                    <option value="online">Online / Nationwide</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="searchFilter">Search</label>
+                <input type="text" id="searchFilter" placeholder="Search by keyword..." onkeyup="renderDirectory()">
+            </div>
+        </div>
+
+        <!-- Directory Grid -->
+        <div class="resource-grid" id="resourceGrid"></div>
+
+    </div>
+
+    <!-- Printable Plan Panel -->
+    <div class="plan-panel" id="planPanel">
+        <div>
+            <strong>My Saved Guide (<span id="planCount">0</span>)</strong>
+            <p style="margin: 0; font-size: 0.82rem; color: var(--text-muted);">Ready to export or print your custom reference sheet</p>
+        </div>
+        <div>
+            <button class="btn btn-outline" onclick="clearPlan()">Clear</button>
+            <button class="btn btn-primary" onclick="printGuide()">Save / Print My Guide</button>
+        </div>
+    </div>
+
+    <!-- Leaflet JS for Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // Centralized Resource Data (North Cumbria Focus)
+        const resources = [
+            // --- CRISIS & DIGITAL TEXT LINES ---
+            {
+                id: 1,
+                title: "NHS Mental Health Crisis Line",
+                category: "crisis-text",
+                area: "carlisle",
+                cost: "Free",
+                desc: "Universal 24/7 NHS mental health crisis assessment and support service across Cumbria.",
+                time: "24 Hours / 7 Days",
+                location: "Phone Service (Cumbria-wide)",
+                lat: null,
+                lng: null,
+                phone: "111",
+                link: "https://www.cntw.nhs.uk"
+            },
+            {
+                id: 2,
+                title: "SHOUT Crisis Text Support",
+                category: "crisis-text",
+                area: "online",
+                cost: "Free",
+                desc: "Free, confidential, 24/7 text messaging support service for anyone in mental distress.",
+                time: "24 Hours / 7 Days",
+                location: "Text SHOUT to 85258",
+                lat: null,
+                lng: null,
+                phone: "85258",
+                link: "https://giveusashout.org"
+            },
+            {
+                id: 3,
+                title: "Samaritans Carlisle & North Cumbria",
+                category: "talking",
+                area: "carlisle",
+                cost: "Free",
+                desc: "Confidential emotional support for anyone struggling to cope or feeling suicidal.",
+                time: "24/7 Phone Support (Branch hours vary)",
+                location: "123 Botchergate, Carlisle, CA1 1RZ",
+                lat: 54.8878,
+                lng: -2.9301,
+                phone: "116123",
+                link: "https://www.samaritans.org/branches/carlisle"
+            },
+
+            // --- TALKING & PEER SUPPORT GROUPS ---
+            {
+                id: 4,
+                title: "Andy's Man Club Carlisle",
+                category: "talking",
+                area: "carlisle",
+                cost: "Free",
+                desc: "Weekly peer-to-peer support group for men aged 18+. Safe, non-judgmental space to talk.",
+                time: "Mondays at 7:00 PM (excl. Bank Holidays)",
+                location: "Carlisle College, Victoria Place, CA1 1HS",
+                lat: 54.8945,
+                lng: -2.9292,
+                phone: "",
+                link: "https://andysmanclub.co.uk"
+            },
+            {
+                id: 5,
+                title: "Every Life Matters Cumbria",
+                category: "talking",
+                area: "carlisle",
+                cost: "Free",
+                desc: "Cumbria-based suicide prevention charity offering community training and bereavement support.",
+                time: "Mon - Fri 9:00 AM - 5:00 PM",
+                location: "Community & Online Across Cumbria",
+                lat: 54.8924,
+                lng: -2.9329,
+                phone: "07908537541",
+                link: "https://www.every-life-matters.org.uk"
+            },
+
+            // --- COMMUNITY SHEDS & CRAFT SPACES ---
+            {
+                id: 6,
+                title: "Carlisle Community Shed",
+                category: "sheds",
+                area: "carlisle",
+                cost: "Low Cost / Voluntary",
+                desc: "A practical workshop space for people to pursue woodworking, share tools, craft, and socialize.",
+                time: "Tue & Thu 10:00 AM - 3:00 PM",
+                location: "Botcherby Community Centre, Victoria Rd, CA1 2TY",
+                lat: 54.8872,
+                lng: -2.9085,
+                phone: "01228 596966",
+                link: ""
+            },
+            {
+                id: 7,
+                title: "Northern Fells Group Men in Sheds",
+                category: "sheds",
+                area: "penrith",
+                cost: "Free / Voluntary",
+                desc: "Fully equipped rural community workshop serving villages around Caldbeck, Wigton, and Eden.",
+                time: "Weekly Workshop Sessions",
+                location: "Caldbeck Workshop, CA7 8EB",
+                lat: 54.7491,
+                lng: -3.0522,
+                phone: "016974 78455",
+                link: "https://www.northernfellsgroup.org.uk"
+            },
+
+            // --- SPORT, FITNESS & RECOVERY GROUPS ---
+            {
+                id: 8,
+                title: "MAN v FAT Football Carlisle",
+                category: "fitness",
+                area: "carlisle",
+                cost: "Paid (Weekly Subs)",
+                desc: "6-a-side football league for men with a BMI of 27.5+. Combines football with weight loss progress.",
+                time: "Fridays 7:00 PM - 9:00 PM",
+                location: "3G Pitch, Edgehill Rd, Harraby, CA1 3LJ",
+                lat: 54.8781,
+                lng: -2.9092,
+                phone: "03451630042",
+                link: "https://www.manvfatfootball.org"
+            },
+            {
+                id: 9,
+                title: "DH Runners (Beginner & Social Groups)",
+                category: "fitness",
+                area: "carlisle",
+                cost: "Free Trial / Low Club Fee",
+                desc: "Friendly Carlisle running club offering structured Couch to 5k and inclusive social running groups.",
+                time: "Tuesdays & Thursdays 6:30 PM",
+                location: "Carlisle Squash Club / Various Carlisle Locations",
+                lat: 54.8910,
+                lng: -2.9250,
+                phone: "",
+                link: "https://dhrunners.org"
+            },
+            {
+                id: 10,
+                title: "Carlisle parkrun",
+                category: "fitness",
+                area: "carlisle",
+                cost: "Free",
+                desc: "Weekly timed 5k walk, jog, or run. Community-led, friendly, and completely non-competitive.",
+                time: "Saturdays at 9:00 AM",
+                location: "Chance's Park, Morton, Carlisle, CA2 6JP",
+                lat: 54.8850,
+                lng: -2.9550,
+                phone: "",
+                link: "https://www.parkrun.org.uk/carlisle"
+            },
+
+            // --- FOOD, DEBT & HOUSING ADVICE ---
+            {
+                id: 11,
+                title: "Carlisle Foodbank",
+                category: "food-advice",
+                area: "carlisle",
+                cost: "Voucher / Referral",
+                desc: "Emergency food parcels and support for individuals and families facing immediate crisis.",
+                time: "Mon, Wed, Fri 1:00 PM - 3:00 PM",
+                location: "4 Tower Court, West Tower Street, CA3 8QT",
+                lat: 54.8962,
+                lng: -2.9365,
+                phone: "07512 552449",
+                link: "https://carlislefoodbank.org.uk"
+            },
+            {
+                id: 12,
+                title: "Citizens Advice Carlisle & Eden",
+                category: "food-advice",
+                area: "carlisle",
+                cost: "Free Advice",
+                desc: "Free, confidential, independent advice on debt management, Universal Credit, housing, and energy support.",
+                time: "Mon - Fri 10:00 AM - 4:00 PM",
+                location: "Broadacre House, Lowther Street, CA3 8DA",
+                lat: 54.8940,
+                lng: -2.9320,
+                phone: "03300563037",
+                link: "https://www.cac-e.org.uk"
+            },
+            {
+                id: 13,
+                title: "Penrith BeBS Foodbank & Support",
+                category: "food-advice",
+                area: "penrith",
+                cost: "Free / Referral",
+                desc: "Community food share and emergency supply hub serving Penrith and surrounding rural Eden villages.",
+                time: "Tue & Fri 10:00 AM - 12:00 PM",
+                location: "Church Centre, Grange YMCA, Penrith, CA11 9EE",
+                lat: 54.6641,
+                lng: -2.7525,
+                phone: "01768 862143",
+                link: ""
+            },
+
+            // --- HOLISTIC & COMMUNITY WELLBEING ---
+            {
+                id: 14,
+                title: "Carlisle Eden Mind (Wellness Workshops)",
+                category: "holistic",
+                area: "carlisle",
+                cost: "Free",
+                desc: "Community wellbeing groups, mindfulness sessions, and peer-led mental health workshops.",
+                time: "Mon - Fri 9:00 AM - 4:30 PM",
+                location: "27 Spencer Street, Carlisle, CA1 1BE",
+                lat: 54.8928,
+                lng: -2.9285,
+                phone: "01228 543166",
+                link: "https://www.cemind.org.uk"
+            },
+            {
+                id: 15,
+                title: "Workington Community Shed & Wellbeing Hub",
+                category: "sheds",
+                area: "west",
+                cost: "Free / Donation",
+                desc: "West Cumbria community group offering craft spaces, social coffee mornings, and skill sharing.",
+                time: "Wed & Fri 10:00 AM - 2:00 PM",
+                location: "Workington Town Centre, CA14 2AL",
+                lat: 54.6425,
+                lng: -3.5450,
+                phone: "",
+                link: ""
+            }
+        ];
+
+        let savedItems = [];
+        let map, mapMarkers = [];
+
+        // Initialize Map centered on Cumbria
+        function initMap() {
+            map = L.map('map').setView([54.8924, -2.9329], 10); // Center Carlisle default
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            updateMapMarkers(resources);
+        }
+
+        function updateMapMarkers(filteredData) {
+            mapMarkers.forEach(m => map.removeLayer(m));
+            mapMarkers = [];
+
+            filteredData.forEach(item => {
+                if (item.lat && item.lng) {
+                    const marker = L.marker([item.lat, item.lng]).addTo(map);
+                    marker.bindPopup(`
+                        <strong>${item.title}</strong><br>
+                        ${item.location}<br>
+                        <small>${item.time}</small>
+                    `);
+                    mapMarkers.push(marker);
+                }
+            });
+        }
+
+        // Render Cards based on Filters
+        function renderDirectory() {
+            const cat = document.getElementById('catFilter').value;
+            const area = document.getElementById('areaFilter').value;
+            const search = document.getElementById('searchFilter').value.toLowerCase();
+
+            const grid = document.getElementById('resourceGrid');
+            grid.innerHTML = "";
+
+            const filtered = resources.filter(item => {
+                const matchCat = (cat === 'all' || item.category === cat);
+                const matchArea = (area === 'all' || item.area === area);
+                const matchSearch = item.title.toLowerCase().includes(search) || item.desc.toLowerCase().includes(search);
+                return matchCat && matchArea && matchSearch;
+            });
+
+            filtered.forEach(item => {
+                const isSaved = savedItems.includes(item.id);
+                const cardHtml = `
+                    <div class="card" id="card-${item.id}">
+                        <div>
+                            <div class="badge-row">
+                                <span class="badge">${getCategoryName(item.category)}</span>
+                                <span class="badge badge-cost">${item.cost}</span>
+                            </div>
+                            <h3>${item.title}</h3>
+                            <p class="desc">${item.desc}</p>
+                            <div class="card-meta">
+                                <p><strong>Times:</strong> ${item.time}</p>
+                                <p><strong>Location:</strong> ${item.location}</p>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            ${item.phone ? `<a href="tel:${item.phone}" class="btn btn-primary">Call</a>` : ''}
+                            ${item.lat ? `<a href="https://maps.google.com/?q=${encodeURIComponent(item.title + ' ' + item.location)}" target="_blank" class="btn btn-outline">Directions</a>` : ''}
+                            <button class="btn btn-plan" style="${isSaved ? 'background:#D1E7DD; color:#0F5132;' : ''}" onclick="toggleSave(${item.id})">
+                                ${isSaved ? '✓ Saved' : '+ Add to My Action Plan'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+
+            updateMapMarkers(filtered);
+        }
+
+        function getCategoryName(catKey) {
+            const names = {
+                'talking': 'Talking & Support',
+                'sheds': 'Community Shed',
+                'fitness': 'Sport & Health',
+                'holistic': 'Holistic & Wellbeing',
+                'crisis-text': 'Crisis & Text Line',
+                'food-advice': 'Food & Advice'
+            };
+            return names[catKey] || 'Community';
+        }
+
+        function toggleSave(id) {
+            const index = savedItems.indexOf(id);
+            if (index > -1) {
+                savedItems.splice(index, 1);
+            } else {
+                savedItems.push(id);
+            }
+            document.getElementById('planCount').innerText = savedItems.length;
+            document.getElementById('planPanel').classList.toggle('active', savedItems.length > 0);
+            renderDirectory();
+        }
+
+        function clearPlan() {
+            savedItems = [];
+            document.getElementById('planCount').innerText = 0;
+            document.getElementById('planPanel').classList.remove('active');
+            renderDirectory();
+        }
+
+        function printGuide() {
+            document.getElementById('print-date').innerText = new Date().toLocaleDateString('en-GB');
+            
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const cardId = parseInt(card.id.replace('card-', ''));
+                if (savedItems.length > 0 && !savedItems.includes(cardId)) {
+                    card.classList.add('no-print');
+                }
+            });
+
+            window.print();
+
+            cards.forEach(card => card.classList.remove('no-print'));
+        }
+
+        window.onload = function() {
+            initMap();
+            renderDirectory();
+        };
+    </script>
+</body>
+</html>
