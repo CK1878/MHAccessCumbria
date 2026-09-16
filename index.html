@@ -3,61 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cumbria WellSpring | Community & Wellbeing Directory</title>
+    <title>IT'S A WRAP | Wellness Recovery Action Planning</title>
     
     <!-- Leaflet OpenStreetMap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <style>
         :root {
-            --brand-primary: #2C4A4E;   /* Deep Slate Teal */
-            --brand-accent: #E07A5F;    /* Warm Terracotta */
-            --brand-soft: #88A096;      /* Soft Sage */
-            --bg-light: #F7F5F0;        /* Warm Sand/Off-White */
+            --brand-dark-navy: #1B2A3A;    /* Header Navy Blue */
+            --brand-sub-nav: #121C27;     /* Top Utility Bar */
+            --brand-terracotta: #DE6B48;  /* Accent Terracotta Button/Active State */
+            --brand-terracotta-hover: #C85937;
+            --brand-soft-bg: #F4F6F8;     /* Light Neutral Canvas */
             --card-bg: #FFFFFF;
             --text-dark: #2B2D42;
             --text-muted: #6C757D;
-            --border-color: #E2E0D9;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--bg-light);
+            background-color: var(--brand-soft-bg);
             color: var(--text-dark);
             line-height: 1.5;
         }
 
-        header {
-            background-color: var(--brand-primary);
+        /* Top Utility Bar */
+        .top-bar {
+            background-color: var(--brand-sub-nav);
+            color: #C5D1DF;
+            font-size: 0.82rem;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-bar-tagline {
+            font-weight: 500;
+        }
+
+        .top-bar-links a {
+            color: #C5D1DF;
+            text-decoration: none;
+            margin-left: 1.2rem;
+        }
+
+        .top-bar-links a:hover {
             color: white;
-            padding: 2rem 1rem 1.5rem 1rem;
+        }
+
+        /* Main Header Banner */
+        header {
+            background-color: var(--brand-dark-navy);
+            color: white;
+            padding: 1.8rem 1rem;
             text-align: center;
         }
 
-        header h1 {
-            margin: 0 0 0.4rem 0;
-            font-size: 2rem;
-            letter-spacing: -0.5px;
+        .header-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        header p {
+        .brand-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Custom Arc Logo */
+        .brand-logo-arc {
+            width: 38px;
+            height: 38px;
+            border: 4px solid var(--brand-terracotta);
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            transform: rotate(-45deg);
+        }
+
+        .brand-titles {
+            text-align: left;
+        }
+
+        .brand-titles h1 {
             margin: 0;
-            font-size: 1.05rem;
-            color: #D1E0DC;
+            font-size: 1.75rem;
+            letter-spacing: 1px;
+            font-weight: 800;
+            text-transform: uppercase;
         }
 
+        .brand-titles p {
+            margin: 0;
+            font-size: 0.78rem;
+            letter-spacing: 1.2px;
+            color: #A3B8CC;
+            text-transform: uppercase;
+        }
+
+        .btn-header-cta {
+            background-color: var(--brand-terracotta);
+            color: white;
+            border: none;
+            padding: 0.75rem 2.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            width: 100%;
+            max-width: 480px;
+            transition: background 0.2s ease;
+        }
+
+        .btn-header-cta:hover {
+            background-color: var(--brand-terracotta-hover);
+        }
+
+        /* Horizontal Tab Bar */
+        .tab-nav-wrapper {
+            background: #FFFFFF;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .tab-nav {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .tab-nav::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1rem 1.2rem;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--brand-dark-navy);
+        }
+
+        .tab-btn.active {
+            color: var(--brand-terracotta);
+            border-bottom-color: var(--brand-terracotta);
+        }
+
+        /* Container & Tab Content Sections */
         .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 1.5rem 1rem;
         }
 
-        /* Crisis & Support Bar */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Crisis Bar */
         .urgent-bar {
             background: #FDF2F0;
-            border-left: 4px solid var(--brand-accent);
+            border-left: 4px solid var(--brand-terracotta);
             padding: 0.9rem 1.2rem;
             border-radius: 6px;
             margin-bottom: 1.5rem;
@@ -73,7 +207,7 @@
         }
 
         .btn-urgent {
-            background-color: var(--brand-accent);
+            background-color: var(--brand-terracotta);
             color: white;
             padding: 0.4rem 0.9rem;
             border-radius: 4px;
@@ -84,10 +218,10 @@
 
         /* Map Section */
         #map {
-            height: 380px;
+            height: 360px;
             width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
             margin-bottom: 1.5rem;
             z-index: 1;
         }
@@ -96,7 +230,7 @@
         .filter-section {
             background: var(--card-bg);
             padding: 1.2rem;
-            border-radius: 10px;
+            border-radius: 8px;
             border: 1px solid var(--border-color);
             margin-bottom: 1.5rem;
             display: grid;
@@ -110,7 +244,7 @@
         }
 
         .filter-group label {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -118,17 +252,18 @@
             margin-bottom: 0.4rem;
         }
 
-        select, input {
+        select, input, textarea {
             padding: 0.6rem 0.8rem;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             font-size: 0.95rem;
             outline: none;
             background-color: #FAF9F6;
+            width: 100%;
         }
 
-        select:focus, input:focus {
-            border-color: var(--brand-soft);
+        select:focus, input:focus, textarea:focus {
+            border-color: var(--brand-terracotta);
             background-color: #FFF;
         }
 
@@ -142,7 +277,7 @@
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 1.25rem;
             display: flex;
             flex-direction: column;
@@ -167,8 +302,8 @@
             font-weight: 600;
             padding: 0.2rem 0.6rem;
             border-radius: 20px;
-            background: #EBF2F0;
-            color: var(--brand-primary);
+            background: #EAEFF5;
+            color: var(--brand-dark-navy);
         }
 
         .badge-cost {
@@ -178,12 +313,12 @@
 
         .card h3 {
             margin: 0 0 0.5rem 0;
-            color: var(--brand-primary);
-            font-size: 1.2rem;
+            color: var(--brand-dark-navy);
+            font-size: 1.15rem;
         }
 
         .card p.desc {
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             color: var(--text-dark);
             margin-bottom: 1rem;
         }
@@ -216,9 +351,51 @@
             justify-content: center;
         }
 
-        .btn-primary { background: var(--brand-primary); color: white; }
-        .btn-outline { border: 1px solid var(--brand-primary); color: var(--brand-primary); background: transparent; }
-        .btn-plan { background: #E8F0EE; color: var(--brand-primary); border: 1px solid #C5D8D2; }
+        .btn-primary { background: var(--brand-dark-navy); color: white; }
+        .btn-outline { border: 1px solid var(--brand-dark-navy); color: var(--brand-dark-navy); background: transparent; }
+        .btn-plan { background: #F7EBE8; color: var(--brand-terracotta); border: 1px solid #F0C4B8; }
+
+        /* Interactive WRAP Tools Styling */
+        .wrap-panel {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .wrap-panel h2 {
+            margin-top: 0;
+            color: var(--brand-dark-navy);
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--brand-soft-bg);
+            padding-bottom: 0.5rem;
+        }
+
+        .tool-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .tool-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #FAF9F6;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-item button {
+            background: none;
+            border: none;
+            color: #C53030;
+            cursor: pointer;
+            font-size: 1rem;
+        }
 
         /* Floating Action Plan Drawer */
         .plan-panel {
@@ -227,7 +404,7 @@
             left: 0;
             right: 0;
             background: white;
-            border-top: 3px solid var(--brand-soft);
+            border-top: 3px solid var(--brand-terracotta);
             padding: 1rem 1.5rem;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
             display: none;
@@ -240,14 +417,15 @@
 
         /* Print formatting */
         @media print {
-            header, .filter-section, .urgent-bar, #map, .card-actions, .plan-panel, .no-print {
+            header, .top-bar, .tab-nav-wrapper, .filter-section, .urgent-bar, #map, .card-actions, .plan-panel, .no-print {
                 display: none !important;
             }
             body { background: white; }
             .container { max-width: 100%; padding: 0; }
+            .tab-content { display: block !important; }
             .resource-grid { display: block; }
             .card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 1rem; page-break-inside: avoid; }
-            .print-header { display: block !important; margin-bottom: 1.5rem; border-bottom: 2px solid var(--brand-primary); padding-bottom: 0.5rem; }
+            .print-header { display: block !important; margin-bottom: 1.5rem; border-bottom: 2px solid var(--brand-dark-navy); padding-bottom: 0.5rem; }
         }
 
         .print-header { display: none; }
@@ -255,16 +433,47 @@
 </head>
 <body>
 
+    <!-- Top Utility Bar -->
+    <div class="top-bar">
+        <div class="top-bar-tagline">• Peer-Designed • Self-Directed • Strengths-Based</div>
+        <div class="top-bar-links">
+            <a href="#about" onclick="switchTab('dashboard')">About WRAP</a>
+            <a href="#directory" onclick="switchTab('directory')">Resource Library</a>
+            <a href="#contact" onclick="switchTab('dashboard')">Get in Touch</a>
+        </div>
+    </div>
+
+    <!-- Main Header -->
     <header>
-        <h1>Cumbria WellSpring</h1>
-        <p>Explore local community spaces, wellbeing groups, support & activities across Cumbria</p>
+        <div class="header-content">
+            <div class="brand-row">
+                <div class="brand-logo-arc"></div>
+                <div class="brand-titles">
+                    <h1>IT'S A WRAP</h1>
+                    <p>WELLNESS RECOVERY ACTION PLANNING</p>
+                </div>
+            </div>
+            <button class="btn-header-cta" onclick="switchTab('toolbox')">Access WRAP Toolkit</button>
+        </div>
     </header>
+
+    <!-- Navigation Tab Bar -->
+    <div class="tab-nav-wrapper">
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('directory')">Community Directory & Map</button>
+            <button class="tab-btn" onclick="switchTab('toolbox')">Wellness Toolbox</button>
+            <button class="tab-btn" onclick="switchTab('maintenance')">Daily Maintenance</button>
+            <button class="tab-btn" onclick="switchTab('triggers')">Triggers & Action Plan</button>
+            <button class="tab-btn" onclick="switchTab('fizz')">Distress / Fizz Scale</button>
+        </div>
+    </div>
 
     <div class="container">
 
         <div class="print-header">
-            <h2>My Community Support & Action Plan</h2>
-            <p>Saved resources & contact details</p>
+            <h2>My Personal Wellness Recovery Action Plan</h2>
+            <p>Saved resources, daily maintenance & coping strategies</p>
             <p><strong>Date Prepared:</strong> <span id="print-date"></span></p>
         </div>
 
@@ -277,48 +486,142 @@
             <a href="tel:111" class="btn-urgent">Call 111</a>
         </div>
 
-        <!-- Interactive Map -->
-        <div id="map"></div>
-
-        <!-- Filter Bar -->
-        <div class="filter-section">
-            <div class="filter-group">
-                <label for="catFilter">Type of Activity / Support</label>
-                <select id="catFilter" onchange="renderDirectory()">
-                    <option value="all">All Categories</option>
-                    <option value="talking">Talking, Crisis & Peer Support</option>
-                    <option value="sheds">Community Sheds & Woodwork</option>
-                    <option value="repair">Repair Cafés & Craft Hubs</option>
-                    <option value="allotment">Allotments, Farming & Green Spaces</option>
-                    <option value="fitness">Walking Sports & Active Groups</option>
-                    <option value="hobby">Model Railway, Gaming & Hobby Clubs</option>
-                    <option value="arts">Creative Arts, Textiles & Crafts</option>
-                    <option value="photography">Photography & Digital Media</option>
-                    <option value="music">Community Music & Choirs</option>
-                    <option value="food-housing">Food, Housing & Welfare Advice</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label for="areaFilter">Area</label>
-                <select id="areaFilter" onchange="renderDirectory()">
-                    <option value="all">All Cumbria</option>
-                    <option value="carlisle">Carlisle</option>
-                    <option value="penrith">Penrith & Eden</option>
-                    <option value="west">West Cumbria (Workington / Whitehaven / Maryport)</option>
-                    <option value="south">South Cumbria & Lakes (Keswick / Ulverston)</option>
-                    <option value="online">Online / Nationwide</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label for="searchFilter">Search</label>
-                <input type="text" id="searchFilter" placeholder="Search by keyword, postcode..." onkeyup="renderDirectory()">
+        <!-- TAB 1: DASHBOARD -->
+        <div id="tab-dashboard" class="tab-content active">
+            <div class="wrap-panel">
+                <h2>Welcome to Your Personal Recovery Toolkit</h2>
+                <p>WRAP (Wellness Recovery Action Plan) is a self-designed system for managing your mental health and everyday wellbeing. Use the tabs above to explore local groups across Cumbria or build your interactive personal recovery plan.</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                    <div style="background: var(--brand-soft-bg); padding: 1rem; border-radius: 6px;">
+                        <h4 style="margin:0 0 0.5rem 0; color: var(--brand-dark-navy);">1. Community Directory</h4>
+                        <p style="margin:0; font-size:0.88rem;">Find local groups, repair cafés, men's sheds, and peer support across Cumbria.</p>
+                    </div>
+                    <div style="background: var(--brand-soft-bg); padding: 1rem; border-radius: 6px;">
+                        <h4 style="margin:0 0 0.5rem 0; color: var(--brand-dark-navy);">2. Wellness Toolbox</h4>
+                        <p style="margin:0; font-size:0.88rem;">Keep track of everyday tools and activities that keep you balanced and feeling well.</p>
+                    </div>
+                    <div style="background: var(--brand-soft-bg); padding: 1rem; border-radius: 6px;">
+                        <h4 style="margin:0 0 0.5rem 0; color: var(--brand-dark-navy);">3. Triggers & Strategies</h4>
+                        <p style="margin:0; font-size:0.88rem;">Identify personal triggers and construct clear action plans to respond effectively.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Directory Grid -->
-        <div class="resource-grid" id="resourceGrid"></div>
+        <!-- TAB 2: COMMUNITY DIRECTORY & MAP -->
+        <div id="tab-directory" class="tab-content">
+            <!-- Interactive Map -->
+            <div id="map"></div>
+
+            <!-- Filter Bar -->
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label for="catFilter">Type of Activity / Support</label>
+                    <select id="catFilter" onchange="renderDirectory()">
+                        <option value="all">All Categories</option>
+                        <option value="talking">Talking, Crisis & Peer Support</option>
+                        <option value="sheds">Community Sheds & Woodwork</option>
+                        <option value="repair">Repair Cafés & Craft Hubs</option>
+                        <option value="allotment">Allotments, Farming & Green Spaces</option>
+                        <option value="fitness">Walking Sports & Active Groups</option>
+                        <option value="hobby">Model Railway, Gaming & Hobby Clubs</option>
+                        <option value="arts">Creative Arts, Textiles & Crafts</option>
+                        <option value="photography">Photography & Digital Media</option>
+                        <option value="music">Community Music & Choirs</option>
+                        <option value="food-housing">Food, Housing & Welfare Advice</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="areaFilter">Area</label>
+                    <select id="areaFilter" onchange="renderDirectory()">
+                        <option value="all">All Cumbria</option>
+                        <option value="carlisle">Carlisle</option>
+                        <option value="penrith">Penrith & Eden</option>
+                        <option value="west">West Cumbria (Workington / Whitehaven / Maryport)</option>
+                        <option value="south">South Cumbria & Lakes (Keswick / Ulverston)</option>
+                        <option value="online">Online / Nationwide</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="searchFilter">Search</label>
+                    <input type="text" id="searchFilter" placeholder="Search by keyword, postcode..." onkeyup="renderDirectory()">
+                </div>
+            </div>
+
+            <!-- Directory Grid -->
+            <div class="resource-grid" id="resourceGrid"></div>
+        </div>
+
+        <!-- TAB 3: WELLNESS TOOLBOX -->
+        <div id="tab-toolbox" class="tab-content">
+            <div class="wrap-panel">
+                <h2>My Wellness Toolbox</h2>
+                <p>Record simple, safe, and free (or low-cost) skills and tools you can do to stay well.</p>
+                
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                    <input type="text" id="toolInput" placeholder="Add a wellness tool (e.g. 20-minute walk, espresso break, wood turning)...">
+                    <button class="btn btn-primary" onclick="addTool()">Add Tool</button>
+                </div>
+
+                <ul id="toolList" class="tool-list"></ul>
+            </div>
+        </div>
+
+        <!-- TAB 4: DAILY MAINTENANCE -->
+        <div id="tab-maintenance" class="tab-content">
+            <div class="wrap-panel">
+                <h2>Daily Maintenance Plan</h2>
+                <p>What do I feel like when I'm feeling well, and what do I need to do every day to stay that way?</p>
+                
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">When I am feeling well, I am:</label>
+                    <textarea id="feelingWellText" rows="3" placeholder="e.g. Focused, chatty, organized, active..." oninput="saveWrapData()"></textarea>
+                </div>
+
+                <div>
+                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">Things I need to do every day:</label>
+                    <textarea id="dailyNeedsText" rows="4" placeholder="e.g. Drink water, go outdoors, connect with a peer, work on a personal project..." oninput="saveWrapData()"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: TRIGGERS & ACTION PLAN -->
+        <div id="tab-triggers" class="tab-content">
+            <div class="wrap-panel">
+                <h2>Triggers & Response Strategy</h2>
+                <p>Identify events or circumstances that might cause distress, and outline your proactive response.</p>
+                
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">My External Triggers:</label>
+                    <textarea id="triggersText" rows="3" placeholder="e.g. Poor sleep, crowded noise, unexpected schedule changes..." oninput="saveWrapData()"></textarea>
+                </div>
+
+                <div>
+                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">My Trigger Action Plan:</label>
+                    <textarea id="triggerPlanText" rows="4" placeholder="e.g. Use ear defenders, take 10 minutes in a quiet space, refer to my wellness toolbox..." oninput="saveWrapData()"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: DISTRESS / FIZZ SCALE -->
+        <div id="tab-fizz" class="tab-content">
+            <div class="wrap-panel">
+                <h2>Distress & 'Fizz' Monitor</h2>
+                <p>Track early warning signs before reaching crisis levels.</p>
+
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">Early Warning Signs ('The Fizz'):</label>
+                    <textarea id="fizzSignsText" rows="3" placeholder="e.g. Irritability, restless sleep, skipping meals, overthinking..." oninput="saveWrapData()"></textarea>
+                </div>
+
+                <div>
+                    <label style="font-weight: 700; display: block; margin-bottom: 0.4rem;">Action Plan for When Things Are Breaking Down:</label>
+                    <textarea id="fizzActionText" rows="4" placeholder="e.g. Call NHS 111 (Option 2), reach out to a trusted friend, step back from extra commitments..." oninput="saveWrapData()"></textarea>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -340,8 +643,26 @@
     <script>
         let resources = [];
         let savedItems = [];
+        let userTools = [];
         let map, mapMarkers = [];
 
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+            if (targetBtn) targetBtn.classList.add('active');
+
+            const targetTab = document.getElementById(`tab-${tabId}`);
+            if (targetTab) targetTab.classList.add('active');
+
+            if (tabId === 'directory' && map) {
+                setTimeout(() => map.invalidateSize(), 200);
+            }
+        }
+
+        // Map Initialization
         function initMap() {
             map = L.map('map').setView([54.8000, -3.1000], 9);
 
@@ -368,6 +689,7 @@
             });
         }
 
+        // Directory Rendering
         function renderDirectory() {
             const cat = document.getElementById('catFilter').value;
             const area = document.getElementById('areaFilter').value;
@@ -452,24 +774,72 @@
             renderDirectory();
         }
 
+        // Local Storage for Interactive WRAP Tools
+        function addTool() {
+            const input = document.getElementById('toolInput');
+            if (input.value.trim()) {
+                userTools.push(input.value.trim());
+                input.value = '';
+                renderTools();
+                saveWrapData();
+            }
+        }
+
+        function removeTool(index) {
+            userTools.splice(index, 1);
+            renderTools();
+            saveWrapData();
+        }
+
+        function renderTools() {
+            const list = document.getElementById('toolList');
+            list.innerHTML = '';
+            userTools.forEach((tool, i) => {
+                list.innerHTML += `
+                    <li class="tool-item">
+                        <span>${tool}</span>
+                        <button onclick="removeTool(${i})">✕</button>
+                    </li>
+                `;
+            });
+        }
+
+        function saveWrapData() {
+            const wrapData = {
+                tools: userTools,
+                feelingWell: document.getElementById('feelingWellText').value,
+                dailyNeeds: document.getElementById('dailyNeedsText').value,
+                triggers: document.getElementById('triggersText').value,
+                triggerPlan: document.getElementById('triggerPlanText').value,
+                fizzSigns: document.getElementById('fizzSignsText').value,
+                fizzAction: document.getElementById('fizzActionText').value
+            };
+            localStorage.setItem('wrap_user_data', JSON.stringify(wrapData));
+        }
+
+        function loadWrapData() {
+            const data = localStorage.getItem('wrap_user_data');
+            if (data) {
+                const parsed = JSON.parse(data);
+                userTools = parsed.tools || [];
+                document.getElementById('feelingWellText').value = parsed.feelingWell || '';
+                document.getElementById('dailyNeedsText').value = parsed.dailyNeeds || '';
+                document.getElementById('triggersText').value = parsed.triggers || '';
+                document.getElementById('triggerPlanText').value = parsed.triggerPlan || '';
+                document.getElementById('fizzSignsText').value = parsed.fizzSigns || '';
+                document.getElementById('fizzActionText').value = parsed.fizzAction || '';
+                renderTools();
+            }
+        }
+
         function printGuide() {
             document.getElementById('print-date').innerText = new Date().toLocaleDateString('en-GB');
-            
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                const cardId = parseInt(card.id.replace('card-', ''));
-                if (savedItems.length > 0 && !savedItems.includes(cardId)) {
-                    card.classList.add('no-print');
-                }
-            });
-
             window.print();
-
-            cards.forEach(card => card.classList.remove('no-print'));
         }
 
         window.onload = function() {
             initMap();
+            loadWrapData();
             fetch('resources.json')
                 .then(response => response.json())
                 .then(data => {
