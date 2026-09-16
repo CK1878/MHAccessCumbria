@@ -10,7 +10,7 @@
   --text-muted: #6C757D;
 }
 
-/* Layout Reset & Base Styling */
+/* Base Reset & Layout */
 * { 
   box-sizing: border-box; 
   margin: 0; 
@@ -27,22 +27,24 @@ body {
 .container { 
   max-width: 1200px; 
   margin: 0 auto; 
-  padding: 0 20px; 
+  padding: 0 16px; 
 }
 
 /* Top Utility Bar */
 .top-bar { 
   background-color: var(--navy-medium); 
   color: #B0C4DE; 
-  font-size: 0.85rem; 
+  font-size: 0.8rem; 
   padding: 8px 0; 
-  border-bottom: 1px solid rgba(255,255,255,0.05); 
+  border-bottom: 1px solid rgba(255,255,255,0.08); 
 }
 
 .top-bar-content { 
   display: flex; 
   justify-content: space-between; 
   align-items: center; 
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .trust-badge { 
@@ -50,20 +52,27 @@ body {
   align-items: center; 
   gap: 6px; 
   font-weight: 500; 
+  white-space: nowrap;
 }
 
 .badge-dot { 
-  width: 8px; 
-  height: 8px; 
+  width: 6px; 
+  height: 6px; 
   background-color: var(--terracotta); 
   border-radius: 50%; 
   display: inline-block; 
+  flex-shrink: 0;
+}
+
+.utility-nav {
+  display: flex;
+  gap: 12px;
+  white-space: nowrap;
 }
 
 .utility-nav a { 
   color: #B0C4DE; 
   text-decoration: none; 
-  margin-left: 20px; 
   transition: color 0.2s; 
 }
 
@@ -75,7 +84,7 @@ body {
 .main-header { 
   background-color: var(--navy-dark); 
   color: #FFFFFF; 
-  padding: 24px 0; 
+  padding: 20px 0; 
   border-bottom: 1px solid rgba(255,255,255,0.1); 
 }
 
@@ -83,21 +92,24 @@ body {
   display: flex; 
   justify-content: space-between; 
   align-items: center; 
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .brand { 
   display: flex; 
   align-items: center; 
-  gap: 16px; 
+  gap: 12px; 
 }
 
 .brand-logo { 
-  width: 42px; 
-  height: 42px; 
+  width: 36px; 
+  height: 36px; 
+  flex-shrink: 0;
 }
 
 .brand-title { 
-  font-size: 1.6rem; 
+  font-size: 1.4rem; 
   font-weight: 800; 
   letter-spacing: 0.5px; 
   color: #FFFFFF; 
@@ -105,22 +117,28 @@ body {
 }
 
 .brand-subtitle { 
-  font-size: 0.9rem; 
+  font-size: 0.8rem; 
   color: #A0AAB2; 
   font-weight: 400; 
   text-transform: uppercase; 
-  letter-spacing: 1px; 
+  letter-spacing: 0.8px; 
 }
 
 /* Primary Action Button */
+.header-actions {
+  flex-shrink: 0;
+}
+
 .btn-primary { 
+  display: inline-block;
   background-color: var(--terracotta); 
   color: #FFFFFF; 
-  padding: 10px 20px; 
+  padding: 8px 16px; 
   border-radius: 6px; 
   text-decoration: none; 
   font-weight: 600; 
-  font-size: 0.95rem; 
+  font-size: 0.85rem; 
+  white-space: nowrap;
   transition: background 0.2s ease-in-out; 
 }
 
@@ -128,26 +146,30 @@ body {
   background-color: var(--terracotta-hover); 
 }
 
-/* Main Navigation Bar */
+/* Main Navigation Bar (With Touch Horizontal Scroll for Mobile) */
 .main-nav { 
   background-color: #FFFFFF; 
   border-bottom: 2px solid #E9ECEF; 
   box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .nav-links { 
   display: flex; 
-  gap: 30px; 
+  gap: 24px; 
+  white-space: nowrap;
 }
 
 .nav-item { 
-  padding: 16px 0; 
+  padding: 14px 0; 
   color: var(--slate-accent); 
   text-decoration: none; 
-  font-size: 0.95rem; 
+  font-size: 0.9rem; 
   font-weight: 600; 
   position: relative; 
   transition: color 0.2s; 
+  flex-shrink: 0;
 }
 
 .nav-item:hover { 
@@ -169,8 +191,38 @@ body {
   border-radius: 3px 3px 0 0; 
 }
 
-/* Main Content Container */
+/* Main Content Area */
 .main-content {
-  padding: 40px 0;
+  padding: 32px 16px;
 }
 
+/* Responsive Mobile Overrides */
+@media (max-width: 640px) {
+  .top-bar-content {
+    justify-content: center;
+  }
+  
+  .trust-badge {
+    font-size: 0.75rem;
+  }
+  
+  .utility-nav {
+    font-size: 0.75rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .btn-primary {
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+}
