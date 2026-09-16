@@ -268,7 +268,7 @@
             font-family: inherit;
         }
 
-        /* Print styling */
+        /* Print formatting */
         @media print {
             header, .top-bar, .tab-nav-wrapper, .urgent-bar, #map, .no-print, .btn { display: none !important; }
             body { background: white; }
@@ -458,7 +458,7 @@
             const targetContent = document.getElementById(`tab-${tabId}`);
             if (targetContent) targetContent.classList.add('active');
 
-            // If switching to directory tab, re-trigger Leaflet size calculation
+            // Trigger Leaflet map calculation on switch
             if (tabId === 'directory') {
                 setTimeout(() => {
                     if (!map) {
@@ -472,7 +472,6 @@
 
         // Initialize OpenStreetMap
         function initMap() {
-            // Default position (Carlisle / Cumbria baseline)
             map = L.map('map').setView([54.8925, -2.9329], 11);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -493,50 +492,59 @@
                     }
                 })
                 .catch(err => {
-                    console.warn("resources.json not loaded yet or empty. Add resources to display markers.", err);
+                    console.warn("resources.json not loaded yet or empty.", err);
                 });
         }
 
+        // Robust Directory Renderer (Handles key variations)
         function renderDirectory() {
             const grid = document.getElementById('resourceGrid');
             grid.innerHTML = '';
 
-            // Clear existing markers
             markers.forEach(m => map.removeLayer(m));
             markers = [];
 
-            if (resources.length === 0) {
+            if (!resources || resources.length === 0) {
                 grid.innerHTML = '<p style="grid-column: 1/-1; color: var(--text-muted);">No directory resources loaded yet. Ensure <code>resources.json</code> is present.</p>';
                 return;
             }
 
             resources.forEach(res => {
-                // Card UI
+                // Key fallbacks to support different JSON property names
+                const title = res.name || res.title || res.organisation || res.service || 'Community Support';
+                const description = res.description || res.details || res.summary || '';
+                const address = res.address || res.location || res.postcode || 'N/A';
+                const phone = res.phone || res.telephone || res.contact || '';
+                const website = res.website || res.url || res.link || '';
+                const lat = res.lat || res.latitude;
+                const lng = res.lng || res.longitude;
+
+                // Build Card HTML
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
                     <div>
-                        <h3 style="margin-top:0; color: var(--brand-dark-navy);">${res.name}</h3>
-                        <p style="font-size:0.88rem; color: var(--text-muted);">${res.description || ''}</p>
-                        <p style="font-size:0.85rem;"><strong>Address:</strong> ${res.address || 'N/A'}</p>
+                        <h3 style="margin-top:0; color: var(--brand-dark-navy);">${title}</h3>
+                        ${description ? `<p style="font-size:0.88rem; color: var(--text-muted);">${description}</p>` : ''}
+                        <p style="font-size:0.85rem;"><strong>Address:</strong> ${address}</p>
                     </div>
-                    <div>
-                        ${res.phone ? `<p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Phone:</strong> ${res.phone}</p>` : ''}
-                        ${res.website ? `<a href="${res.website}" target="_blank" class="btn btn-primary" style="width:100%; text-align:center;">Visit Website</a>` : ''}
+                    <div style="margin-top: 1rem;">
+                        ${phone ? `<p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Phone:</strong> ${phone}</p>` : ''}
+                        ${website ? `<a href="${website}" target="_blank" class="btn btn-primary" style="width:100%; text-align:center;">Visit Website</a>` : ''}
                     </div>
                 `;
                 grid.appendChild(card);
 
-                // Add map marker if lat/lng present
-                if (res.lat && res.lng) {
-                    const marker = L.marker([res.lat, res.lng]).addTo(map)
-                        .bindPopup(`<b>${res.name}</b><br>${res.address || ''}`);
+                // Build Map Marker
+                if (lat && lng) {
+                    const marker = L.marker([lat, lng]).addTo(map)
+                        .bindPopup(`<b>${title}</b><br>${address}`);
                     markers.push(marker);
                 }
             });
         }
 
-        // Fizz Scale
+        // Fizz Scale Updates
         function updateFizz(val) {
             document.getElementById('fizzVal').innerText = val;
             const labels = [
@@ -570,7 +578,7 @@
             list.innerHTML = '';
             userTools.forEach((tool, i) => {
                 list.innerHTML += `
-                    <li style="background:#FAF9F6; padding:0.6rem 0.8rem; border:1px solid #E2E8F0; border-radius:6px; margin-bottom:0.4rem; display:flex; justify-content:space-between; align-items:center;">
+                    <li style="background:#FAF9F6; padding:0.6rem 0.8rem; border:1px solid #E2E8F0; border-radius:6px; margin-bottom:0.4rem; display:flex; justify-between; align-items:center;">
                         <span>${tool}</span>
                         <button class="no-print" onclick="removeTool(${i})" style="background:none; border:none; color:#C53030; cursor:pointer; font-weight:bold;">✕</button>
                     </li>
@@ -578,7 +586,7 @@
             });
         }
 
-        // Save & Restore localStorage
+        // Persistence (localStorage)
         function saveWrapData() {
             const wrapData = {
                 tools: userTools,
@@ -606,6 +614,7 @@
             }
         }
 
+        // Print/Save PDF
         function exportPDF() {
             document.getElementById('print-date').innerText = new Date().toLocaleDateString('en-GB');
             window.print();
