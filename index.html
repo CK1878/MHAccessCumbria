@@ -1,257 +1,483 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>It's a Wrap - Wellness Recovery Action Planning</title>
-  <link rel="stylesheet" href="styles.css">
-  
-  <!-- Leaflet OpenStreetMap Engine (Free & Privacy-Friendly) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumbria WellSpring | Community & Wellbeing Directory</title>
+    
+    <!-- Leaflet OpenStreetMap CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        :root {
+            --brand-primary: #2C4A4E;   /* Deep Slate Teal */
+            --brand-accent: #E07A5F;    /* Warm Terracotta */
+            --brand-soft: #88A096;      /* Soft Sage */
+            --bg-light: #F7F5F0;        /* Warm Sand/Off-White */
+            --card-bg: #FFFFFF;
+            --text-dark: #2B2D42;
+            --text-muted: #6C757D;
+            --border-color: #E2E0D9;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        header {
+            background-color: var(--brand-primary);
+            color: white;
+            padding: 2rem 1rem 1.5rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 0.4rem 0;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #D1E0DC;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        /* Crisis & Support Bar */
+        .urgent-bar {
+            background: #FDF2F0;
+            border-left: 4px solid var(--brand-accent);
+            padding: 0.9rem 1.2rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .urgent-bar strong {
+            color: #902912;
+        }
+
+        .btn-urgent {
+            background-color: var(--brand-accent);
+            color: white;
+            padding: 0.4rem 0.9rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Map Section */
+        #map {
+            height: 380px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 1.5rem;
+            z-index: 1;
+        }
+
+        /* Filters */
+        .filter-section {
+            background: var(--card-bg);
+            padding: 1.2rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        select, input {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+            background-color: #FAF9F6;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--brand-soft);
+            background-color: #FFF;
+        }
+
+        /* Resource Grid & Cards */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.6rem;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            background: #EBF2F0;
+            color: var(--brand-primary);
+        }
+
+        .badge-cost {
+            background: #F4F1EA;
+            color: var(--text-dark);
+        }
+
+        .card h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--brand-primary);
+            font-size: 1.2rem;
+        }
+
+        .card p.desc {
+            font-size: 0.92rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .card-meta p {
+            margin: 0.25rem 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .card-actions {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.55rem 0.85rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary { background: var(--brand-primary); color: white; }
+        .btn-outline { border: 1px solid var(--brand-primary); color: var(--brand-primary); background: transparent; }
+        .btn-plan { background: #E8F0EE; color: var(--brand-primary); border: 1px solid #C5D8D2; }
+
+        /* Floating Action Plan Drawer */
+        .plan-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 3px solid var(--brand-soft);
+            padding: 1rem 1.5rem;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .plan-panel.active { display: flex; }
+
+        /* Print formatting */
+        @media print {
+            header, .filter-section, .urgent-bar, #map, .card-actions, .plan-panel, .no-print {
+                display: none !important;
+            }
+            body { background: white; }
+            .container { max-width: 100%; padding: 0; }
+            .resource-grid { display: block; }
+            .card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 1rem; page-break-inside: avoid; }
+            .print-header { display: block !important; margin-bottom: 1.5rem; border-bottom: 2px solid var(--brand-primary); padding-bottom: 0.5rem; }
+        }
+
+        .print-header { display: none; }
+    </style>
 </head>
 <body>
 
-  <!-- Site Header -->
-  <header class="site-header">
-    <div class="top-bar">
-      <div class="container top-bar-content">
-        <div class="trust-badge">
-          <span class="badge-dot"></span> Peer-Designed &bull; Self-Directed &bull; Strengths-Based
+    <header>
+        <h1>Cumbria WellSpring</h1>
+        <p>Explore local community spaces, wellbeing groups, support & activities across Cumbria</p>
+    </header>
+
+    <div class="container">
+
+        <div class="print-header">
+            <h2>My Community Support & Action Plan</h2>
+            <p>Saved resources & contact details</p>
+            <p><strong>Date Prepared:</strong> <span id="print-date"></span></p>
         </div>
-        <nav class="utility-nav">
-          <a href="#about">About WRAP</a>
-          <a href="#resources" onclick="switchTab('my-resources')">Resource Library</a>
-          <a href="#privacy">100% Private (No Tracking)</a>
-        </nav>
-      </div>
+
+        <!-- Crisis Bar -->
+        <div class="urgent-bar">
+            <div>
+                <strong>Need Immediate Urgent Mental Health Support?</strong> 
+                Call NHS Mental Health Services free on <strong>111 (Option 2)</strong> or text <strong>SHOUT</strong> to <strong>85258</strong> for 24/7 crisis text support.
+            </div>
+            <a href="tel:111" class="btn-urgent">Call 111</a>
+        </div>
+
+        <!-- Interactive Map -->
+        <div id="map"></div>
+
+        <!-- Filter Bar -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <label for="catFilter">Type of Activity / Support</label>
+                <select id="catFilter" onchange="renderDirectory()">
+                    <option value="all">All Categories</option>
+                    <option value="talking">Talking, Crisis & Peer Support</option>
+                    <option value="sheds">Community Sheds & Woodwork</option>
+                    <option value="repair">Repair Cafés & Craft Hubs</option>
+                    <option value="allotment">Allotments, Farming & Green Spaces</option>
+                    <option value="fitness">Walking Sports & Active Groups</option>
+                    <option value="hobby">Model Railway, Gaming & Hobby Clubs</option>
+                    <option value="arts">Creative Arts, Textiles & Crafts</option>
+                    <option value="photography">Photography & Digital Media</option>
+                    <option value="music">Community Music & Choirs</option>
+                    <option value="food-housing">Food, Housing & Welfare Advice</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="areaFilter">Area</label>
+                <select id="areaFilter" onchange="renderDirectory()">
+                    <option value="all">All Cumbria</option>
+                    <option value="carlisle">Carlisle</option>
+                    <option value="penrith">Penrith & Eden</option>
+                    <option value="west">West Cumbria (Workington / Whitehaven / Maryport)</option>
+                    <option value="south">South Cumbria & Lakes (Keswick / Ulverston)</option>
+                    <option value="online">Online / Nationwide</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="searchFilter">Search</label>
+                <input type="text" id="searchFilter" placeholder="Search by keyword, postcode..." onkeyup="renderDirectory()">
+            </div>
+        </div>
+
+        <!-- Directory Grid -->
+        <div class="resource-grid" id="resourceGrid"></div>
+
     </div>
 
-    <div class="main-header">
-      <div class="container header-content">
-        <div class="brand">
-          <svg class="brand-logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20" r="18" stroke="#E07A5F" stroke-width="3.5" stroke-dasharray="80 30" />
-            <circle cx="20" cy="20" r="12" stroke="#3D405B" stroke-width="3" stroke-dasharray="50 20" />
-          </svg>
-          <div class="brand-text">
-            <h1 class="brand-title">IT'S A WRAP</h1>
-            <p class="brand-subtitle">Wellness Recovery Action Planning</p>
-          </div>
+    <!-- Printable Plan Panel -->
+    <div class="plan-panel" id="planPanel">
+        <div>
+            <strong>My Saved Guide (<span id="planCount">0</span>)</strong>
+            <p style="margin: 0; font-size: 0.82rem; color: var(--text-muted);">Ready to export or print your custom reference sheet</p>
         </div>
-        <div class="header-actions">
-          <button onclick="switchTab('wellness-toolbox')" class="btn btn-primary">Access WRAP Toolkit</button>
+        <div>
+            <button class="btn btn-outline" onclick="clearPlan()">Clear</button>
+            <button class="btn btn-primary" onclick="printGuide()">Save / Print My Guide</button>
         </div>
-      </div>
     </div>
 
-    <!-- Navigation Bar -->
-    <nav class="main-nav">
-      <div class="container nav-links">
-        <a href="javascript:void(0)" class="nav-item active" onclick="switchTab('dashboard')">Dashboard</a>
-        <a href="javascript:void(0)" class="nav-item" onclick="switchTab('wellness-toolbox')">Wellness Toolbox</a>
-        <a href="javascript:void(0)" class="nav-item" onclick="switchTab('fizz-scale')">FIZZ Scale</a>
-        <a href="javascript:void(0)" class="nav-item" onclick="switchTab('stop-tool')">STOP Technique</a>
-        <a href="javascript:void(0)" class="nav-item" onclick="switchTab('my-resources')">Resource Directory & Map</a>
-      </div>
-    </nav>
-  </header>
+    <!-- Leaflet JS for Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <main class="container main-content">
+    <script>
+        let resources = [];
+        let savedItems = [];
+        let map, mapMarkers = [];
 
-    <!-- Dashboard -->
-    <section id="dashboard" class="tool-section active">
-      <h2 class="section-title">Welcome to Your Recovery Wrap</h2>
-      <p class="section-desc">A self-directed, peer-focused space for personal wellness planning. All inputs stay stored locally on your device.</p>
-      <p>Select a tool from the header navigation to begin managing your daily maintenance, evaluating your distress with the FIZZ scale, or searching local mental health and activity support networks.</p>
-    </section>
+        function initMap() {
+            map = L.map('map').setView([54.8000, -3.1000], 9);
 
-    <!-- Wellness Toolbox -->
-    <section id="wellness-toolbox" class="tool-section">
-      <h2 class="section-title">Wellness Toolbox</h2>
-      <p class="section-desc">Keep track of your personal coping strategies and daily wellness tools.</p>
-      <textarea id="toolbox-input" rows="6" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;" placeholder="Add personal wellness tools (e.g., exercise, music, grounding)..."></textarea>
-      <br><br>
-      <button class="btn btn-primary" onclick="saveToolbox()">Save to Device</button>
-      <span id="save-status" style="margin-left: 10px; font-size: 0.85rem; color: green;"></span>
-    </section>
-
-    <!-- FIZZ Scale -->
-    <section id="fizz-scale" class="tool-section">
-      <h2 class="section-title">The FIZZ Scale (Emotional Thermometer)</h2>
-      <p class="section-desc">Gauge your distress level from 1 (Calm) to 10 (Crisis).</p>
-      <div class="fizz-container">
-        <input type="range" min="1" max="10" value="1" class="fizz-slider" id="fizzRange" oninput="updateFizz(this.value)">
-        <div class="fizz-output" id="fizzDisplay">Level 1: Calm & Balanced — Things are steady and manageable.</div>
-      </div>
-    </section>
-
-    <!-- STOP Tool -->
-    <section id="stop-tool" class="tool-section">
-      <h2 class="section-title">The S.T.O.P. Technique</h2>
-      <p class="section-desc">A quick grounding exercise when feeling overwhelmed.</p>
-      <div class="stop-grid">
-        <div class="stop-card"><h4>S — Stop</h4><p>Pause what you are doing.</p></div>
-        <div class="stop-card"><h4>T — Take a Breath</h4><p>Focus on a slow, deep breath.</p></div>
-        <div class="stop-card"><h4>O — Observe</h4><p>Notice thoughts and feelings without judgment.</p></div>
-        <div class="stop-card"><h4>P — Proceed</h4><p>Ask: "What is most helpful right now?"</p></div>
-      </div>
-    </section>
-
-    <!-- Resource Directory & Map Section -->
-    <section id="my-resources" class="tool-section">
-      <h2 class="section-title">Community Resource Directory & Map</h2>
-      <p class="section-desc">Explore non-clinical mental health groups, exercise programs, and community support locations.</p>
-      
-      <!-- Interactive OpenStreetMap View -->
-      <div id="map"></div>
-
-      <!-- Quick Category Filters -->
-      <div class="filter-buttons">
-        <button class="filter-btn active" onclick="filterCategory('All')">All Listings</button>
-        <button class="filter-btn" onclick="filterCategory('Mental Health Support')">Mental Health</button>
-        <button class="filter-btn" onclick="filterCategory('Exercise & Physical Activity')">Exercise & Outdoor</button>
-        <button class="filter-btn" onclick="filterCategory('Crisis Support')">Crisis Support</button>
-      </div>
-
-      <input type="text" id="resourceSearch" class="search-box" placeholder="Search by name, category, or area..." onkeyup="filterResources()">
-      
-      <div class="resource-list" id="resourceContainer">
-        <!-- Dynamically filled by resources.json -->
-      </div>
-    </section>
-
-  </main>
-
-  <script>
-    let map;
-    let markers = [];
-    let allResources = [];
-
-    // Navigation Switcher
-    function switchTab(tabId) {
-      document.querySelectorAll('.tool-section').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      
-      const targetSection = document.getElementById(tabId);
-      if (targetSection) targetSection.classList.add('active');
-      
-      const activeNav = Array.from(document.querySelectorAll('.nav-item')).find(a => a.getAttribute('onclick')?.includes(tabId));
-      if (activeNav) activeNav.classList.add('active');
-
-      // Initialize map size when tab opens
-      if (tabId === 'my-resources' && map) {
-        setTimeout(() => map.invalidateSize(), 200);
-      }
-    }
-
-    // Initialize Map and Load JSON Data
-    async function initDirectory() {
-      // Create Leaflet Map centered on North Cumbria / Carlisle area
-      map = L.map('map').setView([54.8925, -2.9329], 12);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '&copy; OpenStreetMap contributors'
-      }).addTo(map);
-
-      try {
-        const res = await fetch('resources.json');
-        allResources = await res.json();
-        renderListings(allResources);
-      } catch (err) {
-        console.log("Could not load resources.json:", err);
-      }
-    }
-
-    // Render Cards and Map Pins
-    function renderListings(items) {
-      const container = document.getElementById('resourceContainer');
-      container.innerHTML = '';
-
-      // Clear existing pins
-      markers.forEach(m => map.removeLayer(m));
-      markers = [];
-
-      items.forEach(item => {
-        // Build HTML Card
-        const card = document.createElement('div');
-        card.className = 'resource-card';
-        card.innerHTML = `
-          <h4>${item.title}</h4>
-          <p>${item.description}</p>
-          <p style="font-size:0.8rem; color:#6C757D; margin-top:4px;"><strong>Location:</strong> ${item.address}</p>
-          <span class="resource-tag">${item.category}</span>
-          <span class="resource-tag" style="background:#F0F4F8; color:#3D405B; margin-left:4px;">${item.access}</span>
-        `;
-        container.appendChild(card);
-
-        // Add Marker to Map if Lat/Lng exist
-        if (item.lat && item.lng) {
-          const marker = L.marker([item.lat, item.lng]).addTo(map);
-          marker.bindPopup(`<b>${item.title}</b><br>${item.category}<br><i>${item.address}</i>`);
-          markers.push(marker);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
         }
-      });
-    }
 
-    // Category Filter
-    function filterCategory(cat) {
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+        function updateMapMarkers(filteredData) {
+            mapMarkers.forEach(m => map.removeLayer(m));
+            mapMarkers = [];
 
-      if (cat === 'All') {
-        renderListings(allResources);
-      } else {
-        const filtered = allResources.filter(r => r.category === cat);
-        renderListings(filtered);
-      }
-    }
+            filteredData.forEach(item => {
+                if (item.lat && item.lng) {
+                    const marker = L.marker([item.lat, item.lng]).addTo(map);
+                    marker.bindPopup(`
+                        <strong>${item.title}</strong><br>
+                        ${item.location}<br>
+                        <small>${item.time}</small>
+                    `);
+                    mapMarkers.push(marker);
+                }
+            });
+        }
 
-    // Search Box Filter
-    function filterResources() {
-      const q = document.getElementById('resourceSearch').value.toLowerCase();
-      const filtered = allResources.filter(r => 
-        r.title.toLowerCase().includes(q) || 
-        r.description.toLowerCase().includes(q) || 
-        r.category.toLowerCase().includes(q) ||
-        r.address.toLowerCase().includes(q)
-      );
-      renderListings(filtered);
-    }
+        function renderDirectory() {
+            const cat = document.getElementById('catFilter').value;
+            const area = document.getElementById('areaFilter').value;
+            const search = document.getElementById('searchFilter').value.toLowerCase();
 
-    // FIZZ Scale
-    function updateFizz(val) {
-      const display = document.getElementById('fizzDisplay');
-      const textMap = {
-        1: "Level 1: Calm & Balanced — Feeling grounded.",
-        2: "Level 2: Mild Stress — Easily manageable.",
-        3: "Level 3: Rising Fizz — Noticeable early warning signs.",
-        4: "Level 4: Moderate Fizz — Stress building, engage Wellness Tools.",
-        5: "Level 5: Halfway Point — Feeling distracted or frustrated.",
-        6: "Level 6: Elevated — Physical symptoms showing.",
-        7: "Level 7: High Fizz — Strong reaction, pause with STOP tool.",
-        8: "Level 8: Very High — Overwhelm setting in.",
-        9: "Level 9: Near Capacity — Immediate grounding required.",
-        10: "Level 10: Full Fizz / Crisis — Focus on safety and support."
-      };
-      display.innerText = textMap[val] || "";
-    }
+            const grid = document.getElementById('resourceGrid');
+            grid.innerHTML = "";
 
-    // LocalStorage
-    function saveToolbox() {
-      localStorage.setItem('wrap_wellness_toolbox', document.getElementById('toolbox-input').value);
-      const status = document.getElementById('save-status');
-      status.innerText = "Saved locally on device!";
-      setTimeout(() => status.innerText = "", 3000);
-    }
+            const filtered = resources.filter(item => {
+                const matchCat = (cat === 'all' || item.category === cat);
+                const matchArea = (area === 'all' || item.area === area);
+                const matchSearch = item.title.toLowerCase().includes(search) || 
+                                    item.desc.toLowerCase().includes(search) || 
+                                    item.location.toLowerCase().includes(search);
+                return matchCat && matchArea && matchSearch;
+            });
 
-    window.onload = function() {
-      initDirectory();
-      const saved = localStorage.getItem('wrap_wellness_toolbox');
-      if (saved) document.getElementById('toolbox-input').value = saved;
-    };
-  </script>
+            filtered.forEach(item => {
+                const isSaved = savedItems.includes(item.id);
+                const cardHtml = `
+                    <div class="card" id="card-${item.id}">
+                        <div>
+                            <div class="badge-row">
+                                <span class="badge">${getCategoryName(item.category)}</span>
+                                <span class="badge badge-cost">${item.cost}</span>
+                            </div>
+                            <h3>${item.title}</h3>
+                            <p class="desc">${item.desc}</p>
+                            <div class="card-meta">
+                                <p><strong>Times:</strong> ${item.time}</p>
+                                <p><strong>Location:</strong> ${item.location}</p>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            ${item.phone ? `<a href="tel:${item.phone}" class="btn btn-primary">Call</a>` : ''}
+                            ${item.link ? `<a href="${item.link}" target="_blank" class="btn btn-outline">Website</a>` : ''}
+                            ${item.lat ? `<a href="https://maps.google.com/?q=${encodeURIComponent(item.title + ' ' + item.location)}" target="_blank" class="btn btn-outline">Map</a>` : ''}
+                            <button class="btn btn-plan" style="${isSaved ? 'background:#D1E7DD; color:#0F5132;' : ''}" onclick="toggleSave(${item.id})">
+                                ${isSaved ? '✓ Saved' : '+ Add to Plan'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
 
+            updateMapMarkers(filtered);
+        }
+
+        function getCategoryName(catKey) {
+            const names = {
+                'talking': 'Talking & Peer Support',
+                'sheds': 'Community Sheds',
+                'repair': 'Repair & Craft',
+                'allotment': 'Allotment & Green Space',
+                'fitness': 'Sports & Activity',
+                'hobby': 'Model & Hobby Clubs',
+                'arts': 'Arts & Textiles',
+                'photography': 'Photography',
+                'music': 'Community Music',
+                'food-housing': 'Housing & Advice'
+            };
+            return names[catKey] || 'Community';
+        }
+
+        function toggleSave(id) {
+            const index = savedItems.indexOf(id);
+            if (index > -1) {
+                savedItems.splice(index, 1);
+            } else {
+                savedItems.push(id);
+            }
+            document.getElementById('planCount').innerText = savedItems.length;
+            document.getElementById('planPanel').classList.toggle('active', savedItems.length > 0);
+            renderDirectory();
+        }
+
+        function clearPlan() {
+            savedItems = [];
+            document.getElementById('planCount').innerText = 0;
+            document.getElementById('planPanel').classList.remove('active');
+            renderDirectory();
+        }
+
+        function printGuide() {
+            document.getElementById('print-date').innerText = new Date().toLocaleDateString('en-GB');
+            
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const cardId = parseInt(card.id.replace('card-', ''));
+                if (savedItems.length > 0 && !savedItems.includes(cardId)) {
+                    card.classList.add('no-print');
+                }
+            });
+
+            window.print();
+
+            cards.forEach(card => card.classList.remove('no-print'));
+        }
+
+        window.onload = function() {
+            initMap();
+            fetch('resources.json')
+                .then(response => response.json())
+                .then(data => {
+                    resources = data;
+                    renderDirectory();
+                })
+                .catch(err => console.error("Error loading resources.json:", err));
+        };
+    </script>
 </body>
 </html>
