@@ -5,10 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>It's a Wrap - Wellness Recovery Action Planning</title>
   <link rel="stylesheet" href="styles.css">
+  
+  <!-- Leaflet OpenStreetMap Engine (Free & Privacy-Friendly) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
-  <!-- Site Header Block -->
+  <!-- Site Header -->
   <header class="site-header">
     <div class="top-bar">
       <div class="container top-bar-content">
@@ -18,7 +22,7 @@
         <nav class="utility-nav">
           <a href="#about">About WRAP</a>
           <a href="#resources" onclick="switchTab('my-resources')">Resource Library</a>
-          <a href="#privacy">100% Private (No Data Tracked)</a>
+          <a href="#privacy">100% Private (No Tracking)</a>
         </nav>
       </div>
     </div>
@@ -41,107 +45,90 @@
       </div>
     </div>
 
-    <!-- Interactive Navigation Tabs -->
+    <!-- Navigation Bar -->
     <nav class="main-nav">
       <div class="container nav-links">
         <a href="javascript:void(0)" class="nav-item active" onclick="switchTab('dashboard')">Dashboard</a>
         <a href="javascript:void(0)" class="nav-item" onclick="switchTab('wellness-toolbox')">Wellness Toolbox</a>
         <a href="javascript:void(0)" class="nav-item" onclick="switchTab('fizz-scale')">FIZZ Scale</a>
         <a href="javascript:void(0)" class="nav-item" onclick="switchTab('stop-tool')">STOP Technique</a>
-        <a href="javascript:void(0)" class="nav-item" onclick="switchTab('my-resources')">Resource Database</a>
+        <a href="javascript:void(0)" class="nav-item" onclick="switchTab('my-resources')">Resource Directory & Map</a>
       </div>
     </nav>
   </header>
 
-  <!-- Main Interactive Body -->
   <main class="container main-content">
 
-    <!-- 1. DASHBOARD -->
+    <!-- Dashboard -->
     <section id="dashboard" class="tool-section active">
       <h2 class="section-title">Welcome to Your Recovery Wrap</h2>
-      <p class="section-desc">A self-directed, peer-focused space for personal wellness planning. All inputs stay stored on your device only.</p>
-      <p>Select a tool from the navigation menu above to get started (such as checking your current intensity on the <strong>FIZZ Scale</strong> or grounding with the <strong>STOP Technique</strong>).</p>
+      <p class="section-desc">A self-directed, peer-focused space for personal wellness planning. All inputs stay stored locally on your device.</p>
+      <p>Select a tool from the header navigation to begin managing your daily maintenance, evaluating your distress with the FIZZ scale, or searching local mental health and activity support networks.</p>
     </section>
 
-    <!-- 2. WELLNESS TOOLBOX -->
+    <!-- Wellness Toolbox -->
     <section id="wellness-toolbox" class="tool-section">
       <h2 class="section-title">Wellness Toolbox</h2>
-      <p class="section-desc">Simple, everyday things you can do to stay well or help yourself feel better when things get tough.</p>
-      <textarea id="toolbox-input" rows="6" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;" placeholder="Type your personal wellness tools here (e.g., listening to music, going for a 10-minute walk, brewing a cup of coffee)..."></textarea>
+      <p class="section-desc">Keep track of your personal coping strategies and daily wellness tools.</p>
+      <textarea id="toolbox-input" rows="6" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;" placeholder="Add personal wellness tools (e.g., exercise, music, grounding)..."></textarea>
       <br><br>
-      <button class="btn btn-primary" onclick="saveToolbox()">Save to My Device</button>
+      <button class="btn btn-primary" onclick="saveToolbox()">Save to Device</button>
       <span id="save-status" style="margin-left: 10px; font-size: 0.85rem; color: green;"></span>
     </section>
 
-    <!-- 3. FIZZ SCALE TOOL -->
+    <!-- FIZZ Scale -->
     <section id="fizz-scale" class="tool-section">
       <h2 class="section-title">The FIZZ Scale (Emotional Thermometer)</h2>
-      <p class="section-desc">Gauge your current distress or distress level (1 = CalmMild, 10 = High Distress / Overwhelmed).</p>
-      
+      <p class="section-desc">Gauge your distress level from 1 (Calm) to 10 (Crisis).</p>
       <div class="fizz-container">
         <input type="range" min="1" max="10" value="1" class="fizz-slider" id="fizzRange" oninput="updateFizz(this.value)">
-        <div class="fizz-output" id="fizzDisplay">
-          Level 1: Calm & Balanced — Things are steady and manageable.
-        </div>
+        <div class="fizz-output" id="fizzDisplay">Level 1: Calm & Balanced — Things are steady and manageable.</div>
       </div>
     </section>
 
-    <!-- 4. STOP TECHNIQUE TOOL -->
+    <!-- STOP Tool -->
     <section id="stop-tool" class="tool-section">
       <h2 class="section-title">The S.T.O.P. Technique</h2>
-      <p class="section-desc">A quick grounding exercise when feeling overwhelmed or triggered.</p>
-      
+      <p class="section-desc">A quick grounding exercise when feeling overwhelmed.</p>
       <div class="stop-grid">
-        <div class="stop-card">
-          <h4>S — Stop</h4>
-          <p>Pause whatever you are doing. Put things on hold for a moment.</p>
-        </div>
-        <div class="stop-card">
-          <h4>T — Take a Breath</h4>
-          <p>Focus on a slow deep breath. Breathe in calm, breathe out tension.</p>
-        </div>
-        <div class="stop-card">
-          <h4>O — Observe</h4>
-          <p>Notice your thoughts, physical feelings, and surroundings non-judgmentally.</p>
-        </div>
-        <div class="stop-card">
-          <h4>P — Proceed</h4>
-          <p>Ask yourself: "What is the most helpful thing I can do right now?"</p>
-        </div>
+        <div class="stop-card"><h4>S — Stop</h4><p>Pause what you are doing.</p></div>
+        <div class="stop-card"><h4>T — Take a Breath</h4><p>Focus on a slow, deep breath.</p></div>
+        <div class="stop-card"><h4>O — Observe</h4><p>Notice thoughts and feelings without judgment.</p></div>
+        <div class="stop-card"><h4>P — Proceed</h4><p>Ask: "What is most helpful right now?"</p></div>
       </div>
     </section>
 
-    <!-- 5. RESOURCE DATABASE -->
+    <!-- Resource Directory & Map Section -->
     <section id="my-resources" class="tool-section">
-      <h2 class="section-title">Peer & Community Resource Database</h2>
-      <p class="section-desc">Filter non-clinical support networks, self-help guides, and community crisis diversions.</p>
+      <h2 class="section-title">Community Resource Directory & Map</h2>
+      <p class="section-desc">Explore non-clinical mental health groups, exercise programs, and community support locations.</p>
       
-      <input type="text" id="resourceSearch" class="search-box" placeholder="Search resources (e.g., Peer Support, Housing, Grounding)..." onkeyup="filterResources()">
+      <!-- Interactive OpenStreetMap View -->
+      <div id="map"></div>
+
+      <!-- Quick Category Filters -->
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterCategory('All')">All Listings</button>
+        <button class="filter-btn" onclick="filterCategory('Mental Health Support')">Mental Health</button>
+        <button class="filter-btn" onclick="filterCategory('Exercise & Physical Activity')">Exercise & Outdoor</button>
+        <button class="filter-btn" onclick="filterCategory('Crisis Support')">Crisis Support</button>
+      </div>
+
+      <input type="text" id="resourceSearch" class="search-box" placeholder="Search by name, category, or area..." onkeyup="filterResources()">
       
       <div class="resource-list" id="resourceContainer">
-        <div class="resource-card" data-category="peer">
-          <h4>Peer-Led Recovery Groups</h4>
-          <p>Self-directed community support meetings led by people with lived experience.</p>
-          <span class="resource-tag">Peer Support</span>
-        </div>
-        <div class="resource-card" data-category="crisis">
-          <h4>Crisis Diversion & Safe Havens</h4>
-          <p>Non-clinical drop-in environments offering calm spaces during severe stress.</p>
-          <span class="resource-tag">Crisis Diversion</span>
-        </div>
-        <div class="resource-card" data-category="tools">
-          <h4>WRAP Action Plan Blueprints</h4>
-          <p>Downloadable workbooks and templates for personal wellness action planning.</p>
-          <span class="resource-tag">Self-Help Tools</span>
-        </div>
+        <!-- Dynamically filled by resources.json -->
       </div>
     </section>
 
   </main>
 
-  <!-- JavaScript for Tabs, Local Storage, & Filtering -->
   <script>
-    // Tab Switching Logic
+    let map;
+    let markers = [];
+    let allResources = [];
+
+    // Navigation Switcher
     function switchTab(tabId) {
       document.querySelectorAll('.tool-section').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -151,50 +138,119 @@
       
       const activeNav = Array.from(document.querySelectorAll('.nav-item')).find(a => a.getAttribute('onclick')?.includes(tabId));
       if (activeNav) activeNav.classList.add('active');
+
+      // Initialize map size when tab opens
+      if (tabId === 'my-resources' && map) {
+        setTimeout(() => map.invalidateSize(), 200);
+      }
     }
 
-    // FIZZ Scale Logic
+    // Initialize Map and Load JSON Data
+    async function initDirectory() {
+      // Create Leaflet Map centered on North Cumbria / Carlisle area
+      map = L.map('map').setView([54.8925, -2.9329], 12);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      try {
+        const res = await fetch('resources.json');
+        allResources = await res.json();
+        renderListings(allResources);
+      } catch (err) {
+        console.log("Could not load resources.json:", err);
+      }
+    }
+
+    // Render Cards and Map Pins
+    function renderListings(items) {
+      const container = document.getElementById('resourceContainer');
+      container.innerHTML = '';
+
+      // Clear existing pins
+      markers.forEach(m => map.removeLayer(m));
+      markers = [];
+
+      items.forEach(item => {
+        // Build HTML Card
+        const card = document.createElement('div');
+        card.className = 'resource-card';
+        card.innerHTML = `
+          <h4>${item.title}</h4>
+          <p>${item.description}</p>
+          <p style="font-size:0.8rem; color:#6C757D; margin-top:4px;"><strong>Location:</strong> ${item.address}</p>
+          <span class="resource-tag">${item.category}</span>
+          <span class="resource-tag" style="background:#F0F4F8; color:#3D405B; margin-left:4px;">${item.access}</span>
+        `;
+        container.appendChild(card);
+
+        // Add Marker to Map if Lat/Lng exist
+        if (item.lat && item.lng) {
+          const marker = L.marker([item.lat, item.lng]).addTo(map);
+          marker.bindPopup(`<b>${item.title}</b><br>${item.category}<br><i>${item.address}</i>`);
+          markers.push(marker);
+        }
+      });
+    }
+
+    // Category Filter
+    function filterCategory(cat) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      if (cat === 'All') {
+        renderListings(allResources);
+      } else {
+        const filtered = allResources.filter(r => r.category === cat);
+        renderListings(filtered);
+      }
+    }
+
+    // Search Box Filter
+    function filterResources() {
+      const q = document.getElementById('resourceSearch').value.toLowerCase();
+      const filtered = allResources.filter(r => 
+        r.title.toLowerCase().includes(q) || 
+        r.description.toLowerCase().includes(q) || 
+        r.category.toLowerCase().includes(q) ||
+        r.address.toLowerCase().includes(q)
+      );
+      renderListings(filtered);
+    }
+
+    // FIZZ Scale
     function updateFizz(val) {
       const display = document.getElementById('fizzDisplay');
       const textMap = {
-        1: "Level 1: Calm & Balanced — Feeling grounded and steady.",
-        2: "Level 2: Mild Stress — Slight tension, easily manageable.",
-        3: "Level 3: Rising Fizz — Noticed early warning signs.",
-        4: "Level 4: Moderate Fizz — Stress building, time to use Wellness Tools.",
+        1: "Level 1: Calm & Balanced — Feeling grounded.",
+        2: "Level 2: Mild Stress — Easily manageable.",
+        3: "Level 3: Rising Fizz — Noticeable early warning signs.",
+        4: "Level 4: Moderate Fizz — Stress building, engage Wellness Tools.",
         5: "Level 5: Halfway Point — Feeling distracted or frustrated.",
-        6: "Level 6: Elevated — Harder to focus, physical symptoms showing.",
-        7: "Level 7: High Fizz — Strong emotional reaction, pause with STOP tool.",
-        8: "Level 8: Very High — Overwhelm setting in, activate support plan.",
-        9: "Level 9: Near Capacity — Immediate grounding and safe space needed.",
-        10: "Level 10: Full Fizz / Crisis — Focus on safety and reaching out for support."
+        6: "Level 6: Elevated — Physical symptoms showing.",
+        7: "Level 7: High Fizz — Strong reaction, pause with STOP tool.",
+        8: "Level 8: Very High — Overwhelm setting in.",
+        9: "Level 9: Near Capacity — Immediate grounding required.",
+        10: "Level 10: Full Fizz / Crisis — Focus on safety and support."
       };
       display.innerText = textMap[val] || "";
     }
 
-    // LocalStorage for Wellness Toolbox (100% Private, 0 External Server Data)
+    // LocalStorage
     function saveToolbox() {
-      const val = document.getElementById('toolbox-input').value;
-      localStorage.setItem('wrap_wellness_toolbox', val);
+      localStorage.setItem('wrap_wellness_toolbox', document.getElementById('toolbox-input').value);
       const status = document.getElementById('save-status');
       status.innerText = "Saved locally on device!";
       setTimeout(() => status.innerText = "", 3000);
     }
 
-    // Load saved data on startup
     window.onload = function() {
+      initDirectory();
       const saved = localStorage.getItem('wrap_wellness_toolbox');
       if (saved) document.getElementById('toolbox-input').value = saved;
     };
-
-    // Filter Resources
-    function filterResources() {
-      const query = document.getElementById('resourceSearch').value.toLowerCase();
-      const cards = document.querySelectorAll('.resource-card');
-      cards.forEach(card => {
-        const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(query) ? "block" : "none";
-      });
-    }
   </script>
 
 </body>
