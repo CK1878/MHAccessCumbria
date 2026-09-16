@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumbria Community & Crisis Support Directory</title>
+    <style>
+        :root {
+            --primary: #005A36; /* NHS/CNTW Green theme */
+            --primary-dark: #003B23;
+            --accent: #d4edda;
+            --light-bg: #f8f9fa;
+            --text-dark: #212529;
+            --border: #dee2e6;
+            --crisis-red: #d9534f;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.75rem;
+        }
+
+        .crisis-banner {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 0.75rem 1rem;
+            margin: 1rem;
+            border-radius: 6px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .crisis-banner a {
+            background-color: var(--crisis-red);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .filters {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .filter-group label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        select, input {
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary-dark);
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--primary-dark);
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-free { background: #e2e3e5; color: #383d41; }
+
+        .details p {
+            margin: 0.3rem 0;
+            font-size: 0.9rem;
+        }
+
+        .card-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.5rem 0.75rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-outline { border: 1px solid var(--primary); color: var(--primary); background: transparent; }
+        .btn-add { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+
+        /* Summary Basket / Export Panel */
+        .summary-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 2px solid var(--primary);
+            padding: 1rem;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .summary-panel.active { display: flex; }
+
+        /* PRINT STYLES - Clean layout for exporting/printing */
+        @media print {
+            header, .filters, .crisis-banner, .card-actions, .summary-panel, .no-print {
+                display: none !important;
+            }
+
+            body { background: white; color: black; }
+            .container { max-width: 100%; padding: 0; }
+            .resource-grid { display: block; }
+            
+            .card {
+                break-inside: avoid;
+                border: 1px solid #ccc;
+                margin-bottom: 1rem;
+                page-break-inside: avoid;
+            }
+
+            .print-only-header {
+                display: block !important;
+                border-bottom: 2px solid black;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .print-only-header { display: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cumbria Community & Crisis Support Directory</h1>
+        <p>Mental Health, Food Security, Financial & Housing Advice Resources</p>
+    </header>
+
+    <div class="container">
+        <!-- Print Header (Only shows when printed/exported) -->
+        <div class="print-only-header">
+            <h2>My Community Support & Action Plan</h2>
+            <p>Community support options & contact details</p>
+            <p><strong>Date Prepared:</strong> <span id="print-date"></span></p>
+        </div>
+
+        <!-- Immediate Crisis Alert Box -->
+        <div class="crisis-banner">
+            <div>
+                <strong>Need Urgent NHS Crisis Mental Health Support?</strong> 
+                Call CNTW Universal Crisis Line: 0800 652 2865
+            </div>
+            <a href="tel:08006522865">Call Now</a>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="filters">
+            <div class="filter-group">
+                <label for="categoryFilter">Category</label>
+                <select id="categoryFilter" onchange="filterResources()">
+                    <option value="all">All Categories</option>
+                    <option value="mental-health">Mental Health & Peer Support</option>
+                    <option value="food">Food Banks & Warm Hubs</option>
+                    <option value="finance">Finance, Benefits & Housing</option>
+                    <option value="carers">Carers & Advice Services</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="locationFilter">Area / Location</label>
+                <select id="locationFilter" onchange="filterResources()">
+                    <option value="all">All Cumbria</option>
+                    <option value="carlisle">Carlisle</option>
+                    <option value="penrith">Penrith / Eden</option>
+                    <option value="west">West Cumbria (Workington/Whitehaven)</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="searchFilter">Keyword Search</label>
+                <input type="text" id="searchFilter" placeholder="Search service, name, keyword..." onkeyup="filterResources()">
+            </div>
+        </div>
+
+        <!-- Directory Cards Grid -->
+        <div class="resource-grid" id="resourceGrid">
+            
+            <!-- Sample Card 1 -->
+            <div class="card" data-category="mental-health" data-location="carlisle">
+                <div>
+                    <span class="badge">Mental Health</span>
+                    <span class="badge badge-free">Free</span>
+                    <h3>Andy's Man Club Carlisle</h3>
+                    <p>Talking group for men aged 18+. Weekly peer support group providing a safe space to talk.</p>
+                    <div class="details">
+                        <p><strong>Opening Times:</strong> Mondays at 7:00 PM (excl. Bank Holidays)</p>
+                        <p><strong>Location:</strong> Carlisle College, Victoria Place, Carlisle CA1 1HS</p>
+                        <p><strong>Cost:</strong> Free (Tea & Biscuits provided)</p>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="https://maps.google.com/?q=Carlisle+College+Victoria+Place+Carlisle" target="_blank" class="btn btn-outline">Directions</a>
+                    <button class="btn btn-add" onclick="toggleAddToSummary(this, 'Andy\'s Man Club Carlisle', 'Mondays 7PM @ Carlisle College', 'Free')">+ Add to My Action Plan</button>
+                </div>
+            </div>
+
+            <!-- Sample Card 2 -->
+            <div class="card" data-category="food" data-location="carlisle">
+                <div>
+                    <span class="badge">Food & Warm Hubs</span>
+                    <span class="badge badge-free">Voucher / Self-Referral</span>
+                    <h3>Carlisle Foodbank</h3>
+                    <p>Emergency food parcels for individuals and families in crisis across Carlisle.</p>
+                    <div class="details">
+                        <p><strong>Opening Times:</strong> Mon, Wed, Fri (1:00 PM - 3:00 PM)</p>
+                        <p><strong>Location:</strong> Lowther Street, Carlisle CA3 8eS</p>
+                        <p><strong>Contact:</strong> 07512 552449</p>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="tel:07512552449" class="btn btn-primary">Call</a>
+                    <a href="https://maps.google.com/?q=Carlisle+Foodbank+Lowther+Street" target="_blank" class="btn btn-outline">Directions</a>
+                    <button class="btn btn-add" onclick="toggleAddToSummary(this, 'Carlisle Foodbank', 'Mon/Wed/Fri 1-3PM @ Lowther St', 'Voucher/Referral')">+ Add to My Action Plan</button>
+                </div>
+            </div>
+
+            <!-- Sample Card 3 -->
+            <div class="card" data-category="finance" data-location="carlisle">
+                <div>
+                    <span class="badge">Finance & Housing</span>
+                    <span class="badge badge-free">Free Advice</span>
+                    <h3>Citizens Advice Carlisle & Eden</h3>
+                    <p>Free, confidential, and independent advice on debt, benefits, housing, and consumer rights.</p>
+                    <div class="details">
+                        <p><strong>Opening Times:</strong> Mon–Fri 10:00 AM - 4:00 PM (Phone Advice)</p>
+                        <p><strong>Location:</strong> 5-6 Broad Street, Carlisle CA1 2AQ</p>
+                        <p><strong>Contact:</strong> 0808 278 7844</p>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="tel:08082787844" class="btn btn-primary">Call Advice Line</a>
+                    <a href="https://maps.google.com/?q=Citizens+Advice+Broad+Street+Carlisle" target="_blank" class="btn btn-outline">Directions</a>
+                    <button class="btn btn-add" onclick="toggleAddToSummary(this, 'Citizens Advice Carlisle', 'Mon-Fri 10AM-4PM', 'Free')">+ Add to My Action Plan</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Floating Summary Panel for Download / Print -->
+    <div class="summary-panel" id="summaryPanel">
+        <div>
+            <strong>My Selected Resources (<span id="summaryCount">0</span>)</strong>
+            <p style="margin: 0; font-size: 0.8rem; color: #666;">Ready to print or save your personal guide</p>
+        </div>
+        <div>
+            <button class="btn btn-outline" onclick="clearSummary()">Clear All</button>
+            <button class="btn btn-primary" onclick="printPatientSheet()">Save / Print My Guide</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedResources = [];
+
+        function filterResources() {
+            const cat = document.getElementById('categoryFilter').value;
+            const loc = document.getElementById('locationFilter').value;
+            const query = document.getElementById('searchFilter').value.toLowerCase();
+            
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                const cardLoc = card.getAttribute('data-location');
+                const text = card.innerText.toLowerCase();
+
+                const matchCat = (cat === 'all' || cardCat === cat);
+                const matchLoc = (loc === 'all' || cardLoc === loc);
+                const matchSearch = text.includes(query);
+
+                if (matchCat && matchLoc && matchSearch) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleAddToSummary(btn, name, times, cost) {
+            const index = selectedResources.findIndex(r => r.name === name);
+            if (index > -1) {
+                selectedResources.splice(index, 1);
+                btn.innerText = "+ Add to My Action Plan";
+                btn.style.background = "#e0f2fe";
+            } else {
+                selectedResources.push({ name, times, cost });
+                btn.innerText = "✓ Saved to Plan";
+                btn.style.background = "#d1fae5";
+            }
+            updateSummaryPanel();
+        }
+
+        function updateSummaryPanel() {
+            const panel = document.getElementById('summaryPanel');
+            const count = document.getElementById('summaryCount');
+            count.innerText = selectedResources.length;
+
+            if (selectedResources.length > 0) {
+                panel.classList.add('active');
+            } else {
+                panel.classList.remove('active');
+            }
+        }
+
+        function clearSummary() {
+            selectedResources = [];
+            document.querySelectorAll('.btn-add').forEach(btn => {
+                btn.innerText = "+ Add to My Action Plan";
+                btn.style.background = "#e0f2fe";
+            });
+            updateSummaryPanel();
+        }
+
+        function printPatientSheet() {
+            document.getElementById('print-date').innerText = new Date().toLocaleDateString('en-GB');
+            
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText;
+                const isSelected = selectedResources.some(r => r.name === title);
+                if (selectedResources.length > 0 && !isSelected) {
+                    card.classList.add('no-print');
+                }
+            });
+
+            window.print();
+
+            cards.forEach(card => card.classList.remove('no-print'));
+        }
+    </script>
+</body>
+</html>
