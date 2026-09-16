@@ -108,3 +108,37 @@
   margin-top: 6px;
   font-weight: 600;
 }
+/* Interactive Map Container */
+#map {
+  width: 100%;
+  height: 350px;
+  border-radius: 8px;
+  margin: 16px 0;
+  border: 1px solid #CED4DA;
+  z-index: 1;
+}
+
+/* Filter Tag Buttons */
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.filter-btn {
+  background: #E0E8F0;
+  color: var(--navy-dark);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.filter-btn:hover, .filter-btn.active {
+  background: var(--terracotta);
+  color: #FFFFFF;
+}
