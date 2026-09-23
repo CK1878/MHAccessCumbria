@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT'S A WRAP | Wellness Recovery Action Planning</title>
+    <title>IT'S A WRAP | Interactive Wellness Recovery Action Plan</title>
     
     <!-- Leaflet OpenStreetMap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -32,7 +32,7 @@
             line-height: 1.5;
         }
 
-        /* Top Utility Bar */
+        /* Top Bar */
         .top-bar {
             background-color: var(--brand-sub-nav);
             color: #C5D1DF;
@@ -53,7 +53,7 @@
 
         .top-bar-links a:hover { color: white; }
 
-        /* Header Banner */
+        /* Header */
         header {
             background-color: var(--brand-dark-navy);
             color: white;
@@ -118,7 +118,7 @@
 
         .btn-header-cta:hover { background-color: var(--brand-terracotta-hover); }
 
-        /* Tab Navigation */
+        /* Tabs */
         .tab-nav-wrapper {
             background: #FFFFFF;
             border-bottom: 1px solid var(--border-color);
@@ -164,7 +164,6 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Panels & Cards */
         .wrap-panel {
             background: white;
             border: 1px solid var(--border-color);
@@ -179,6 +178,40 @@
             font-size: 1.3rem;
             border-bottom: 2px solid var(--brand-soft-bg);
             padding-bottom: 0.5rem;
+        }
+
+        /* Filter Controls */
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            background: #FAF9F6;
+            padding: 0.8rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--brand-dark-navy);
+        }
+
+        select, input[type="text"], textarea {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.55rem;
+            font-family: inherit;
+            font-size: 0.9rem;
         }
 
         /* Fizz Scale */
@@ -205,7 +238,7 @@
             margin-bottom: 0.5rem;
         }
 
-        /* STOPP Steps */
+        /* STOPP Grid */
         .stopp-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -239,10 +272,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 0.3rem;
         }
 
         .btn-primary { background: var(--brand-dark-navy); color: white; }
         .btn-terracotta { background: var(--brand-terracotta); color: white; }
+        .btn-outline { background: white; border: 1px solid var(--border-color); color: var(--text-dark); }
 
         .urgent-bar {
             background: #FDF2F0;
@@ -259,23 +294,49 @@
 
         #map { height: 360px; width: 100%; border-radius: 8px; margin-bottom: 1.5rem; }
         .resource-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
-        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; }
-
-        textarea, input[type="text"] {
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 0.6rem;
-            font-family: inherit;
+        
+        .card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            padding: 1.25rem; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            position: relative;
         }
 
-        /* Print formatting */
+        .card.selected-for-wrap {
+            border: 2px solid var(--brand-terracotta);
+            background: #FFFDFB;
+        }
+
+        .resource-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--brand-terracotta);
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+        }
+
+        /* Printable Area Formatting */
+        .print-saved-resources { display: none; }
+
         @media print {
-            header, .top-bar, .tab-nav-wrapper, .urgent-bar, #map, .no-print, .btn { display: none !important; }
+            header, .top-bar, .tab-nav-wrapper, .urgent-bar, #map, .filter-controls, .no-print, .btn { display: none !important; }
             body { background: white; }
             .container { max-width: 100%; padding: 0; }
-            .tab-content { display: block !important; margin-bottom: 2rem; }
+            .tab-content { display: block !important; margin-bottom: 1.5rem; }
             .wrap-panel { border: 1px solid #ccc; page-break-inside: avoid; }
             .print-header { display: block !important; margin-bottom: 1.5rem; border-bottom: 2px solid var(--brand-dark-navy); padding-bottom: 0.5rem; }
+            
+            /* Hide full grid on print, show only checked resources */
+            .resource-grid { display: none !important; }
+            .print-saved-resources { display: block !important; }
+            .print-resource-item { border-bottom: 1px solid #eee; padding: 0.5rem 0; }
         }
 
         .print-header { display: none; }
@@ -283,17 +344,15 @@
 </head>
 <body>
 
-    <!-- Top Utility Bar -->
     <div class="top-bar">
         <div>• Peer-Designed • Self-Directed • Strengths-Based</div>
         <div class="top-bar-links">
             <a onclick="switchTab('dashboard')">About WRAP</a>
-            <a onclick="switchTab('directory')">Resource Library</a>
+            <a onclick="switchTab('directory')">Community Directory</a>
             <a onclick="exportPDF()" style="color: var(--brand-terracotta); font-weight:700;">[Print / Save PDF Plan]</a>
         </div>
     </div>
 
-    <!-- Main Header Banner -->
     <header>
         <div class="header-content">
             <div class="brand-row">
@@ -307,14 +366,13 @@
         </div>
     </header>
 
-    <!-- Navigation Tab Bar -->
     <div class="tab-nav-wrapper">
         <div class="tab-nav">
             <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</button>
             <button class="tab-btn" data-tab="directory" onclick="switchTab('directory')">Community Directory & Map</button>
             <button class="tab-btn" data-tab="toolbox" onclick="switchTab('toolbox')">Wellness Toolbox</button>
             <button class="tab-btn" data-tab="stopp" onclick="switchTab('stopp')">STOPP Skill</button>
-            <button class="tab-btn" data-tab="fizz" onclick="switchTab('fizz')">Distress / 'Fizz' Scale</button>
+            <button class="tab-btn" data-tab="fizz" onclick="switchTab('fizz')">Distress Intensity Gauge</button>
             <button class="tab-btn" data-tab="maintenance" onclick="switchTab('maintenance')">Daily Maintenance Plan</button>
         </div>
     </div>
@@ -323,7 +381,7 @@
 
         <div class="print-header">
             <h2>Personal Wellness Recovery Action Plan</h2>
-            <p>Exported Plan • Date: <span id="print-date"></span></p>
+            <p>Peer Supporter & Self-Directed Plan • Exported: <span id="print-date"></span></p>
         </div>
 
         <div class="urgent-bar no-print">
@@ -334,71 +392,104 @@
             <button class="btn btn-terracotta" onclick="exportPDF()">Print / Save PDF Plan</button>
         </div>
 
-        <!-- TAB 1: DASHBOARD -->
+        <!-- DASHBOARD -->
         <div id="tab-dashboard" class="tab-content active">
             <div class="wrap-panel">
                 <h2>Welcome to Your Interactive WRAP Toolkit</h2>
-                <p>Use the tabs above to explore your local community directory or construct your individual wellness and coping strategies. Everything you write is automatically saved to your browser and can be exported as a printable PDF at any time.</p>
+                <p>Use the tabs above to explore local community support or record your personal wellness strategies. Everything you complete is saved locally in your browser and can be printed as a compact PDF at any time.</p>
             </div>
         </div>
 
-        <!-- TAB 2: DIRECTORY & MAP -->
+        <!-- DIRECTORY & MAP -->
         <div id="tab-directory" class="tab-content">
             <div class="wrap-panel">
-                <h2>Community Directory & Map</h2>
+                <h2>Community Directory & Support Map</h2>
+                
+                <!-- Filter System -->
+                <div class="filter-controls no-print">
+                    <div class="filter-group">
+                        <label for="categoryFilter">Filter by Service Type:</label>
+                        <select id="categoryFilter" onchange="filterResources()">
+                            <option value="all">All Services & Groups</option>
+                            <option value="Men's Groups">Men's Groups / Sheds</option>
+                            <option value="Crisis Support">Crisis & Urgent Support</option>
+                            <option value="Social Hubs">Community & Social Hubs</option>
+                            <option value="Peer Support">Peer Support Groups</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="areaFilter">Filter by Area / Location:</label>
+                        <select id="areaFilter" onchange="filterResources()">
+                            <option value="all">All Locations</option>
+                            <option value="Carlisle">Carlisle</option>
+                            <option value="West Cumbria">West Cumbria (Cleator Moor, Workington, Whitehaven)</option>
+                            <option value="Eden">Eden & Penrith</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div id="map" class="no-print"></div>
+
                 <div class="resource-grid" id="resourceGrid"></div>
+
+                <!-- Print-Only Saved Resources Block -->
+                <div class="print-saved-resources">
+                    <h3 style="border-bottom: 2px solid var(--brand-dark-navy); padding-bottom:0.3rem;">Selected Community Contacts for My Plan</h3>
+                    <div id="savedResourcesPrintList">
+                        <p style="color: var(--text-muted);">No specific community resources starred for this plan.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- TAB 3: WELLNESS TOOLBOX -->
+        <!-- TOOLBOX -->
         <div id="tab-toolbox" class="tab-content">
             <div class="wrap-panel">
                 <h2>My Wellness Toolbox</h2>
-                <p>Record simple, safe, and free (or low-cost) activities that keep you grounded and balanced.</p>
+                <p>Record simple, safe, and effective actions that help you remain well.</p>
                 <div class="no-print" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                    <input type="text" id="toolInput" placeholder="Add a tool (e.g. 15 min walk, fresh espresso, music)..." style="flex:1;">
+                    <input type="text" id="toolInput" placeholder="Add a wellness strategy (e.g. 15 min outdoor walk, espresso break)..." style="flex:1;">
                     <button class="btn btn-primary" onclick="addTool()">Add Tool</button>
                 </div>
                 <ul id="toolList" style="list-style: none; padding: 0;"></ul>
             </div>
         </div>
 
-        <!-- TAB 4: STOPP TECHNIQUE -->
+        <!-- STOPP SKILL -->
         <div id="tab-stopp" class="tab-content">
             <div class="wrap-panel">
-                <h2>The STOPP Skill</h2>
-                <p>A CBT-based grounding technique to pause, gain perspective, and choose how to proceed when feeling overwhelmed.</p>
+                <h2>The STOPP Grounding Skill</h2>
+                <p>A simple CBT-based grounding technique to pause, gain perspective, and avoid impulsive actions.</p>
                 <div class="stopp-grid">
                     <div class="stopp-card">
                         <strong>S - Stop!</strong>
-                        <span>Pause immediately. Do not react on impulse.</span>
+                        <span>Pause immediately. Notice the urge to react.</span>
                     </div>
                     <div class="stopp-card">
                         <strong>T - Take a breath</strong>
-                        <span>Slow down your breathing. Inhale deep into your belly.</span>
+                        <span>Slow down your breathing. Inhale deeply into your belly.</span>
                     </div>
                     <div class="stopp-card">
                         <strong>O - Observe</strong>
-                        <span>What thoughts am I having? What sensations are in my body?</span>
+                        <span>What thoughts am I focusing on? What physical sensations do I feel?</span>
                     </div>
                     <div class="stopp-card">
                         <strong>P - Pull Back</strong>
-                        <span>Put it in perspective. Will this matter in a week? What's the bigger picture?</span>
+                        <span>Put it in perspective. What is the bigger picture here?</span>
                     </div>
                     <div class="stopp-card">
-                        <strong>P - Practice / Proceed</strong>
-                        <span>What is the best thing to do right now for my wellbeing?</span>
+                        <strong>P - Proceed / Practice</strong>
+                        <span>What is the most helpful thing to do right now for my wellbeing?</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 5: DISTRESS / FIZZ SCALE -->
+        <!-- DISTRESS GAUGE -->
         <div id="tab-fizz" class="tab-content">
             <div class="wrap-panel">
-                <h2>Interactive Distress & 'Fizz' Monitor</h2>
-                <p>Assess your current distress level and establish corresponding action plans.</p>
+                <h2>Distress Intensity Gauge</h2>
+                <p>Track your distress levels and establish personal action steps for early warning signs.</p>
                 
                 <div class="fizz-slider-container no-print">
                     <div class="fizz-gauge"></div>
@@ -407,38 +498,36 @@
                 </div>
 
                 <div style="margin-top: 1rem;">
-                    <label style="font-weight:700;">My Personal 'Fizz' Indicators (Early Warning Signs):</label>
-                    <textarea id="fizzSignsText" rows="3" placeholder="e.g. Restless sleep, irritability, skipping coffee breaks..." style="width:100%; margin-top:0.4rem;" oninput="saveWrapData()"></textarea>
+                    <label style="font-weight:700;">My Personal Early Warning Signs:</label>
+                    <textarea id="fizzSignsText" rows="3" placeholder="e.g. Disrupted sleep, withdrawing from social contact, agitation..." style="width:100%; margin-top:0.4rem;" oninput="saveWrapData()"></textarea>
                 </div>
 
                 <div style="margin-top: 1rem;">
-                    <label style="font-weight:700;">Action Strategy When 'Fizz' Rises:</label>
-                    <textarea id="fizzActionText" rows="3" placeholder="e.g. Step outside for 10 mins, practice STOPP, call a friend..." style="width:100%; margin-top:0.4rem;" oninput="saveWrapData()"></textarea>
+                    <label style="font-weight:700;">Action Strategy When Distress Rises:</label>
+                    <textarea id="fizzActionText" rows="3" placeholder="e.g. Use 5-4-3-2-1 grounding, contact my peer supporter, take time out..." style="width:100%; margin-top:0.4rem;" oninput="saveWrapData()"></textarea>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 6: DAILY MAINTENANCE PLAN -->
+        <!-- DAILY MAINTENANCE -->
         <div id="tab-maintenance" class="tab-content">
             <div class="wrap-panel">
                 <h2>Daily Maintenance Plan</h2>
-                <p>Routine actions to maintain wellness and mental stability.</p>
-
                 <div style="margin-bottom: 1rem;">
                     <label style="font-weight: 700;">When I am feeling well, I am:</label>
-                    <textarea id="feelingWellText" rows="3" style="width:100%; margin-top:0.4rem;" placeholder="e.g. Focused, chatty, organized..." oninput="saveWrapData()"></textarea>
+                    <textarea id="feelingWellText" rows="3" style="width:100%; margin-top:0.4rem;" placeholder="e.g. Engaged, chatty, organized..." oninput="saveWrapData()"></textarea>
                 </div>
 
                 <div>
-                    <label style="font-weight: 700;">Things I must do every day to stay well:</label>
-                    <textarea id="dailyNeedsText" rows="4" style="width:100%; margin-top:0.4rem;" placeholder="e.g. 8 hours sleep, nutritious meal, time outdoors..." oninput="saveWrapData()"></textarea>
+                    <label style="font-weight: 700;">Things I need to do every day to stay well:</label>
+                    <textarea id="dailyNeedsText" rows="4" style="width:100%; margin-top:0.4rem;" placeholder="e.g. Regular meals, 8 hours sleep, time outdoors..." oninput="saveWrapData()"></textarea>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Leaflet OpenStreetMap JS -->
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
@@ -446,8 +535,8 @@
         let markers = [];
         let resources = [];
         let userTools = [];
+        let savedResourceIds = [];
 
-        // Tab Switching Logic
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -458,105 +547,153 @@
             const targetContent = document.getElementById(`tab-${tabId}`);
             if (targetContent) targetContent.classList.add('active');
 
-            // Trigger Leaflet map calculation on switch
             if (tabId === 'directory') {
                 setTimeout(() => {
-                    if (!map) {
-                        initMap();
-                    } else {
-                        map.invalidateSize();
-                    }
+                    if (!map) initMap(); else map.invalidateSize();
                 }, 100);
             }
         }
 
-        // Initialize OpenStreetMap
         function initMap() {
-            map = L.map('map').setView([54.8925, -2.9329], 11);
-
+            map = L.map('map').setView([54.8925, -2.9329], 10);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
 
-            renderDirectory();
+            renderDirectory(resources);
         }
 
-        // Fetch & Render Directory
         function loadResources() {
             fetch('resources.json')
                 .then(res => res.json())
                 .then(data => {
                     resources = data;
                     if (document.getElementById('tab-directory').classList.contains('active')) {
-                        if (!map) initMap(); else renderDirectory();
+                        if (!map) initMap(); else renderDirectory(resources);
                     }
                 })
                 .catch(err => {
-                    console.warn("resources.json not loaded yet or empty.", err);
+                    console.warn("resources.json missing or formatted incorrectly.", err);
                 });
         }
 
-        // Robust Directory Renderer (Handles key variations)
-        function renderDirectory() {
+        function filterResources() {
+            const selectedCategory = document.getElementById('categoryFilter').value;
+            const selectedArea = document.getElementById('areaFilter').value;
+
+            const filtered = resources.filter(res => {
+                const matchesCategory = (selectedCategory === 'all') || (res.category === selectedCategory);
+                const matchesArea = (selectedArea === 'all') || (res.area === selectedArea);
+                return matchesCategory && matchesArea;
+            });
+
+            renderDirectory(filtered);
+        }
+
+        function renderDirectory(dataToRender) {
             const grid = document.getElementById('resourceGrid');
             grid.innerHTML = '';
 
             markers.forEach(m => map.removeLayer(m));
             markers = [];
 
-            if (!resources || resources.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; color: var(--text-muted);">No directory resources loaded yet. Ensure <code>resources.json</code> is present.</p>';
+            if (!dataToRender || dataToRender.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; color: var(--text-muted);">No matching community resources found for selected filters.</p>';
                 return;
             }
 
-            resources.forEach(res => {
-                // Key fallbacks to support different JSON property names
-                const title = res.name || res.title || res.organisation || res.service || 'Community Support';
-                const description = res.description || res.details || res.summary || '';
-                const address = res.address || res.location || res.postcode || 'N/A';
-                const phone = res.phone || res.telephone || res.contact || '';
-                const website = res.website || res.url || res.link || '';
+            dataToRender.forEach((res, index) => {
+                const id = res.id || index;
+                const title = res.name || res.title || 'Community Support';
+                const description = res.description || res.details || '';
+                const address = res.address || res.location || 'N/A';
+                const phone = res.phone || '';
+                const website = res.website || res.url || '';
                 const lat = res.lat || res.latitude;
                 const lng = res.lng || res.longitude;
+                const isSaved = savedResourceIds.includes(id);
 
-                // Build Card HTML
                 const card = document.createElement('div');
-                card.className = 'card';
+                card.className = `card ${isSaved ? 'selected-for-wrap' : ''}`;
+                
+                // Build Google Maps Directions URL
+                const mapsUrl = (lat && lng) 
+                    ? `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
+                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(title + ' ' + address)}`;
+
                 card.innerHTML = `
                     <div>
+                        <label class="resource-checkbox-label no-print">
+                            <input type="checkbox" ${isSaved ? 'checked' : ''} onchange="toggleSaveResource(${id})">
+                            ${isSaved ? '⭐ Added to My WRAP Plan' : '☆ Add to My WRAP Plan'}
+                        </label>
                         <h3 style="margin-top:0; color: var(--brand-dark-navy);">${title}</h3>
                         ${description ? `<p style="font-size:0.88rem; color: var(--text-muted);">${description}</p>` : ''}
-                        <p style="font-size:0.85rem;"><strong>Address:</strong> ${address}</p>
+                        <p style="font-size:0.85rem; margin-bottom:0.3rem;"><strong>Address:</strong> ${address}</p>
                     </div>
-                    <div style="margin-top: 1rem;">
-                        ${phone ? `<p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Phone:</strong> ${phone}</p>` : ''}
-                        ${website ? `<a href="${website}" target="_blank" class="btn btn-primary" style="width:100%; text-align:center;">Visit Website</a>` : ''}
+                    <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                        ${phone ? `<p style="font-size:0.85rem; margin:0 0 0.4rem 0;"><strong>Phone:</strong> ${phone}</p>` : ''}
+                        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                            <a href="${mapsUrl}" target="_blank" class="btn btn-outline" style="flex:1;">📍 Get Directions</a>
+                            ${website ? `<a href="${website}" target="_blank" class="btn btn-primary" style="flex:1;">Visit Website</a>` : ''}
+                        </div>
                     </div>
                 `;
                 grid.appendChild(card);
 
-                // Build Map Marker
                 if (lat && lng) {
                     const marker = L.marker([lat, lng]).addTo(map)
-                        .bindPopup(`<b>${title}</b><br>${address}`);
+                        .bindPopup(`<b>${title}</b><br>${address}<br><a href="${mapsUrl}" target="_blank">Get Directions</a>`);
                     markers.push(marker);
                 }
             });
+
+            updateSavedPrintList();
         }
 
-        // Fizz Scale Updates
+        function toggleSaveResource(id) {
+            const index = savedResourceIds.indexOf(id);
+            if (index > -1) {
+                savedResourceIds.splice(index, 1);
+            } else {
+                savedResourceIds.push(id);
+            }
+            saveWrapData();
+            filterResources(); // Refresh card states
+        }
+
+        function updateSavedPrintList() {
+            const printContainer = document.getElementById('savedResourcesPrintList');
+            printContainer.innerHTML = '';
+
+            const savedItems = resources.filter((r, idx) => savedResourceIds.includes(r.id || idx));
+
+            if (savedItems.length === 0) {
+                printContainer.innerHTML = '<p style="color: var(--text-muted);">No specific community resources starred for this plan.</p>';
+                return;
+            }
+
+            savedItems.forEach(item => {
+                printContainer.innerHTML += `
+                    <div class="print-resource-item">
+                        <strong>${item.name || item.title}</strong> - ${item.address || ''}<br>
+                        ${item.phone ? 'Phone: ' + item.phone + ' | ' : ''} ${item.website || ''}
+                    </div>
+                `;
+            });
+        }
+
         function updateFizz(val) {
             document.getElementById('fizzVal').innerText = val;
             const labels = [
                 "Calm & Balanced", "Slightly Unsettled", "Mild Stress", 
-                "Noticeable Tension", "Building Pressure", "High 'Fizz' / Agitated", 
+                "Noticeable Tension", "Building Pressure", "High Distress / Agitated", 
                 "Very Distressed", "Overwhelmed", "Near Crisis", "Crisis Level"
             ];
             document.getElementById('fizzStatus').innerText = labels[val - 1] || "";
             saveWrapData();
         }
 
-        // Tool Add/Remove
         function addTool() {
             const input = document.getElementById('toolInput');
             if (input.value.trim()) {
@@ -578,7 +715,7 @@
             list.innerHTML = '';
             userTools.forEach((tool, i) => {
                 list.innerHTML += `
-                    <li style="background:#FAF9F6; padding:0.6rem 0.8rem; border:1px solid #E2E8F0; border-radius:6px; margin-bottom:0.4rem; display:flex; justify-between; align-items:center;">
+                    <li style="background:#FAF9F6; padding:0.6rem 0.8rem; border:1px solid #E2E8F0; border-radius:6px; margin-bottom:0.4rem; display:flex; justify-content:space-between; align-items:center;">
                         <span>${tool}</span>
                         <button class="no-print" onclick="removeTool(${i})" style="background:none; border:none; color:#C53030; cursor:pointer; font-weight:bold;">✕</button>
                     </li>
@@ -586,10 +723,10 @@
             });
         }
 
-        // Persistence (localStorage)
         function saveWrapData() {
             const wrapData = {
                 tools: userTools,
+                savedResourceIds: savedResourceIds,
                 fizzLevel: document.getElementById('fizzRange').value,
                 fizzSigns: document.getElementById('fizzSignsText').value,
                 fizzAction: document.getElementById('fizzActionText').value,
@@ -604,6 +741,7 @@
             if (data) {
                 const parsed = JSON.parse(data);
                 userTools = parsed.tools || [];
+                savedResourceIds = parsed.savedResourceIds || [];
                 document.getElementById('fizzRange').value = parsed.fizzLevel || 1;
                 updateFizz(parsed.fizzLevel || 1);
                 document.getElementById('fizzSignsText').value = parsed.fizzSigns || '';
@@ -614,7 +752,6 @@
             }
         }
 
-        // Print/Save PDF
         function exportPDF() {
             document.getElementById('print-date').innerText = new Date().toLocaleDateString('en-GB');
             window.print();
