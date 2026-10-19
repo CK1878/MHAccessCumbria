@@ -559,11 +559,12 @@
         }
 
         function initMap() {
-            map = L.map('map').setView([54.8925, -2.9329], 10);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
-
+            if (!map) {
+                map = L.map('map').setView([54.8925, -2.9329], 10);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+            }
             renderDirectory(resources);
         }
 
@@ -582,33 +583,38 @@
         }
 
         function filterResources() {
-            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
-            const selectedCategory = document.getElementById('categoryFilter').value;
-            const selectedArea = document.getElementById('areaFilter').value;
+            const searchInputEl = document.getElementById('searchInput');
+            const categoryFilterEl = document.getElementById('categoryFilter');
+            const areaFilterEl = document.getElementById('areaFilter');
+
+            const searchText = searchInputEl ? searchInputEl.value.toLowerCase().trim() : '';
+            const selectedCategory = categoryFilterEl ? categoryFilterEl.value : 'all';
+            const selectedArea = areaFilterEl ? areaFilterEl.value : 'all';
 
             const filtered = resources.filter(res => {
                 const title = (res.name || res.title || '').toLowerCase();
                 const desc = (res.description || res.details || '').toLowerCase();
                 const areaVal = (res.area || '').toLowerCase();
                 const catVal = (res.category || '').toLowerCase();
+                const locationVal = (res.location || '').toLowerCase();
 
-                // Flexible search matching (checks title, description, category, or area)
                 const matchesSearch = !searchText || 
                     title.includes(searchText) || 
                     desc.includes(searchText) || 
                     catVal.includes(searchText) || 
-                    areaVal.includes(searchText);
+                    areaVal.includes(searchText) ||
+                    locationVal.includes(searchText);
 
                 const matchesCategory = (selectedCategory === 'all') || (res.category === selectedCategory);
                 
-                // Flexible area matching (sub-string check so "West Cumbria" matches full descriptions)
-                const matchesArea = (selectedArea === 'all') || areaVal.includes(selectedArea.toLowerCase());
+                // Keep county-wide, national, or universal entries visible across all region selections
+                const isUniversal = areaVal.includes('cumbria wide') || areaVal.includes('national') || areaVal.includes('nationwide') || areaVal.includes('all') || locationVal.includes('county-wide');
+                const matchesArea = (selectedArea === 'all') || isUniversal || areaVal.includes(selectedArea.toLowerCase());
 
                 return matchesSearch && matchesCategory && matchesArea;
             });
 
             renderDirectory(filtered);
-        }
         }
 
         function renderDirectory(dataToRender) {
@@ -629,7 +635,7 @@
                 const description = res.description || res.details || '';
                 const address = res.address || res.location || 'N/A';
                 const phone = res.phone || '';
-                const website = res.website || res.url || '';
+                const website = res.website || res.url || res.link || '';
                 const lat = res.lat || res.latitude;
                 const lng = res.lng || res.longitude;
                 const isSaved = savedResourceIds.includes(id);
@@ -701,8 +707,8 @@
             savedItems.forEach(item => {
                 printContainer.innerHTML += `
                     <div class="print-resource-item">
-                        <strong>${item.name || item.title}</strong> - ${item.address || ''}<br>
-                        ${item.phone ? 'Phone: ' + item.phone + ' | ' : ''} ${item.website || ''}
+                        <strong>${item.name || item.title}</strong> - ${item.address || item.location || ''}<br>
+                        ${item.phone ? 'Phone: ' + item.phone + ' | ' : ''} ${item.website || item.link || ''}
                     </div>
                 `;
             });
