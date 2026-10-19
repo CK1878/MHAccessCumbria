@@ -333,7 +333,6 @@
             .wrap-panel { border: 1px solid #ccc; page-break-inside: avoid; }
             .print-header { display: block !important; margin-bottom: 1.5rem; border-bottom: 2px solid var(--brand-dark-navy); padding-bottom: 0.5rem; }
             
-            /* Hide full grid on print, show only checked resources */
             .resource-grid { display: none !important; }
             .print-saved-resources { display: block !important; }
             .print-resource-item { border-bottom: 1px solid #eee; padding: 0.5rem 0; }
@@ -405,8 +404,12 @@
             <div class="wrap-panel">
                 <h2>Community Directory & Support Map</h2>
                 
-                <!-- Filter System -->
+                <!-- Filter & Search Controls -->
                 <div class="filter-controls no-print">
+                    <div class="filter-group" style="flex: 2; min-width: 250px;">
+                        <label for="searchInput">Search Support (e.g. food bank, football, sheds):</label>
+                        <input type="text" id="searchInput" placeholder="Type to search activities or names..." oninput="filterResources()">
+                    </div>
                     <div class="filter-group">
                         <label for="categoryFilter">Filter by Service Type:</label>
                         <select id="categoryFilter" onchange="filterResources()">
@@ -415,6 +418,7 @@
                             <option value="Crisis Support">Crisis & Urgent Support</option>
                             <option value="Social Hubs">Community & Social Hubs</option>
                             <option value="Peer Support">Peer Support Groups</option>
+                            <option value="Food & Practical">Food Banks & Practical Help</option>
                         </select>
                     </div>
                     <div class="filter-group">
@@ -422,7 +426,7 @@
                         <select id="areaFilter" onchange="filterResources()">
                             <option value="all">All Locations</option>
                             <option value="Carlisle">Carlisle</option>
-                            <option value="West Cumbria">West Cumbria (Cleator Moor, Workington, Whitehaven)</option>
+                            <option value="West Cumbria">West Cumbria</option>
                             <option value="Eden">Eden & Penrith</option>
                         </select>
                     </div>
@@ -578,13 +582,29 @@
         }
 
         function filterResources() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
             const selectedCategory = document.getElementById('categoryFilter').value;
             const selectedArea = document.getElementById('areaFilter').value;
 
             const filtered = resources.filter(res => {
+                const title = (res.name || res.title || '').toLowerCase();
+                const desc = (res.description || res.details || '').toLowerCase();
+                const areaVal = (res.area || '').toLowerCase();
+                const catVal = (res.category || '').toLowerCase();
+
+                // Flexible search matching (checks title, description, category, or area)
+                const matchesSearch = !searchText || 
+                    title.includes(searchText) || 
+                    desc.includes(searchText) || 
+                    catVal.includes(searchText) || 
+                    areaVal.includes(searchText);
+
                 const matchesCategory = (selectedCategory === 'all') || (res.category === selectedCategory);
-                const matchesArea = (selectedArea === 'all') || (res.area === selectedArea);
-                return matchesCategory && matchesArea;
+                
+                // Flexible area matching (sub-string check so "West Cumbria" matches full descriptions)
+                const matchesArea = (selectedArea === 'all') || areaVal.includes(selectedArea.toLowerCase());
+
+                return matchesSearch && matchesCategory && matchesArea;
             });
 
             renderDirectory(filtered);
@@ -598,7 +618,7 @@
             markers = [];
 
             if (!dataToRender || dataToRender.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; color: var(--text-muted);">No matching community resources found for selected filters.</p>';
+                grid.innerHTML = '<p style="grid-column: 1/-1; color: var(--text-muted);">No matching community resources found for selected filters or search terms.</p>';
                 return;
             }
 
@@ -616,7 +636,6 @@
                 const card = document.createElement('div');
                 card.className = `card ${isSaved ? 'selected-for-wrap' : ''}`;
                 
-                // Build Google Maps Directions URL
                 const mapsUrl = (lat && lng) 
                     ? `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
                     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(title + ' ' + address)}`;
@@ -632,7 +651,7 @@
                         <p style="font-size:0.85rem; margin-bottom:0.3rem;"><strong>Address:</strong> ${address}</p>
                     </div>
                     <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.4rem;">
-                        ${phone ? `<p style="font-size:0.85rem; margin:0 0 0.4rem 0;"><strong>Phone:</strong> ${phone}</p>` : ''}
+                        ${phone ? `<p style="font-size:0.85rem; margin:0 0 0.4rem 0;"><strong>Phone:</strong> <a href="tel:${phone.replace(/\s+/g, '')}" style="color: var(--brand-terracotta); font-weight:700; text-decoration:none;">${phone}</a></p>` : ''}
                         <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
                             <a href="${mapsUrl}" target="_blank" class="btn btn-outline" style="flex:1;">📍 Get Directions</a>
                             ${website ? `<a href="${website}" target="_blank" class="btn btn-primary" style="flex:1;">Visit Website</a>` : ''}
@@ -642,8 +661,13 @@
                 grid.appendChild(card);
 
                 if (lat && lng) {
-                    const marker = L.marker([lat, lng]).addTo(map)
-                        .bindPopup(`<b>${title}</b><br>${address}<br><a href="${mapsUrl}" target="_blank">Get Directions</a>`);
+                    const popupContent = `
+                        <b>${title}</b><br>
+                        ${address}<br>
+                        ${phone ? `Phone: <a href="tel:${phone.replace(/\s+/g, '')}">${phone}</a><br>` : ''}
+                        <a href="${mapsUrl}" target="_blank">Get Directions</a>
+                    `;
+                    const marker = L.marker([lat, lng]).addTo(map).bindPopup(popupContent);
                     markers.push(marker);
                 }
             });
@@ -659,7 +683,7 @@
                 savedResourceIds.push(id);
             }
             saveWrapData();
-            filterResources(); // Refresh card states
+            filterResources(); 
         }
 
         function updateSavedPrintList() {
